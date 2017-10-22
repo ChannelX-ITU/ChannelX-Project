@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="21c37dbc-3815-4fc2-8a6c-7b148636261c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/channel/channel.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/channel/mailman.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/channel/message.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/channel/sender.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/channel/settings.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/channel/user.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/main.go" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/server.go" />
-    </list>
+    <list default="true" id="21c37dbc-3815-4fc2-8a6c-7b148636261c" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
