@@ -1,9 +1,11 @@
 package channel
 
 type User struct {
-	name	string
-	id		int
-	eMail	string
-	sms		string
-	set		UserSetting
+	//name	string
+	//sms	string
+	//set	UserSetting
+	eMail		string
+	userId		int
+	PrefId		int
+	hashPass	int
 }
