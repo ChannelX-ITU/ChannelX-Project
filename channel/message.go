@@ -1,7 +1,6 @@
 package channel
 
 import (
-	"./"
 )
 
 type Message struct {
