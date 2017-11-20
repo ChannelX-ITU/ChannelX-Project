@@ -1,0 +1,20 @@
+@import '../../dark-theme.scss';
+@import '../../util.scss';
+$text: map-deep-get($dark-theme, foreground, text);
+
+.extend-filler {
+    flex: 1 1 auto;
+}
+
+
+span {
+    padding: 8px;
+    font-size: 0.7em;
+}
+
+span > a {
+    cursor: pointer;
+    cursor: hand;
+    text-decoration: none;
+    color: $text;
+}

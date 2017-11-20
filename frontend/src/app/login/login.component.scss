@@ -1,0 +1,15 @@
+#registerCard {
+    width: 400px;
+    text-align:center;
+    margin: 42px auto 42px auto;
+    padding: 10px;
+}
+
+input {
+    flex: 1 1 auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,24 @@
+@import '../../dark-theme.scss';
+@import '../../util.scss';
+$text: map-deep-get($dark-theme, foreground, text);
+
+mat-grid-list {
+    padding-top: 48px;
+    width: 70%;
+    display: flex;
+    margin: auto;
+    color: $text;
+}
+
+mat-grid-tile {
+    flex-direction: column;
+}
+
+p {
+    display: block;
+    flex: 1 1 auto;
+}
+
+mat-icon {
+    color: $text;
+}

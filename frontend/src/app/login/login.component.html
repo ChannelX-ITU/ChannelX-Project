@@ -1,0 +1,37 @@
+<mat-card id="registerCard">
+    <mat-tab-group>
+        <mat-tab label="Signin">
+            <form method="post" action="login">
+                <mat-form-field>
+                    <input required matInput placeholder="Username" id="login_username" type="text" name="username">
+                </mat-form-field>
+                <mat-form-field>
+                    <input required matInput placeholder="Password" id="login_password" type="password" name="password">
+                </mat-form-field>
+                <mat-card-actions>
+                    <button mat-raised-button color="accent" (click)="onSubmit('hello')">
+                        {{button_text}}
+                    </button>
+                </mat-card-actions>
+            </form>
+        </mat-tab>
+        <mat-tab label="Signup">
+            <form>
+                <mat-form-field>
+                    <input required matInput placeholder="Username" id="signup_username" type="text" name="username">
+                </mat-form-field>
+                <mat-form-field>
+                    <input required matInput placeholder="E-Mail" class="text-input" id="signup_email" type="text" name="email">
+                </mat-form-field>
+                <mat-form-field>
+                    <input required matInput placeholder="Password" id="signup_password" type="password" name="password">
+                </mat-form-field>
+                <br/>
+                <button mat-raised-button name="submit" color="accent" (click)="onSubmit('hello')">
+                    {{button_text}}
+                </button>
+            </form>
+        </mat-tab>
+    </mat-tab-group>
+
+</mat-card>

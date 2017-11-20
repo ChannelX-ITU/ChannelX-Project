@@ -1,0 +1,26 @@
+@import './color.variables.scss';
+
+// Create the theme object (a Sass map containing all of the palettes).
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+
+body {
+    background: $dark-background;
+    margin: 0px;
+}
+
+mat-tab-body {
+    padding: 16px;
+}
+
+div.mat-tab-label {
+    min-width: 0px;
+    flex: 1 1 auto;
+}
+
+div.mat-tab-labels {
+    flex: 1 1 auto;
+}
