@@ -1,0 +1,72 @@
+<mat-card id="homeButtons">
+	<mat-tab-group>
+		<mat-tab label="Create A Channel">
+			<mat-vertical-stepper [linear]="true">
+				<mat-step label="Name Your Channel" [stepControl]="nameForm">
+					<form>
+						<mat-form-field>
+							<input matInput placeholder="Channel Name" id="channel_name" type="text" name="channelName" required>
+						</mat-form-field>
+					</form>
+				</mat-step>
+				<mat-step label="Configure Communication Type" [stepControl]="commForm">
+					<form>
+						<mat-form-field>
+							<mat-select placeholder="Choose Comm Type">
+								<mat-option *ngFor="let commType of commTypes" [value]="commType.view">
+								{{commType.view}}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</form>
+				</mat-step>
+				<mat-step label="Configure Active Hours" [stepControl]="timeForm">
+					<form>
+						<mat-form-field>
+							<input matInput [matDatepicker]="picker" placeholder="Choose a Starting Date">
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-datepicker touchUi="true" #picker></mat-datepicker>
+						</mat-form-field>
+						<br/>
+						<mat-form-field>
+							<mat-select placeholder="Choose Active Days" multiple>
+								<mat-option *ngFor="let day of days" [value]="day.view">
+								{{day.view}}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<br/>
+						<mat-form-field>
+							<mat-select placeholder="Choose Active Hour Begin">
+								<mat-option *ngFor="let hour of hours" [value]="hour.view">
+								{{hour.view}}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<br/>
+							<mat-form-field>
+								<input matInput placeholder="Channel Hours" id="channel_hour"
+								type="number" name="channelHour" required>
+							</mat-form-field>
+						<br/>
+						<span matToolTip="ToolTip!">Load the preset while loading this page</span>
+							<mat-card-actions>
+							<div>
+							  <button mat-button>Submit</button>
+							</div>
+						</mat-card-actions>
+					</form>
+				</mat-step>
+			</mat-vertical-stepper>
+		</mat-tab>
+
+		<mat-tab label="Manage Channels">
+			<mat-list>
+			  <mat-list-item *ngFor="let channel of channels">
+					<button mat-button>{{channel.view}}</button>
+				</mat-list-item>
+			</mat-list>
+			<span> Why not make this a table showing the total users and comm type etc </span>
+		</mat-tab>
+	</mat-tab-group>
+</mat-card>
