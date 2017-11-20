@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/ChannelX-ITU/ChannelX-Project/channel"
+	"github.com/ChannelX-ITU/ChannelX-Project/backend/channel"
 	"net/http"
 	"github.com/gorilla/mux"
 	"fmt"
@@ -20,7 +20,7 @@ type Server struct {
 func (s *Server) Setup(smtp string, port int, username string, psswrd string) {
 	s.mailMan = &channel.Mailman{}
 	s.mailMan.Setup(smtp, port, username, psswrd)
-	db, err := sql.Open("mysql", "root:35792030@/ChannelX")
+	db, err := sql.Open("mysql", "root:35792030@tcp(mysql:3306)/ChannelX")
 	if err != nil {
 		panic(err.Error())
 	}

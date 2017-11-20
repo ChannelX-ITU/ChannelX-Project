@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ChannelX-ITU/ChannelX-Project/server"
+	"github.com/ChannelX-ITU/ChannelX-Project/backend/server"
 )
 
 const (

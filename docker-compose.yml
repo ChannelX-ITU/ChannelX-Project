@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mysql:
+    image: 'mysql'
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: 35792030
+        MYSQL_DATABASE: ChannelX
+  backend:
+    build: .
+    depends_on: 
+     - "mysql"
+    links:
+     - "mysql:mysql"
+    ports:
+     - "6969:6969"
+    command: sh -c 'while sleep 3600; do :; done'
