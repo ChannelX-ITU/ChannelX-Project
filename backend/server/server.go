@@ -1,7 +1,7 @@
 package server
 
 import (
-	"github.com/ChannelX-ITU/ChannelX-Project/channel"
+	"github.com/ChannelX-ITU/ChannelX-Project/backend/channel"
 	"net/http"
 	"github.com/gorilla/mux"
 	"fmt"
