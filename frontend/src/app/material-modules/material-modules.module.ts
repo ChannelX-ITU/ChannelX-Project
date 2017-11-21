@@ -1,14 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { 
-    MatCardModule, 
-    MatTabsModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
+import {
+    MatCardModule,
+    MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
     MatToolbarModule,
     MatGridListModule,
-    MatIconModule
+    MatIconModule,
+	MatOptionModule,
+	MatSelectModule,
+	MatNativeDateModule,
+	MatDatepickerModule,
+	MatSliderModule,
+  MatListModule,
+	MatStepperModule,
+  MatSidenavModule
 } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -23,9 +31,17 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
       MatInputModule,
       MatButtonModule,
       MatToolbarModule,
+      MatListModule,
       MatGridListModule,
       MatIconModule,
-      NoopAnimationsModule
+      NoopAnimationsModule,
+	  MatOptionModule,
+	  MatSelectModule,
+	  MatNativeDateModule,
+	  MatDatepickerModule,
+	  MatSliderModule,
+	  MatStepperModule,
+    MatSidenavModule
   ],
   declarations: []
 })
