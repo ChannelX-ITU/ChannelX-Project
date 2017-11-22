@@ -60,13 +60,95 @@
 			</mat-vertical-stepper>
 		</mat-tab>
 
-		<mat-tab label="Manage Channels">
-			<mat-list>
-			  <mat-list-item *ngFor="let channel of channels">
-					<button mat-button>{{channel.view}}</button>
-				</mat-list-item>
-			</mat-list>
-			<span> Why not make this a table showing the total users and comm type etc </span>
+		<mat-tab label="Channels">
+				<mat-table #table [dataSource]="dataSource">
+
+					<!--Channel Name Column-->
+					<ng-container matColumnDef="ChannelName">
+						<mat-header-cell *matHeaderCellDef> Channel Name </mat-header-cell>
+						<mat-cell *matCellDef="let element"><button mat-button>{{element.ChannelName}}</button></mat-cell>
+					</ng-container>
+
+					<!--Channel User Count Column-->
+					<ng-container matColumnDef="UserCount">
+					  <mat-header-cell *matHeaderCellDef> User Count </mat-header-cell>
+					  <mat-cell *matCellDef="let element"> {{element.UserCount}} </mat-cell>
+					</ng-container>
+
+					<!--Channel Prefered Comm Column-->
+					<ng-container matColumnDef="CommType">
+					  <mat-header-cell *matHeaderCellDef> Comm Type </mat-header-cell>
+					  <mat-cell *matCellDef="let element"> {{element.CommType}} </mat-cell>
+					</ng-container>
+
+					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    			<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+				</mat-table>
+		</mat-tab>
+
+		<mat-tab label="User Preferences">
+					User Mails<br/>
+					<mat-list>
+						<mat-list-item *ngFor="let email of emails">
+							<button mat-button>Edit: {{email.name}}	| {{email.view}}</button>
+						</mat-list-item>
+					</mat-list>
+					<form>
+						<mat-form-field>
+							<input matInput placeholder="Email Name" id="email_name" type="text" name="emailName">
+						</mat-form-field>
+						<mat-form-field>
+							<input matInput placeholder="New Email" id="new_email" type="text" name="newEmail">
+						</mat-form-field>
+						<button mat-button>Submit</button>
+					</form>
+					User Phone Numbers<br/>
+					<mat-list>
+						<mat-list-item *ngFor="let phone of phones">
+							<button mat-button>Edit: {{phone.name}}	| {{phone.view}}</button>
+						</mat-list-item>
+					</mat-list>
+					<form>
+						<mat-form-field>
+							<input matInput placeholder="Phone Name" id="phone_name" type="text" name="phoneName">
+						</mat-form-field>
+						<mat-form-field>
+							<input matInput placeholder="New Phone Number" id="new_phone" type="text" name="newPhone">
+						</mat-form-field>
+						<button mat-button>Submit</button>
+					</form>
+					<form label="Channel Preset">
+						User preset<br/>
+						<mat-form-field>
+							<mat-select placeholder="Choose Comm Type">
+								<mat-option *ngFor="let commType of commTypes" [value]="commType.view">
+								{{commType.view}}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field>
+							<mat-select placeholder="Choose Active Days" multiple>
+								<mat-option *ngFor="let day of days" [value]="day.view">
+								{{day.view}}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<br/>
+						<mat-form-field>
+							<mat-select placeholder="Choose Active Hour Begin">
+								<mat-option *ngFor="let hour of hours" [value]="hour.view">
+								{{hour.view}}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<br/>
+							<mat-form-field>
+								<input matInput placeholder="Channel Hours" id="channel_hour"
+								type="number" name="channelHour" required>
+							</mat-form-field>
+							<button mat-button>Save Preset</button>
+					</form>
 		</mat-tab>
 	</mat-tab-group>
 </mat-card>

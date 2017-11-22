@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -7,10 +8,15 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./home.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
+
 export class HomeComponent implements OnInit {
   nameForm: FormGroup;
   timeForm: FormGroup;
   commForm: FormGroup;
+
+  displayedColumns = ['ChannelName', 'UserCount', 'CommType'];
+  dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
+
   constructor() { }
 
   ngOnInit() {
@@ -42,8 +48,8 @@ export class HomeComponent implements OnInit {
   ];
 
   hours = [
-	{value: '0000-0', view: '00:00'},
 	{value: '0100-0', view: '01:00'},
+  {value: '0000-0', view: '00:00'},
 	{value: '0200-0', view: '02:00'},
 	{value: '0300-0', view: '03:00'},
 	{value: '0400-0', view: '04:00'},
@@ -67,4 +73,28 @@ export class HomeComponent implements OnInit {
 	{value: '2200-0', view: '22:00'},
 	{value: '2300-0', view: '23:00'},
   ];
+
+  emails = [
+    {value: '0', name: 'Default Mail', view: 'ihsanyigitergin@gmail.com'},
+    {value: '1', name: 'School Mail', view: 'erginihs@itu.edu.tr'}
+  ];
+
+  phones = [
+    {value: '0', name: 'Default Phone', view: '+905546544365'},
+    {value: '1', name: 'School Phone', view: '+905318893565'}
+  ];
 }
+
+export interface Element {
+  ChannelName: string;
+  UserCount: number;
+  CommType: string;
+  IsActive: number;
+}
+
+const ELEMENT_DATA: Element[] = [
+  {ChannelName: 'BluePanda', UserCount: 10, CommType: 'Email', IsActive: 1},
+  {ChannelName: 'RedIguana', UserCount: 12, CommType: 'Email', IsActive: 1},
+  {ChannelName: 'GreyChipmunk', UserCount: 23, CommType: 'Email', IsActive: 1},
+  {ChannelName: 'FlyingWhale', UserCount: 2, CommType: 'SMS', IsActive: 1}
+];
