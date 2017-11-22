@@ -4,6 +4,8 @@ import (
 	"github.com/ChannelX-ITU/ChannelX-Project/backend/channel"
 	"net/http"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/handlers"
+	"os"
 	"fmt"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
@@ -20,7 +22,7 @@ type Server struct {
 func (s *Server) Setup(smtp string, port int, username string, psswrd string) {
 	s.mailMan = &channel.Mailman{}
 	s.mailMan.Setup(smtp, port, username, psswrd)
-	db, err := sql.Open("mysql", "root:35792030@tcp(mysql:3306)/ChannelX")
+	db, err := sql.Open("mysql", "root:35792030@tcp(my.sql:3306)/ChannelX")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -110,18 +112,22 @@ func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (s *Server) Recieve(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Selam"))
+func (s *Server) Recieve(res http.ResponseWriter, req *http.Request) {
+	http.ServeFile(res, req, "static/index.html")
 }
 
 func (s *Server) Run() {
 	s.mailMan.Run()
 	router := mux.NewRouter()
-	router.HandleFunc("/", s.Recieve)
-	router.HandleFunc("/signup", s.SingupPage)
-	router.HandleFunc("/submitsignup", s.SubmitSignUp)
-	router.HandleFunc("/login", s.login)
-	http.ListenAndServe(":6969", router)
+	fs := http.FileServer(http.Dir("static"))
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
+	router.HandleFunc("/{_:.*}", s.Recieve)
+	// router.HandleFunc("/signup", s.SingupPage)
+	// router.HandleFunc("/submitsignup", s.SubmitSignUp)
+	// router.HandleFunc("/login", s.login)
+
+	loggedHandler := handlers.CombinedLoggingHandler(os.Stdout, router)
+	http.ListenAndServe(":6969", loggedHandler)
 }
 
 func (s *Server) SignUp(w http.ResponseWriter, r *http.Request) {
