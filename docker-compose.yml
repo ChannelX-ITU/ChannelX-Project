@@ -6,12 +6,21 @@ services:
     environment:
         MYSQL_ROOT_PASSWORD: 35792030
         MYSQL_DATABASE: ChannelX
+    ports:
+     - "3306:3306"
   backend:
     build: .
     depends_on: 
      - "mysql"
     links:
-     - "mysql:mysql"
+     - "mysql:my.sql"
     ports:
      - "6969:6969"
-    command: sh -c 'while sleep 3600; do :; done'
+     - "4200:4200"
+    volumes:
+     - ./backend:/app/backend
+     - ./frontend:/app/frontend
+     - /app/frontend/node_modules
+    environment:
+        PKG_NAME: github.com/ChannelX-ITU/ChannelX-Project/backend
+    entrypoint: startup.sh

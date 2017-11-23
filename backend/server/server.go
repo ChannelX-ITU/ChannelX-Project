@@ -38,7 +38,7 @@ func (s *Server) Setup(smtp string, port int, username string, psswrd string) {
 func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	// If method is GET serve an html login page
 	if req.Method != "POST" {
-		http.ServeFile(res, req, "static/templates/login.html")
+		http.Redirect(res, req, "/login", 301)
 		return
 	}
 
@@ -120,11 +120,11 @@ func (s *Server) Run() {
 	s.mailMan.Run()
 	router := mux.NewRouter()
 	fs := http.FileServer(http.Dir("static"))
+	router.HandleFunc("/api/login", s.login)
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
 	router.HandleFunc("/{_:.*}", s.Recieve)
 	// router.HandleFunc("/signup", s.SingupPage)
 	// router.HandleFunc("/submitsignup", s.SubmitSignUp)
-	// router.HandleFunc("/login", s.login)
 
 	loggedHandler := handlers.CombinedLoggingHandler(os.Stdout, router)
 	http.ListenAndServe(":6969", loggedHandler)

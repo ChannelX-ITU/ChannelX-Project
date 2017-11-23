@@ -3,17 +3,17 @@ FROM node:8-alpine as builder
 WORKDIR /app
 
 RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh musl-dev go mysql mysql-client
+    apk add --no-cache bash git openssh musl-dev go
 
 RUN mkdir -p /app/backend /app/frontend
-
-ENV FRONTEND_PATH /app/frontend
-ENV BACKEND_PATH /app/backend
-ENV PATH="/app:${PATH}"
 
 RUN mkdir -p /app/go 
 ENV GOPATH /app/go 
 RUN mkdir -p $GOPATH/pkg $GOPATH/bin $GOPATH/src
+
+ENV FRONTEND_PATH /app/frontend
+ENV BACKEND_PATH /app/backend
+ENV PATH="/app:${GOPATH}/bin:${PATH}"
 
 COPY my.cnf /etc/mysql/my.cnf
 COPY mysql_setup.sh /app/mysql_setup.sh
@@ -21,12 +21,16 @@ COPY startup.sh /app/startup.sh
 COPY build_be.sh /app/build_backend.sh
 COPY build_fe.sh /app/build_frontend.sh
 COPY build_fe_dev.sh /app/build_frontend_dev.sh
-RUN chmod u+x startup.sh mysql_setup.sh build_backend.sh build_frontend.sh build_frontend_dev.sh
+COPY build_be_dev.sh /app/build_backend_dev.sh
+COPY build_dev.sh /app/build_dev.sh
+COPY build.sh /app/build.sh
+COPY wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x startup.sh mysql_setup.sh build_backend.sh build_frontend.sh build_frontend_dev.sh build_backend_dev.sh build_dev.sh build.sh wait-for-it.sh
 
 EXPOSE 4200
 EXPOSE 6969
 
-ENTRYPOINT startup.sh && /bin/bash
+ENTRYPOINT /bin/bash
 
 # FROM alpine
 # 
