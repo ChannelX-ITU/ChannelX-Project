@@ -50,9 +50,9 @@ func (m *Mailman) Run()  {
 
 				ma := gomail.NewMessage()
 				ma.SetHeader("From", m.username)
-				ma.SetHeader("To", msg.to.eMail)
-				ma.SetHeader("Subject", msg.sub)
-				ma.SetBody("text/html", msg.msg)
+				ma.SetHeader("To", msg.To)
+				ma.SetHeader("Subject", msg.Sub)
+				ma.SetBody("text/html", msg.Msg)
 
 				if err := gomail.Send(s, ma); err != nil {
 					log.Print(err)

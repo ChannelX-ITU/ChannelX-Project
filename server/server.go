@@ -8,7 +8,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
-	"time"
+	"github.com/satori/go.uuid"
 )
 
 type Server struct {
@@ -76,7 +76,7 @@ func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
 		http.ServeFile(res, req, "static/templates/signup.html")
 		return
 	}
-
+	email	 := req.FormValue("email")
 	username := req.FormValue("username")
 	password := req.FormValue("password")
 
@@ -87,26 +87,63 @@ func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
 	switch {
 	// Username is available
 	case err == sql.ErrNoRows:
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-		if err != nil {
+		err := s.dataBase.QueryRow("SELECT C.val FROM COMM AS C, COMM_TYPE AS C_T WHERE C_T.val=? AND C.val=?", "EMAIL", email).Scan(&user)
+		if err == nil {
+			res.Write([]byte("E-Mail: " + email + " is already taken!"))
+			return
+		}
+		if err != sql.ErrNoRows {
 			http.Error(res, "Server error, unable to create your account.", 500)
+			return
+		}
+
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+
+		if err != nil {
+			http.Error(res, "4Server error, unable to create your account.", 500)
 			return
 		}
 
 		_, err = s.dataBase.Exec("INSERT INTO USERS(username, password) VALUES(?, ?)", username, hashedPassword)
 		if err != nil {
-			http.Error(res, "Server error, unable to create your account.", 500)
+			http.Error(res, "3Server error, unable to create your account.", 500)
 			return
 		}
 
-		res.Write([]byte("User created!"))
+		_, err = s.dataBase.Exec("INSERT INTO COMM(user_id, type_id, val) VALUES((SELECT U.user_id FROM USERS AS U WHERE U.username=?), (SELECT ct.type_id FROM COMM_TYPE AS ct WHERE ct.val=?), ?)", username, "EMAIL", email)
+		if err != nil {
+			http.Error(res, "2Server error, unable to create your account.", 500)
+			s.dataBase.Exec("DELETE FROM USERS WHERE username=?", username)
+			return
+		}
+
+		_,err = s.dataBase.Exec("INSERT INTO PREFERENCE(user_id) VALUE ((SELECT U.user_id FROM USERS AS U WHERE U.username=?))", username)
+		if err != nil {
+			http.Error(res, "1Server error, unable to create your account.", 500)
+			s.dataBase.Exec("DELETE FROM COMM WHERE val=?", email)
+			s.dataBase.Exec("DELETE FROM USERS WHERE username=?", username)
+			return
+		}
+
+		u1 := uuid.NewV4()
+
+		_,err = s.dataBase.Exec("INSERT INTO TOKENS(user_id, token) VALUE ((SELECT U.user_id FROM USERS AS U WHERE U.username=?), ? )", username, u1)
+		if err != nil {
+			http.Error(res, err.Error(), 500)
+			s.dataBase.Exec( "DELETE FROM PREFERENCE WHERE user_id=(SELECT  U.user_id FROM USERS AS U WHERE U.username=?)", username )
+			s.dataBase.Exec("DELETE FROM COMM WHERE val=?", email)
+			s.dataBase.Exec("DELETE FROM USERS WHERE username=?", username)
+			return
+		}
+
+		s.mailMan.Send(channel.Message{email, "Activation", u1.String()})
+		res.Write([]byte("Activation mail is sent to " + email))
 		return
 	case err != nil:
 		http.Error(res, "Server error, unable to create your account.", 500)
 		return
 	default:
 		res.Write([]byte("Username: " + user + " is already taken!"))
-		time.Sleep(3 * time.Second)
 	}
 }
 

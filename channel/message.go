@@ -4,7 +4,7 @@ import (
 )
 
 type Message struct {
-	to 			*User
-	sub			string
-	msg			string
+	To 			string
+	Sub			string
+	Msg			string
 }
