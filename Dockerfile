@@ -15,16 +15,18 @@ ENV FRONTEND_PATH /app/frontend
 ENV BACKEND_PATH /app/backend
 ENV PATH="/app:${GOPATH}/bin:${PATH}"
 
+RUN go get -v github.com/achiku/wbs
+
 COPY my.cnf /etc/mysql/my.cnf
-COPY mysql_setup.sh /app/mysql_setup.sh
-COPY startup.sh /app/startup.sh
-COPY build_be.sh /app/build_backend.sh
-COPY build_fe.sh /app/build_frontend.sh
-COPY build_fe_dev.sh /app/build_frontend_dev.sh
-COPY build_be_dev.sh /app/build_backend_dev.sh
-COPY build_dev.sh /app/build_dev.sh
-COPY build.sh /app/build.sh
-COPY wait-for-it.sh /app/wait-for-it.sh
+COPY scripts/mysql_setup.sh /app/mysql_setup.sh
+COPY scripts/startup.sh /app/startup.sh
+COPY scripts/build_be.sh /app/build_backend.sh
+COPY scripts/build_fe.sh /app/build_frontend.sh
+COPY scripts/build_fe_dev.sh /app/build_frontend_dev.sh
+COPY scripts/build_be_dev.sh /app/build_backend_dev.sh
+COPY scripts/build_dev.sh /app/build_dev.sh
+COPY scripts/build.sh /app/build.sh
+COPY scripts/wait-for-it.sh /app/wait-for-it.sh
 RUN chmod +x startup.sh mysql_setup.sh build_backend.sh build_frontend.sh build_frontend_dev.sh build_backend_dev.sh build_dev.sh build.sh wait-for-it.sh
 
 EXPOSE 4200

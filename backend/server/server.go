@@ -35,7 +35,7 @@ func (s *Server) Setup(smtp string, port int, username string, psswrd string) {
 	s.dataBase = db
 }
 
-func (s *Server) login(res http.ResponseWriter, req *http.Request) {
+func (s *Server) Login(res http.ResponseWriter, req *http.Request) {
 	// If method is GET serve an html login page
 	if req.Method != "POST" {
 		http.Redirect(res, req, "/login", 301)
@@ -71,11 +71,11 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	res.Write([]byte("Hello " + databaseUsername))
 }
 
-func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
+func (s *Server) SignupPage(res http.ResponseWriter, req *http.Request) {
 
 	// Serve signup.html to get requests to /signup
 	if req.Method != "POST" {
-		http.ServeFile(res, req, "static/templates/signup.html")
+		http.Redirect(res, req, "/register", 301)
 		return
 	}
 
@@ -91,20 +91,21 @@ func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
 	case err == sql.ErrNoRows:
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 		if err != nil {
-			http.Error(res, "Server error, unable to create your account.", 500)
+			http.Error(res, "Server error, unable to create your account. 1: " + err.Error(), 500)
 			return
 		}
 
 		_, err = s.dataBase.Exec("INSERT INTO USERS(username, password) VALUES(?, ?)", username, hashedPassword)
 		if err != nil {
-			http.Error(res, "Server error, unable to create your account.", 500)
+			http.Error(res, "Server error, unable to create your account. 2: " + err.Error(), 500)
 			return
 		}
 
 		res.Write([]byte("User created!"))
 		return
 	case err != nil:
-		http.Error(res, "Server error, unable to create your account.", 500)
+		http.Error(res, "Server error, unable to create your account. 3: " + err.Error(), 500)
+
 		return
 	default:
 		res.Write([]byte("Username: " + user + " is already taken!"))
@@ -120,10 +121,11 @@ func (s *Server) Run() {
 	s.mailMan.Run()
 	router := mux.NewRouter()
 	fs := http.FileServer(http.Dir("static"))
-	router.HandleFunc("/api/login", s.login)
+	router.HandleFunc("/api/login", s.Login)
+	router.HandleFunc("/api/signup", s.SignupPage)
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
 	router.HandleFunc("/{_:.*}", s.Recieve)
-	// router.HandleFunc("/signup", s.SingupPage)
+
 	// router.HandleFunc("/submitsignup", s.SubmitSignUp)
 
 	loggedHandler := handlers.CombinedLoggingHandler(os.Stdout, router)
