@@ -16,7 +16,8 @@ import {
 	MatSliderModule,
   MatListModule,
 	MatStepperModule,
-  MatTableModule
+  MatTableModule,
+  MatExpansionModule
 } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -41,7 +42,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 	  MatDatepickerModule,
 	  MatSliderModule,
 	  MatStepperModule,
-    MatTableModule
+    MatTableModule,
+    MatExpansionModule
   ],
   declarations: []
 })

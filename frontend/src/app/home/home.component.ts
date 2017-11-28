@@ -18,13 +18,24 @@ export class HomeComponent implements OnInit {
   dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
 
   constructor() { }
-
+  regTypeSelectedOption: string = "";
+  selectedNav: any;
   ngOnInit() {
-
+      this.selectedNav = 'select value';
   }
 
+  setNav(nav:any){
+    	this.selectedNav = nav;
+			if(this.selectedNav == "Email"){
+				this.regTypeSelectedOption = "email";
+			}
+			else if(this.selectedNav == "SMS"){
+				this.regTypeSelectedOption = "sms";
+			}
+	}
+
   onSubmit(username: String) {
-	console.log(username);
+	   console.log(username);
   }
 
   channels = [
@@ -33,8 +44,8 @@ export class HomeComponent implements OnInit {
   ]
 
   commTypes = [
-	{value: 'Email-0', view: 'Email'},
-	{value: 'SMS-1', view: 'SMS'}
+	{value: 'Email', view: 'Email'},
+	{value: 'SMS', view: 'SMS'}
   ];
 
   days = [
