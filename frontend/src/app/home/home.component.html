@@ -182,32 +182,41 @@
 				</mat-step>
 				<mat-step label="Configure Active Hours" [stepControl]="timeForm">
 					<form>
+					<br/>
 						<mat-form-field>
 							<input matInput [matDatepicker]="picker" placeholder="Choose a Starting Date">
 							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 							<mat-datepicker touchUi="true" #picker></mat-datepicker>
 						</mat-form-field>
 						<br/>
-						<mat-form-field>
-							<mat-select placeholder="Choose Active Days" multiple>
-								<mat-option *ngFor="let day of days" [value]="day.view">
-								{{day.view}}
-								</mat-option>
-							</mat-select>
-						</mat-form-field>
-						<br/>
-						<mat-form-field>
-							<mat-select placeholder="Choose Active Hour Begin">
-								<mat-option *ngFor="let hour of hours" [value]="hour.view">
-								{{hour.view}}
-								</mat-option>
-							</mat-select>
-						</mat-form-field>
-						<br/>
-							<mat-form-field>
-								<input matInput placeholder="Channel Hours" id="channel_hour"
-								type="number" name="channelHour" required>
-							</mat-form-field>
+						<div>
+							<mat-card id="interval">
+		            <mat-form-field>
+		              <mat-select placeholder="Choose Active Days" multiple>
+		                <mat-option *ngFor="let day of days" [value]="day.view">
+		                {{day.view}}
+		                </mat-option>
+		              </mat-select>
+		            </mat-form-field>
+		            <br/>
+		            <mat-form-field>
+		              <mat-select placeholder="Choose Active Hour Begin">
+		                <mat-option *ngFor="let hour of hours" [value]="hour.view">
+		                {{hour.view}}
+		                </mat-option>
+		              </mat-select>
+		            </mat-form-field>
+		            <br/>
+		            <mat-form-field>
+		              <mat-select placeholder="Choose Active Hour Finish">
+		                <mat-option *ngFor="let hour of hours" [value]="hour.view">
+		                {{hour.view}}
+		                </mat-option>
+		              </mat-select>
+		            </mat-form-field>
+		            <button mat-fab>+</button>
+		          </mat-card>
+						</div>
 						<br/>
 						<span matToolTip="ToolTip!">Load the preset while loading this page</span>
 							<mat-card-actions>
