@@ -1,0 +1,16 @@
+<mat-card id="Channel_Card">
+  <mat-tab-group>
+    <mat-tab label="Broadcast Message">
+      <form method="post" action="broadcast">
+        <mat-form-field>
+            <textarea matTextareaAutosize matAutosizeMinRows="3"
+            matAutosizeMaxRows="8" required matInput placeholder="Type your message here.." id="message" type="text" name="message"></textarea>
+        </mat-form-field>
+        <button mat-raised-button>SEND</button>
+      </form>
+    </mat-tab>
+    <mat-tab label="Channel Settings">
+
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>

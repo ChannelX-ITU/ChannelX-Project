@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector: 'app-message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss'],
+  selector: 'app-channel',
+  templateUrl: './channel.component.html',
+  styleUrls: ['./channel.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MessageComponent implements OnInit {
+export class ChannelComponent implements OnInit {
 
   constructor() { }
 
