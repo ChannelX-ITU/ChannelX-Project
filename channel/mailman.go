@@ -21,7 +21,7 @@ type Mailman struct {
 
 func (m *Mailman) Setup(smtp string, port int, username string, password string) {
 	m.mc = make(chan Message, 100)
-	m.smtp = username
+	m.smtp = smtp
 	m.port = port
 	m.username = username
 	m.password = password

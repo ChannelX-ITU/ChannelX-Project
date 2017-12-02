@@ -47,6 +47,7 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	// Grab from the database
 	var databaseUsername  string
 	var databasePassword  string
+	var databaseToken     string
 
 	// Search the database for the username provided
 	// If it exists grab the password for validation
@@ -64,7 +65,11 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 		http.Redirect(res, req, "/login", 301)
 		return
 	}
-
+	err = s.dataBase.QueryRow("SELECT token FROM TOKENS WHERE user_id=(SELECT user_id FROM USERS WHERE username=?)", username).Scan(&databaseToken)
+	if err != sql.ErrNoRows {
+		res.Write([]byte("Please activate your account!"))
+		return
+	}
 	// If the login succeeded
 	res.Write([]byte("Hello " + databaseUsername))
 }
@@ -136,7 +141,7 @@ func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		s.mailMan.Send(channel.Message{email, "Activation", u1.String()})
+		s.mailMan.Send(channel.Message{email, "Activation", "To activate your account please click the link: localhost:6969/activate/" + u1.String()})
 		res.Write([]byte("Activation mail is sent to " + email))
 		return
 	case err != nil:
@@ -158,7 +163,23 @@ func (s *Server) Run() {
 	router.HandleFunc("/signup", s.SingupPage)
 	router.HandleFunc("/submitsignup", s.SubmitSignUp)
 	router.HandleFunc("/login", s.login)
+	router.HandleFunc("/activate/{token}", s.ActivateToken)
+
 	http.ListenAndServe(":6969", router)
+}
+
+func (s *Server) ActivateToken(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	token := vars["token"]
+
+	var databaseUser string
+	err := s.dataBase.QueryRow("SELECT user_id FROM TOKENS WHERE token=?", token).Scan(&databaseUser)
+	if err != nil {
+		w.Write([]byte("This activation token is not valid!"))
+		return
+	}
+	s.dataBase.Exec("DELETE FROM TOKENS WHERE token=?", token)
+	w.Write([]byte("Your account has been activated!"))
 }
 
 func (s *Server) SignUp(w http.ResponseWriter, r *http.Request) {
