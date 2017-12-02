@@ -1,47 +1,25 @@
 <mat-card id="homeButtons">
-	<mat-tab-group>
+	<nav mat-tab-nav-bar class="home-navigation">
+	  <a mat-tab-link
+	     *ngFor="let link of navLinks"
+	     [routerLink]="link.path"
+	     routerLinkActive #rla="routerLinkActive"
+	     [active]="rla.isActive">
+	    {{link.label}}
+	  </a>
+	</nav>
+
+	<router-outlet></router-outlet>
+
+</mat-card>
+	<!-- <mat-tab-group>
 		<mat-tab label="Channels">
-			<mat-accordion>
-				<mat-expansion-panel>
-					<mat-expansion-panel-header>
-						<mat-panel-title> Owned Channels </mat-panel-title>
-						<mat-panel-description>	Your created channels </mat-panel-description>
-					</mat-expansion-panel-header>
-					<mat-table #table [dataSource]="dataSource">
-						<!--Channel Name Column-->
-						<ng-container matColumnDef="ChannelName">
-							<mat-header-cell *matHeaderCellDef> Channel Name </mat-header-cell>
-							<mat-cell *matCellDef="let element"><a mat-button href="message">{{element.ChannelName}}</a></mat-cell>
-							<!-- Also bind the selected channel id!!!! -->
-						</ng-container>
-
-						<!--Channel User Count Column-->
-						<ng-container matColumnDef="UserCount">
-						  <mat-header-cell *matHeaderCellDef> User Count </mat-header-cell>
-						  <mat-cell *matCellDef="let element"> {{element.UserCount}} </mat-cell>
-						</ng-container>
-
-						<!--Channel Prefered Comm Column-->
-						<ng-container matColumnDef="CommType">
-						  <mat-header-cell *matHeaderCellDef> Comm Type </mat-header-cell>
-						  <mat-cell *matCellDef="let element"> {{element.CommType}} </mat-cell>
-						</ng-container>
-
-						<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-	    			<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-					</mat-table>
-				</mat-expansion-panel>
-				<mat-expansion-panel>
-					<mat-expansion-panel-header>
-						<mat-panel-title>	Subscribed Channels </mat-panel-title>
-						<mat-panel-description> Your subscribed channels </mat-panel-description>
-					</mat-expansion-panel-header>
-					<span> Fill this area with channel buttons as well </span>
-				</mat-expansion-panel>
-			</mat-accordion>
+			
 		</mat-tab>
 
 		<mat-tab label="User Preferences">
+			<app-user-preferences [emails]="emails" [phones]="phones"></app-user-preferences>
+			
 			<mat-accordion>
 				<mat-expansion-panel>
 					<mat-expansion-panel-header>
@@ -228,5 +206,4 @@
 				</mat-step>
 			</mat-horizontal-stepper>
 		</mat-tab>
-	</mat-tab-group>
-</mat-card>
+	</mat-tab-group> -->

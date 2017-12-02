@@ -1,0 +1,100 @@
+<!-- <div class="pref-container">
+  <div class="pref-container-cell">
+    <div class="sample">
+      HELLO
+    </div>
+  </div>
+  <div class="pref-container-cell">
+    <div class="sample">
+      HELLO
+    </div>
+  </div>
+</div>
+<div class="pref-container">
+  <div class="pref-container-cell">
+    <div class="sample">
+      HELLO
+    </div>
+  </div>
+</div> -->
+
+
+<div class="pref-container">
+  <div class="pref-container-cell">
+    <mat-card class="sub-content">
+      <mat-card-header>
+        <mat-card-title>
+          User Mails
+        </mat-card-title>
+        <mat-card-subtitle>
+          Your e-mail list and edit options
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngFor="let email of emails">
+            <button mat-button>Edit: {{email.name}} | {{email.view}}</button>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="pref-container-cell">
+    <mat-card class="sub-content">
+      <mat-card-header>
+        <mat-card-title>
+          User SMS
+        </mat-card-title>
+        <mat-card-subtitle>
+          Your phone number list and edit options
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngFor="let phone of phones">
+            <button mat-button>Edit: {{phone.name}} | {{phone.view}}</button>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div class="pref-container">
+  <div class="pref-container-cell">
+    <mat-card class="sub-content">
+      <mat-card-header>
+        <mat-card-title>
+          Add Communication Method
+        </mat-card-title>
+        <mat-card-subtitle>
+          Add a new method for other people to contact you with
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <form>
+          <mat-form-field>
+            <mat-select placeholder="Type" id="comm_type" name="commType">
+              <mat-option value="mail">
+                Email
+              </mat-option>
+              <mat-option value="sms">
+                SMS
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field>
+            <input matInput placeholder="Name" id="comm_name" type="text" name="commName">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Number/Mail" id="comm_value" type="text" name="commValue">
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>ADD</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
