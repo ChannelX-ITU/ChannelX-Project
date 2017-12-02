@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./server"
+	"./channel"
 )
 
 const (
@@ -12,7 +12,8 @@ const (
 )
 
 func main()  {
-	s := server.Server{}
+	s := channel.Server{}
 	s.Setup(smtp, port, username, psswrd)
 	s.Run()
+	s.Close()
 }

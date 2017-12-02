@@ -1,8 +1,9 @@
 package channel
 
 type Restriction struct {
-	restId	int
-	prefId	int
-	typeId	int
-	value	string
+	prefID		int
+	typeID		int
+	Val			string 	`json:"value"`
+	ContOp		string	`json:"operator"`
+	ContType	string	`json:"type"`
 }

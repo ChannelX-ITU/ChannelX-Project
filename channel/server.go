@@ -1,7 +1,6 @@
-package server
+package channel
 
 import (
-	"../channel"
 	"net/http"
 	"github.com/gorilla/mux"
 	"fmt"
@@ -9,16 +8,17 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
 	"github.com/satori/go.uuid"
+	"encoding/json"
 )
 
 type Server struct {
 	dataBase		*sql.DB
-	mailMan			*channel.Mailman
+	mailMan			*Mailman
 	port 			string
 }
 
 func (s *Server) Setup(smtp string, port int, username string, psswrd string) {
-	s.mailMan = &channel.Mailman{}
+	s.mailMan = &Mailman{}
 	s.mailMan.Setup(smtp, port, username, psswrd)
 	db, err := sql.Open("mysql", "root:35792030@/ChannelX")
 	if err != nil {
@@ -48,6 +48,7 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	var databaseUsername  string
 	var databasePassword  string
 	var databaseToken     string
+	var userID			  int
 
 	// Search the database for the username provided
 	// If it exists grab the password for validation
@@ -70,8 +71,30 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 		res.Write([]byte("Please activate your account!"))
 		return
 	}
+
+	err = s.dataBase.QueryRow("SELECT user_id FROM USERS WHERE username=?", username).Scan(&userID)
+	if err != nil {
+		fmt.Println(err)
+		res.Write([]byte("Server error"))
+		return
+	}
+
 	// If the login succeeded
-	res.Write([]byte("Hello " + databaseUsername))
+	us, err := s.GetUser(userID)
+	if err != nil {
+		fmt.Println(err)
+		res.Write([]byte("Server error"))
+		return
+	}
+
+	user, err := json.Marshal(us)
+	if err != nil {
+		fmt.Println(err)
+		res.Write([]byte("Server error"))
+		return
+	}
+
+	res.Write(user)
 }
 
 func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
@@ -122,7 +145,7 @@ func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		_,err = s.dataBase.Exec("INSERT INTO PREFERENCE(user_id) VALUE ((SELECT U.user_id FROM USERS AS U WHERE U.username=?))", username)
+		_,err = s.dataBase.Exec("INSERT INTO PREFERENCE(user_id, start_date) VALUE ((SELECT U.user_id FROM USERS AS U WHERE U.username=?), 0)", username)
 		if err != nil {
 			http.Error(res, "1Server error, unable to create your account.", 500)
 			s.dataBase.Exec("DELETE FROM COMM WHERE val=?", email)
@@ -141,7 +164,7 @@ func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		s.mailMan.Send(channel.Message{email, "Activation", "To activate your account please click the link: localhost:6969/activate/" + u1.String()})
+		s.mailMan.Send(Message{email, "Activation", "To activate your account please click the link: localhost:6969/activate/" + u1.String()})
 		res.Write([]byte("Activation mail is sent to " + email))
 		return
 	case err != nil:
@@ -193,4 +216,8 @@ func (s *Server) SubmitSignUp(w http.ResponseWriter, r *http.Request)  {
 		fmt.Println("Key:", key, "Value:", val)
 	}
 	w.Write([]byte("Danke!"))
+}
+
+func (s *Server) Close() {
+	s.dataBase.Close()
 }
