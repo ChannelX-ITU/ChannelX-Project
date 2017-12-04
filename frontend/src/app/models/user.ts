@@ -1,10 +1,10 @@
 import { Channel } from './channel'
 import { Preference } from './preference'
-import { CommMethod } from './comm-method'
+import { Communication } from './communication'
 
 export class User {
     username: string;
     channels: Channel[];
     preferences: Preference;
-    comm_methods: CommMethod;
+    communications: Communication[];
 }

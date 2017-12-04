@@ -1,4 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router'
+import { HttpClient } from '@angular/common/http'
+import { Logger } from '@nsalaun/ng-logger'
+import { User } from '../../models/user'
+import { CookieService } from 'ngx-cookie'
+import { Store } from '@ngrx/store'
+import { UserState } from '../../state/user-state'
 
 @Component({
   selector: 'app-login',
@@ -7,16 +14,37 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-    button_text: String = "Giriş";
+  username: string;
+  password: string;
 
-  constructor() { }
+  constructor(private client: HttpClient, 
+    private logger: Logger, 
+    private cookies: CookieService,
+    private router: Router,
+    private store: Store<UserState>) { }
 
   ngOnInit() {
+    this.cookies.put("test", "yiha");
   }
 
-  onSubmit(username: String) {
-      console.log("login", username);
-      this.button_text = "Giriş Yapılıyor: " + username;
+  login() {
+    this.cookies.get("test")
+    this.client.post<User>("/api/login", {
+      username: this.username,
+      password: this.password
+    }).subscribe(
+      data => {
+        this.logger.log("Got data: ", data)
+        this.router.navigateByUrl("/home", {
+          skipLocationChange: false
+        }).then( value => {
+          this.store.dispatch({ type: "LOGIN" })
+        })
+      },
+      error => {
+        this.logger.error("Got error: ", error)
+      }
+    )
   }
 
 }

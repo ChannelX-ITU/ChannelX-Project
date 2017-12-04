@@ -1,3 +1,4 @@
 export class Interval {
-    start: number
+    start: number;
+    duration: number;
 }

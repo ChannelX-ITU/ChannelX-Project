@@ -1,12 +1,12 @@
 <form method="post" action="login">
     <mat-form-field>
-        <input required matInput placeholder="Username" id="login_username" type="text" name="username">
+        <input required matInput [(ngModel)]="username" placeholder="Username" id="login_username" type="text" name="username">
     </mat-form-field>
     <mat-form-field>
-        <input required matInput placeholder="Password" id="login_password" type="password" name="password">
+        <input required matInput [(ngModel)]="password" placeholder="Password" id="login_password" type="password" name="password">
     </mat-form-field>
     <mat-card-actions>
-        <button mat-raised-button color="accent">
+        <button mat-raised-button color="accent" (click)="login()">
             Login
         </button>
     </mat-card-actions>

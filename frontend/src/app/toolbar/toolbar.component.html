@@ -1,14 +1,14 @@
 <mat-toolbar color="primary">
-    Channel-X
+    Channel-X | {{logged_in}}
     <span class="extend-filler"></span>
 
     <!-- Sign in olmadıkça home gösterme -->
-    <span><a routerLink="/home">Home</a></span>
+    <span *ngIf="logged_in"><a routerLink="/home">Home</a></span>
 
     <!-- Sign in olduysa login gösterme -->
-    <span><a routerLink="/login">Signin/Signup</a></span>
+    <span *ngIf="!logged_in"><a routerLink="/login">Signin/Signup</a></span>
 
     <!-- Sign in olmadıkça logout gösterme -->
-    <span><a routerLing="/logout">Logout</a></span>
+    <span *ngIf="logged_in"><a (click)="logout()">Logout</a></span>
     <span><a routerLink="/about">About</a></span>
 </mat-toolbar>

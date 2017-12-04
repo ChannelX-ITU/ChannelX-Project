@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
 
 
 import { AppComponent } from './app.component';
@@ -17,7 +18,11 @@ import { CreateChannelComponent } from './home/create-channel/create-channel.com
 import { AuthComponent } from './auth/auth.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { NgLoggerModule, Level } from '@nsalaun/ng-logger';
+import { CookieModule } from 'ngx-cookie';
 import { environment } from '../environments/environment';
+
+import { StoreModule } from '@ngrx/store';
+import { userAuth } from './state/user-authenticator'
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -40,10 +45,13 @@ if (environment.production){
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     MaterialModulesModule,
     AppRoutingModule,
     FormsModule,
-    NgLoggerModule.forRoot(LOG_LEVEL)
+    NgLoggerModule.forRoot(LOG_LEVEL),
+    CookieModule.forRoot(),
+    StoreModule.forRoot({ user: userAuth })
   ],
   providers: [],
   bootstrap: [AppComponent]
