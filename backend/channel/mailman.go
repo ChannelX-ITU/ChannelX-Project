@@ -21,11 +21,13 @@ type Mailman struct {
 
 func (m *Mailman) Setup(smtp string, port int, username string, password string) {
 	m.mc = make(chan Message, 100)
-	m.smtp = username
+	m.smtp = smtp
 	m.port = port
 	m.username = username
 	m.password = password
 	m.dial = gomail.NewDialer(m.smtp, m.port, m.username, m.password)
+
+	
 }
 
 func (m *Mailman) Run()  {
@@ -50,9 +52,9 @@ func (m *Mailman) Run()  {
 
 				ma := gomail.NewMessage()
 				ma.SetHeader("From", m.username)
-				ma.SetHeader("To", msg.to.eMail)
-				ma.SetHeader("Subject", msg.sub)
-				ma.SetBody("text/html", msg.msg)
+				ma.SetHeader("To", msg.To)
+				ma.SetHeader("Subject", msg.Sub)
+				ma.SetBody("text/html", msg.Msg)
 
 				if err := gomail.Send(s, ma); err != nil {
 					log.Print(err)
