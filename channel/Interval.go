@@ -1,7 +1,5 @@
 package channel
 
-import "golang.org/x/tools/go/gcimporter15/testdata"
-
 type Interval struct {
 	Start		int		`json:"start"`
 	Duration	int		`json:"duration"`
@@ -30,20 +28,15 @@ func (s *Server) GetInterval(prefID int) (inf []Interval, err error) {
 	return
 }
 
-func (s *Server) AddInterval(in []Interval, prefID int) (err error) {
-	set, err := s.dataBase.Prepare("INSERT INTO INTER(pref_id, start_time_in_minutes, duration) VALUES(?, ?, ?)")
+func (s *Server) AddInterval(in []Interval, prefID int64) (err error) {
+	set, err := s.dataBase.Prepare("INSERT INTO INTER(preference_id, start_time_in_minutes, duration) VALUES(?, ?, ?)")
 	if err != nil {
 		return
 	}
 
 	for _, val := range in {
-		_, _ = set.Exec(prefID, val.Start, val.Duration)
+		_, err = set.Exec(prefID, val.Start, val.Duration)
 	}
 
-
-
-	s.
-
-		prefID, err = res.LastInsertId()
 	return
 }

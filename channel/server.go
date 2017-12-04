@@ -93,6 +93,7 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 		res.Write([]byte("Server error"))
 		return
 	}
+	fmt.Println(s.AddChannel(Channel{"IdsaNdSfooC32NM", 1, Preference{2131231321, 323, []Interval{Interval{21323, 2132}}}, []Restriction{Restriction{19, "EMAIL", "@itu.edu.tr", "=", "END"}}, make([]string, 0)}, 32, "cicekhu@gmail.com").Error())
 
 	res.Write(user)
 }

@@ -35,8 +35,11 @@ func (s *Server) AddPreference(p Preference, channelID int) (prefID int64, err e
 		return
 	}
 
-	s.
-
 	prefID, err = res.LastInsertId()
+	if err != nil {
+		return
+	}
+
+	err = s.AddInterval(p.Intervals, prefID)
 	return
 }
