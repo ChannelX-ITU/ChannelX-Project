@@ -6,6 +6,7 @@ import { User } from '../../models/user'
 import { CookieService } from 'ngx-cookie'
 import { Store } from '@ngrx/store'
 import { UserState } from '../../state/user-state'
+import { NotificationsService } from 'angular2-notifications'
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     private logger: Logger, 
     private cookies: CookieService,
     private router: Router,
-    private store: Store<UserState>) { }
+    private store: Store<UserState>,
+    private notifications: NotificationsService) { }
 
   ngOnInit() {
     this.cookies.put("test", "yiha");
@@ -35,10 +37,13 @@ export class LoginComponent implements OnInit {
     }).subscribe(
       data => {
         this.logger.log("Got data: ", data)
+
+        this.store.dispatch({ type: "LOGIN" })
+        
         this.router.navigateByUrl("/home", {
           skipLocationChange: false
-        }).then( value => {
-          this.store.dispatch({ type: "LOGIN" })
+        }).then( _ => {
+          this.notifications.success("Login successful!")
         })
       },
       error => {

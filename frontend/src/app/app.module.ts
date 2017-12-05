@@ -1,7 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 
 import { AppComponent } from './app.component';
@@ -23,6 +25,7 @@ import { environment } from '../environments/environment';
 
 import { StoreModule } from '@ngrx/store';
 import { userAuth } from './state/user-authenticator'
+import { AuthGuard } from './guards/auth.guard'
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -45,15 +48,17 @@ if (environment.production){
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     MaterialModulesModule,
     AppRoutingModule,
     FormsModule,
     NgLoggerModule.forRoot(LOG_LEVEL),
     CookieModule.forRoot(),
-    StoreModule.forRoot({ user: userAuth })
+    StoreModule.forRoot({ user: userAuth }),
+    SimpleNotificationsModule.forRoot()
   ],
-  providers: [],
+  providers: [ AuthGuard ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,11 +3,8 @@ import { Router } from '@angular/router'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs/Observable';
 import { Logger } from '@nsalaun/ng-logger'
-import { UserState } from '../state/user-state'
+import { AppState } from '../state/app-state'
 
-interface AppState {
-    user: UserState
-}
 
 @Component({
   selector: 'app-toolbar',

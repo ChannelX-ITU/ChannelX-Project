@@ -9,3 +9,8 @@
 @include mat-core();
 
 @include angular-material-theme($dark-theme);
+
+.notification {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+

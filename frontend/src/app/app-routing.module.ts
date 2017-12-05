@@ -9,6 +9,7 @@ import { UserPreferencesComponent } from './home/user-preferences/user-preferenc
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent} from './auth/register/register.component'
 import { AuthComponent } from './auth/auth.component'
+import { AuthGuard } from './guards/auth.guard'
 
 const routes: Routes = [
   { path: '', component: AuthComponent, children: [
@@ -19,6 +20,7 @@ const routes: Routes = [
   },
   { path: 'about', component: AboutComponent },
   { path: 'home', component: HomeComponent,
+      canActivate: [ AuthGuard ],
       children: [
           { path: "", redirectTo: "channels", pathMatch: "full" },
           { path: "channels", component: ChannelsComponent },
