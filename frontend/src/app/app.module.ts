@@ -10,6 +10,7 @@ import { AboutComponent } from './about/about.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { ChannelComponent } from './channel/channel.component';
+import { ReplyComponent } from './reply/reply.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ChannelComponent } from './channel/channel.component';
     ToolbarComponent,
     AboutComponent,
     HomeComponent,
-    ChannelComponent
+    ChannelComponent,
+    ReplyComponent
   ],
   imports: [
     BrowserModule,

@@ -4,13 +4,15 @@ import { LoginComponent } from './login/login.component';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { ChannelComponent } from './channel/channel.component';
+import { ReplyComponent } from './reply/reply.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'about', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
   { path: 'about', component: AboutComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'channel', component: ChannelComponent }
+  { path: 'channel', component: ChannelComponent },
+  { path: 'reply', component: ReplyComponent }
 ];
 
 
