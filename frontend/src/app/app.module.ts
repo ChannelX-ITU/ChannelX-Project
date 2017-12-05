@@ -14,6 +14,7 @@ import { AboutComponent } from './about/about.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { ChannelComponent } from './channel/channel.component';
+import { ReplyComponent } from './reply/reply.component';
 import { UserPreferencesComponent } from './home/user-preferences/user-preferences.component';
 import { ChannelsComponent } from './home/channels/channels.component';
 import { CreateChannelComponent } from './home/create-channel/create-channel.component';
@@ -42,6 +43,7 @@ if (environment.production){
     ToolbarComponent,
     AboutComponent,
     HomeComponent,
+    ReplyComponent
     ChannelComponent,
     UserPreferencesComponent,
     ChannelsComponent,
