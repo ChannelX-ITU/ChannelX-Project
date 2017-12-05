@@ -1,4 +1,21 @@
-<mat-card id="Channel_Card">
+<mat-card id="homeButtons">
+  <nav mat-tab-nav-bar class="home-navigation">
+    <a mat-tab-link
+       *ngFor="let link of navLinks"
+       [routerLink]="link.path"
+       routerLinkActive #rla="routerLinkActive"
+       [active]="rla.isActive">
+      {{link.label}}
+    </a>
+  </nav>
+
+  <div class="padded-content">
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-card>
+
+<!-- <mat-card id="Channel_Card">
   <mat-tab-group>
     <mat-tab label="Broadcast Message">
       <form method="post" action="broadcast">
@@ -75,4 +92,4 @@
       </form>
     </mat-tab>
   </mat-tab-group>
-</mat-card>
+</mat-card> -->

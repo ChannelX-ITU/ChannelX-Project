@@ -5,8 +5,7 @@ import {MatTableDataSource} from '@angular/material';
 @Component({
   selector: 'app-channels',
   templateUrl: './channels.component.html',
-  styleUrls: ['./channels.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./channels.component.scss']
 })
 export class ChannelsComponent implements OnInit {
 

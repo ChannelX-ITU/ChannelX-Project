@@ -2,13 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
-import { ChannelComponent } from './channel/channel.component';
 import { ChannelsComponent } from './home/channels/channels.component';
 import { CreateChannelComponent } from './home/create-channel/create-channel.component';
 import { UserPreferencesComponent } from './home/user-preferences/user-preferences.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent} from './auth/register/register.component'
 import { AuthComponent } from './auth/auth.component'
+
+import { ChannelComponent } from './channel/channel.component'
+import { BroadcastComponent } from './channel/broadcast/broadcast.component'
+import { EditChannelComponent } from './channel/edit-channel/edit-channel.component'
+
 import { AuthGuard } from './guards/auth.guard'
 
 const routes: Routes = [
@@ -20,7 +24,7 @@ const routes: Routes = [
   },
   { path: 'about', component: AboutComponent },
   { path: 'home', component: HomeComponent,
-      canActivate: [ AuthGuard ],
+      canActivate: [  ],
       children: [
           { path: "", redirectTo: "channels", pathMatch: "full" },
           { path: "channels", component: ChannelsComponent },
@@ -28,7 +32,14 @@ const routes: Routes = [
           { path: "create", component: CreateChannelComponent }
       ]
   },
-  { path: 'channel', component: ChannelComponent },
+  { path: 'channel', component: ChannelComponent,
+      canActivate: [  ],
+      children: [
+        { path: "", redirectTo: "settings", pathMatch: "full" },
+        { path: "settings", component: EditChannelComponent },
+        { path: "broadcast", component: BroadcastComponent }
+      ] 
+  },
   { path: '**', redirectTo: '' }
 ];
 

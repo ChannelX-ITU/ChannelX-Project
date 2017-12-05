@@ -25,7 +25,10 @@ import { environment } from '../environments/environment';
 
 import { StoreModule } from '@ngrx/store';
 import { userAuth } from './state/user-authenticator'
-import { AuthGuard } from './guards/auth.guard'
+import { AuthGuard } from './guards/auth.guard';
+import { BroadcastComponent } from './channel/broadcast/broadcast.component';
+import { EditChannelComponent } from './channel/edit-channel/edit-channel.component';
+import { IndexerPipe } from './pipes/indexer.pipe'
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -44,7 +47,10 @@ if (environment.production){
     ChannelsComponent,
     CreateChannelComponent,
     AuthComponent,
-    RegisterComponent
+    RegisterComponent,
+    BroadcastComponent,
+    EditChannelComponent,
+    IndexerPipe
   ],
   imports: [
     BrowserModule,

@@ -1,85 +1,85 @@
-    <mat-horizontal-stepper [linear]="true">
-        <mat-step label="Name Your Channel" [stepControl]="nameForm">
-            <form>
-                <mat-form-field>
-                    <input matInput placeholder="Channel Name" id="channel_name" type="text" name="channelName" required>
-                </mat-form-field>
-            </form>
-        </mat-step>
-        <mat-step label="Configure Communication Type" [stepControl]="commForm">
-            <form>
-                <mat-form-field>
-                    <mat-select [(ngModel)]="selectedNav" (change)="setNav(selectedNav)"
-                      name="CommType" name="CommType" placeholder="Choose Comm Type">
-                        <mat-option *ngFor="let commType of commTypes" [value]="commType.view">
-                        {{commType.view}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <div *ngIf="regTypeSelectedOption === 'email'">
-                    <mat-form-field>
-                        <mat-select placeholder="Choose E-mail">
-                            <mat-option *ngFor="let email of emails" [value]="email.view">
-                            {{email.name}} - {{email.view}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div *ngIf="regTypeSelectedOption === 'sms'">
-                    <mat-form-field>
-                        <mat-select placeholder="Choose Phone">
-                            <mat-option *ngFor="let phone of phones" [value]="phone.view">
-                            {{phone.name}} - {{phone.view}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </form>
-        </mat-step>
-        <mat-step label="Configure Active Hours" [stepControl]="timeForm">
-            <form>
-            <br/>
-                <mat-form-field>
-                    <input matInput [matDatepicker]="picker" placeholder="Choose a Starting Date">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker touchUi="true" #picker></mat-datepicker>
-                </mat-form-field>
-                <br/>
-                <div>
-                    <mat-card id="interval">
-            <mat-form-field>
-              <mat-select placeholder="Choose Active Days" multiple>
-                <mat-option *ngFor="let day of days" [value]="day.view">
-                {{day.view}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <br/>
-            <mat-form-field>
-              <mat-select placeholder="Choose Active Hour Begin">
-                <mat-option *ngFor="let hour of hours" [value]="hour.view">
-                {{hour.view}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <br/>
-            <mat-form-field>
-              <mat-select placeholder="Choose Active Hour Finish">
-                <mat-option *ngFor="let hour of hours" [value]="hour.view">
-                {{hour.view}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <button mat-mini-fab>+</button>
-          </mat-card>
-                </div>
-                <br/>
-                <span matToolTip="ToolTip!">Load the preset while loading this page</span>
-                    <mat-card-actions>
-                    <div>
-                      <button mat-button>Submit</button>
-                    </div>
-                </mat-card-actions>
-            </form>
-        </mat-step>
-    </mat-horizontal-stepper>
+<mat-horizontal-stepper [linear]="true">
+  <mat-step label="Name Your Channel" [stepControl]="nameForm">
+    <form>
+      <mat-form-field>
+        <input matInput placeholder="Channel Name" id="channel_name" type="text" name="channelName" required>
+      </mat-form-field>
+    </form>
+  </mat-step>
+  <mat-step label="Configure Communication Type" [stepControl]="commForm">
+    <form>
+      <mat-form-field>
+        <mat-select [(ngModel)]="selectedNav" (change)="setNav(selectedNav)"
+        name="CommType" name="CommType" placeholder="Choose Comm Type">
+        <mat-option *ngFor="let commType of commTypes" [value]="commType.view">
+          {{commType.view}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="regTypeSelectedOption === 'email'">
+      <mat-form-field>
+        <mat-select placeholder="Choose E-mail">
+          <mat-option *ngFor="let email of emails" [value]="email.view">
+            {{email.name}} - {{email.view}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div *ngIf="regTypeSelectedOption === 'sms'">
+      <mat-form-field>
+        <mat-select placeholder="Choose Phone">
+          <mat-option *ngFor="let phone of phones" [value]="phone.view">
+            {{phone.name}} - {{phone.view}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-step>
+<mat-step label="Configure Active Hours" [stepControl]="timeForm">
+  <form>
+    <br/>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Choose a Starting Date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi="true" #picker></mat-datepicker>
+    </mat-form-field>
+    <br/>
+    <div>
+      <mat-card id="interval">
+        <mat-form-field>
+          <mat-select placeholder="Choose Active Days" multiple>
+            <mat-option *ngFor="let day of days" [value]="day.view">
+              {{day.view}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+          <mat-select placeholder="Choose Active Hour Begin">
+            <mat-option *ngFor="let hour of hours" [value]="hour.view">
+              {{hour.view}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+          <mat-select placeholder="Choose Active Hour Finish">
+            <mat-option *ngFor="let hour of hours" [value]="hour.view">
+              {{hour.view}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-mini-fab>+</button>
+      </mat-card>
+    </div>
+    <br/>
+    <span matToolTip="ToolTip!">Load the preset while loading this page</span>
+    <mat-card-actions>
+      <div>
+        <button mat-button>Submit</button>
+      </div>
+    </mat-card-actions>
+  </form>
+</mat-step>
+</mat-horizontal-stepper>

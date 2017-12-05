@@ -8,6 +8,11 @@ import {ViewChild, Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 
 export class ChannelComponent implements OnInit {
+  navLinks = [
+    { path: "broadcast", label: "Broadcast Message"},
+    { path: "settings", label: "Channel Settings"}
+  ];
+
   constructor() { }
 
   regTypeSelectedOption: string = "";
@@ -16,10 +21,7 @@ export class ChannelComponent implements OnInit {
       this.selectedNav = 'select value';
   }
 
-  createNew()
-  {
-    console.log("Whoa");
-  }
+  
 
   setNav(nav:any){
     	this.selectedNav = nav;
