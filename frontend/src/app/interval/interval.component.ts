@@ -1,48 +1,38 @@
-import {ContentChild, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
+import { Interval } from '../models/interval'
 
 @Component({
-  selector: 'app-interval',
-  templateUrl: './interval.component.html',
-  styleUrls: ['./interval.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  template: `
-    <template #temp>
-    <mat-card id="interval">
-      <mat-form-field>
-        <mat-select placeholder="Choose Active Days" multiple>
-          <mat-option *ngFor="let day of days" [value]="day.view">
-          {{day.view}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <br/>
-      <mat-form-field>
-        <mat-select placeholder="Choose Active Hour Begin">
-          <mat-option *ngFor="let hour of hours" [value]="hour.view">
-          {{hour.view}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <br/>
-      <mat-form-field>
-        <mat-select placeholder="Choose Active Hour Finish">
-          <mat-option *ngFor="let hour of hours" [value]="hour.view">
-          {{hour.view}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-fab (click)="createNew()">+</button>
-    </mat-card>
-    </template>
-    <template [ngTemplateOutlet]="temp"></template>
-  `
+    selector: 'app-interval',
+    templateUrl: './interval.component.html',
+    styleUrls: ['./interval.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
+
 export class IntervalComponent implements OnInit {
-  bla: boolean = false;
-      @ContentChild('temp') testEl: any;
-  constructor() { }
 
-  ngOnInit() {
-  }
+    @Input() 
+    intervals: IntervalInterface[];
 
+    @Output()
+    intervalsChange: EventEmitter<IntervalInterface[]> = new EventEmitter<IntervalInterface[]>();
+
+    constructor() { }
+
+    ngOnInit() {
+    }
+
+    close(interval: IntervalInterface) {
+        this.intervals = this.intervals.filter( (value) => {
+            return value != interval;
+        });
+        this.intervalsChange.emit(this.intervals);
+    }
+
+}
+
+
+export class IntervalInterface {
+    days: number[];
+    start: number;
+    end: number;
 }

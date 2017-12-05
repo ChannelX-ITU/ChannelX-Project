@@ -1,0 +1,21 @@
+.intervals {
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+}
+
+div.intervals {
+    position: relative;
+    min-height: 300px;
+}
+
+app-interval.intervals {
+    padding-left: 64px;
+}
+
+button.fab {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 16px;
+}

@@ -29,7 +29,8 @@ import { userAuth } from './state/user-authenticator'
 import { AuthGuard } from './guards/auth.guard';
 import { BroadcastComponent } from './channel/broadcast/broadcast.component';
 import { EditChannelComponent } from './channel/edit-channel/edit-channel.component';
-import { IndexerPipe } from './pipes/indexer.pipe'
+import { IndexerPipe } from './pipes/indexer.pipe';
+import { IntervalComponent } from './interval/interval.component'
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -43,7 +44,7 @@ if (environment.production){
     ToolbarComponent,
     AboutComponent,
     HomeComponent,
-    ReplyComponent
+    ReplyComponent,
     ChannelComponent,
     UserPreferencesComponent,
     ChannelsComponent,
@@ -52,7 +53,8 @@ if (environment.production){
     RegisterComponent,
     BroadcastComponent,
     EditChannelComponent,
-    IndexerPipe
+    IndexerPipe,
+    IntervalComponent
   ],
   imports: [
     BrowserModule,

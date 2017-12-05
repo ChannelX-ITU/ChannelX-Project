@@ -26,34 +26,11 @@
   </mat-form-field>
 </div>
 <br/>
-<div>
-  <mat-card id="interval">
-    <mat-form-field>
-      <mat-select placeholder="Choose Active Days" multiple>
-        <mat-option *ngFor="let day of days" [value]="day.view">
-          {{day.view}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <br/>
-    <mat-form-field>
-      <mat-select placeholder="Choose Active Hour Begin">
-        <mat-option *ngFor="let hour of 24 | indexer" [value]="hour">
-          {{hour}}:00
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <br/>
-    <mat-form-field>
-      <mat-select placeholder="Choose Active Hour Finish">
-        <mat-option *ngFor="let hour of 24 | indexer" [value]="hour">
-          {{hour}}:00
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-fab (click)="createNew()">+</button>
-  </mat-card>
-  <div #container></div>
+<div class="intervals">
+  <app-interval class="intervals" [(intervals)]="intervals"></app-interval>
+  <button mat-mini-fab class="fab" (click)="createNew()">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>
 <br/>
 <span>Ya</span>

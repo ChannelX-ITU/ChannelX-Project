@@ -12,6 +12,7 @@ import { AuthComponent } from './auth/auth.component'
 import { ChannelComponent } from './channel/channel.component'
 import { BroadcastComponent } from './channel/broadcast/broadcast.component'
 import { EditChannelComponent } from './channel/edit-channel/edit-channel.component'
+import { ReplyComponent } from './reply/reply.component'
 
 import { AuthGuard } from './guards/auth.guard'
 
@@ -39,6 +40,9 @@ const routes: Routes = [
         { path: "settings", component: EditChannelComponent },
         { path: "broadcast", component: BroadcastComponent }
       ] 
+  },
+  {
+    path: 'reply', component: ReplyComponent
   },
   { path: '**', redirectTo: '' }
 ];

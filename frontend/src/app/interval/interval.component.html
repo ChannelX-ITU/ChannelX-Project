@@ -1,0 +1,30 @@
+<mat-card class="interval" *ngFor="let interval of intervals">
+  <div class="content">
+    <button mat-button class="close" (click)="close(interval)">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-form-field>
+      <mat-select placeholder="Choose Active Days" multiple ([value])="interval.end">
+        <mat-option *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; let i = index" [value]="i">
+          {{day}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+      <mat-select placeholder="Choose Active Hour Begin" ([value])="interval.end">
+        <mat-option *ngFor="let hour of 24 | indexer" [value]="hour">
+          {{hour}}:00
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br/>
+    <mat-form-field>
+      <mat-select placeholder="Choose Active Hour Finish" ([value])="interval.end">
+        <mat-option *ngFor="let hour of 24 | indexer" [value]="hour">
+          {{hour}}:00
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</mat-card>

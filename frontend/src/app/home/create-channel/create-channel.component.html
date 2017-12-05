@@ -40,33 +40,38 @@
   <form>
     <br/>
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Choose a Starting Date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker touchUi="true" #picker></mat-datepicker>
+      <input matTooltip="Tooltip!" matInput [matDatepicker]="startPicker" placeholder="Choose a Starting Date">
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi="true" #startPicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="endPicker" placeholder="Choose a Closure Date">
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker touchUi="true" #endPicker></mat-datepicker>
     </mat-form-field>
     <br/>
     <div>
       <mat-card id="interval">
         <mat-form-field>
           <mat-select placeholder="Choose Active Days" multiple>
-            <mat-option *ngFor="let day of days" [value]="day.view">
-              {{day.view}}
+            <mat-option *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; let i = index" [value]="index">
+              {{day}}
             </mat-option>
           </mat-select>
         </mat-form-field>
         <br/>
         <mat-form-field>
           <mat-select placeholder="Choose Active Hour Begin">
-            <mat-option *ngFor="let hour of hours" [value]="hour.view">
-              {{hour.view}}
+            <mat-option *ngFor="let hour of 24 | indexer" [value]="hour">
+              {{hour}}:00
             </mat-option>
           </mat-select>
         </mat-form-field>
         <br/>
         <mat-form-field>
           <mat-select placeholder="Choose Active Hour Finish">
-            <mat-option *ngFor="let hour of hours" [value]="hour.view">
-              {{hour.view}}
+            <mat-option *ngFor="let hour of 24 | indexer" [value]="hour">
+              {{hour}}:00
             </mat-option>
           </mat-select>
         </mat-form-field>
