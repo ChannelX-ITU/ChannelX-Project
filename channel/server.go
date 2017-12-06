@@ -495,6 +495,12 @@ func (s *Server) AddChannelHandler (w http.ResponseWriter, r *http.Request) {
 			}
 			defer r.Body.Close()
 
+			channelID, _ := s.GetChannelID(t.Channel.Name)
+			if channelID != -1 {
+				http.Error(w, "Channel already exists!", http.StatusBadRequest)
+				return
+			}
+
 			err = s.AddChannel(t.Channel, userId, t.Comm)
 			if err != nil {
 				http.Error(w, "Internal error", http.StatusInternalServerError)

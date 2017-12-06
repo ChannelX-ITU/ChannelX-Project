@@ -28,8 +28,8 @@
       <file leaf-file-name="server.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/channel/server.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="216" column="40" lean-forward="true" selection-start-line="216" selection-start-column="40" selection-end-line="216" selection-end-column="40" />
+            <state relative-caret-position="647">
+              <caret line="500" column="16" lean-forward="false" selection-start-line="500" selection-start-column="16" selection-end-line="500" selection-end-column="16" />
               <folding>
                 <element signature="e#17#231#0" expanded="true" />
                 <element signature="e#310#375#0" expanded="false" />
@@ -37,6 +37,7 @@
                 <element signature="n#!!block;n#login#0" expanded="false" />
                 <element signature="n#!!block;n#SingupPage#0" expanded="false" />
                 <element signature="n#!!block;n#Recieve#0" expanded="false" />
+                <element signature="n#!!block;n#Run#0" expanded="false" />
                 <element signature="n#!!block;n#ActivateToken#0" expanded="false" />
                 <element signature="n#!!block;n#SignUp#0" expanded="false" />
                 <element signature="n#!!block;n#SubmitSignUp#0" expanded="false" />
@@ -48,28 +49,9 @@
                 <element signature="n#!!block;n#ServerUserChannels#0" expanded="false" />
                 <element signature="n#!!block;n#Logout#0" expanded="false" />
                 <element signature="n#!!block;n#JoinChannelHandler#0" expanded="false" />
-                <element signature="n#!!block;n#AddChannelHandler#0" expanded="false" />
-                <marker date="1512593715506" expanded="true" signature="1493:1546" ph="SELECT usern... USERS" />
-                <marker date="1512593715506" expanded="true" signature="1965:2048" ph="SELECT token... TOKENS" />
-                <marker date="1512593715506" expanded="true" signature="2005:2047" ph="SELECT user_... USERS" />
-                <marker date="1512593715506" expanded="true" signature="2203:2245" ph="SELECT user_... USERS" />
-                <marker date="1512593715506" expanded="true" signature="3693:3736" ph="SELECT usern... USERS" />
-                <marker date="1512593715506" expanded="true" signature="3856:3929" ph="SELECT C.val... COMM" />
-                <marker date="1512593715506" expanded="true" signature="4397:4447" ph="INSERT INTO USERS... " />
-                <marker date="1512593715506" expanded="true" signature="4610:4771" ph="INSERT INTO COMM... " />
-                <marker date="1512593715506" expanded="true" signature="4658:4709" ph="SELECT U.use... USERS" />
-                <marker date="1512593715506" expanded="true" signature="4713:4766" ph="SELECT ct.ty... COMM_TYPE" />
-                <marker date="1512593715506" expanded="true" signature="4911:4945" ph="DELETE FROM USERS... " />
-                <marker date="1512593715506" expanded="true" signature="5000:5108" ph="INSERT INTO PREFERENCE... " />
-                <marker date="1512593715506" expanded="true" signature="5232:5260" ph="DELETE FROM COMM... " />
-                <marker date="1512593715506" expanded="true" signature="5290:5324" ph="DELETE FROM USERS... " />
-                <marker date="1512593715506" expanded="true" signature="5401:5501" ph="INSERT INTO TOKENS... " />
-                <marker date="1512593715506" expanded="true" signature="5594:5685" ph="DELETE FROM PREFERENCE... " />
-                <marker date="1512593715506" expanded="true" signature="5632:5684" ph="SELECT U.use... USERS" />
-                <marker date="1512593715506" expanded="true" signature="5719:5747" ph="DELETE FROM COMM... " />
-                <marker date="1512593715506" expanded="true" signature="5777:5811" ph="DELETE FROM USERS... " />
-                <marker date="1512593715506" expanded="true" signature="7093:7133" ph="SELECT user_... TOKENS" />
-                <marker date="1512593715506" expanded="true" signature="7268:7300" ph="DELETE FROM TOKENS... " />
+                <marker date="1512593854262" expanded="true" signature="5594:5685" ph="DELETE FROM PREFERENCE... " />
+                <marker date="1512593854262" expanded="true" signature="5632:5684" ph="SELECT U.use... USERS" />
+                <marker date="1512593854262" expanded="true" signature="5777:5811" ph="DELETE FROM USERS... " />
               </folding>
             </state>
           </provider>
@@ -450,6 +432,7 @@
             <element signature="n#!!block;n#login#0" expanded="false" />
             <element signature="n#!!block;n#SingupPage#0" expanded="false" />
             <element signature="n#!!block;n#Recieve#0" expanded="false" />
+            <element signature="n#!!block;n#Run#0" expanded="false" />
             <element signature="n#!!block;n#ActivateToken#0" expanded="false" />
             <element signature="n#!!block;n#SignUp#0" expanded="false" />
             <element signature="n#!!block;n#SubmitSignUp#0" expanded="false" />
@@ -461,28 +444,9 @@
             <element signature="n#!!block;n#ServerUserChannels#0" expanded="false" />
             <element signature="n#!!block;n#Logout#0" expanded="false" />
             <element signature="n#!!block;n#JoinChannelHandler#0" expanded="false" />
-            <element signature="n#!!block;n#AddChannelHandler#0" expanded="false" />
-            <marker date="1512593715506" expanded="true" signature="1493:1546" ph="SELECT usern... USERS" />
-            <marker date="1512593715506" expanded="true" signature="1965:2048" ph="SELECT token... TOKENS" />
-            <marker date="1512593715506" expanded="true" signature="2005:2047" ph="SELECT user_... USERS" />
-            <marker date="1512593715506" expanded="true" signature="2203:2245" ph="SELECT user_... USERS" />
-            <marker date="1512593715506" expanded="true" signature="3693:3736" ph="SELECT usern... USERS" />
-            <marker date="1512593715506" expanded="true" signature="3856:3929" ph="SELECT C.val... COMM" />
-            <marker date="1512593715506" expanded="true" signature="4397:4447" ph="INSERT INTO USERS... " />
-            <marker date="1512593715506" expanded="true" signature="4610:4771" ph="INSERT INTO COMM... " />
-            <marker date="1512593715506" expanded="true" signature="4658:4709" ph="SELECT U.use... USERS" />
-            <marker date="1512593715506" expanded="true" signature="4713:4766" ph="SELECT ct.ty... COMM_TYPE" />
-            <marker date="1512593715506" expanded="true" signature="4911:4945" ph="DELETE FROM USERS... " />
-            <marker date="1512593715506" expanded="true" signature="5000:5108" ph="INSERT INTO PREFERENCE... " />
-            <marker date="1512593715506" expanded="true" signature="5232:5260" ph="DELETE FROM COMM... " />
-            <marker date="1512593715506" expanded="true" signature="5290:5324" ph="DELETE FROM USERS... " />
-            <marker date="1512593715506" expanded="true" signature="5401:5501" ph="INSERT INTO TOKENS... " />
-            <marker date="1512593715506" expanded="true" signature="5594:5685" ph="DELETE FROM PREFERENCE... " />
-            <marker date="1512593715506" expanded="true" signature="5632:5684" ph="SELECT U.use... USERS" />
-            <marker date="1512593715506" expanded="true" signature="5719:5747" ph="DELETE FROM COMM... " />
-            <marker date="1512593715506" expanded="true" signature="5777:5811" ph="DELETE FROM USERS... " />
-            <marker date="1512593715506" expanded="true" signature="7093:7133" ph="SELECT user_... TOKENS" />
-            <marker date="1512593715506" expanded="true" signature="7268:7300" ph="DELETE FROM TOKENS... " />
+            <marker date="1512593854262" expanded="true" signature="5594:5685" ph="DELETE FROM PREFERENCE... " />
+            <marker date="1512593854262" expanded="true" signature="5632:5684" ph="SELECT U.use... USERS" />
+            <marker date="1512593854262" expanded="true" signature="5777:5811" ph="DELETE FROM USERS... " />
           </folding>
         </state>
       </provider>
@@ -566,6 +530,7 @@
             <element signature="n#!!block;n#login#0" expanded="false" />
             <element signature="n#!!block;n#SingupPage#0" expanded="false" />
             <element signature="n#!!block;n#Recieve#0" expanded="false" />
+            <element signature="n#!!block;n#Run#0" expanded="false" />
             <element signature="n#!!block;n#ActivateToken#0" expanded="false" />
             <element signature="n#!!block;n#SignUp#0" expanded="false" />
             <element signature="n#!!block;n#SubmitSignUp#0" expanded="false" />
@@ -577,28 +542,9 @@
             <element signature="n#!!block;n#ServerUserChannels#0" expanded="false" />
             <element signature="n#!!block;n#Logout#0" expanded="false" />
             <element signature="n#!!block;n#JoinChannelHandler#0" expanded="false" />
-            <element signature="n#!!block;n#AddChannelHandler#0" expanded="false" />
-            <marker date="1512593715506" expanded="true" signature="1493:1546" ph="SELECT usern... USERS" />
-            <marker date="1512593715506" expanded="true" signature="1965:2048" ph="SELECT token... TOKENS" />
-            <marker date="1512593715506" expanded="true" signature="2005:2047" ph="SELECT user_... USERS" />
-            <marker date="1512593715506" expanded="true" signature="2203:2245" ph="SELECT user_... USERS" />
-            <marker date="1512593715506" expanded="true" signature="3693:3736" ph="SELECT usern... USERS" />
-            <marker date="1512593715506" expanded="true" signature="3856:3929" ph="SELECT C.val... COMM" />
-            <marker date="1512593715506" expanded="true" signature="4397:4447" ph="INSERT INTO USERS... " />
-            <marker date="1512593715506" expanded="true" signature="4610:4771" ph="INSERT INTO COMM... " />
-            <marker date="1512593715506" expanded="true" signature="4658:4709" ph="SELECT U.use... USERS" />
-            <marker date="1512593715506" expanded="true" signature="4713:4766" ph="SELECT ct.ty... COMM_TYPE" />
-            <marker date="1512593715506" expanded="true" signature="4911:4945" ph="DELETE FROM USERS... " />
-            <marker date="1512593715506" expanded="true" signature="5000:5108" ph="INSERT INTO PREFERENCE... " />
-            <marker date="1512593715506" expanded="true" signature="5232:5260" ph="DELETE FROM COMM... " />
-            <marker date="1512593715506" expanded="true" signature="5290:5324" ph="DELETE FROM USERS... " />
-            <marker date="1512593715506" expanded="true" signature="5401:5501" ph="INSERT INTO TOKENS... " />
-            <marker date="1512593715506" expanded="true" signature="5594:5685" ph="DELETE FROM PREFERENCE... " />
-            <marker date="1512593715506" expanded="true" signature="5632:5684" ph="SELECT U.use... USERS" />
-            <marker date="1512593715506" expanded="true" signature="5719:5747" ph="DELETE FROM COMM... " />
-            <marker date="1512593715506" expanded="true" signature="5777:5811" ph="DELETE FROM USERS... " />
-            <marker date="1512593715506" expanded="true" signature="7093:7133" ph="SELECT user_... TOKENS" />
-            <marker date="1512593715506" expanded="true" signature="7268:7300" ph="DELETE FROM TOKENS... " />
+            <marker date="1512593854262" expanded="true" signature="5594:5685" ph="DELETE FROM PREFERENCE... " />
+            <marker date="1512593854262" expanded="true" signature="5632:5684" ph="SELECT U.use... USERS" />
+            <marker date="1512593854262" expanded="true" signature="5777:5811" ph="DELETE FROM USERS... " />
           </folding>
         </state>
       </provider>
@@ -834,8 +780,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/channel/server.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="216" column="40" lean-forward="true" selection-start-line="216" selection-start-column="40" selection-end-line="216" selection-end-column="40" />
+        <state relative-caret-position="647">
+          <caret line="500" column="16" lean-forward="false" selection-start-line="500" selection-start-column="16" selection-end-line="500" selection-end-column="16" />
           <folding>
             <element signature="e#17#231#0" expanded="true" />
             <element signature="e#310#375#0" expanded="false" />
@@ -843,6 +789,7 @@
             <element signature="n#!!block;n#login#0" expanded="false" />
             <element signature="n#!!block;n#SingupPage#0" expanded="false" />
             <element signature="n#!!block;n#Recieve#0" expanded="false" />
+            <element signature="n#!!block;n#Run#0" expanded="false" />
             <element signature="n#!!block;n#ActivateToken#0" expanded="false" />
             <element signature="n#!!block;n#SignUp#0" expanded="false" />
             <element signature="n#!!block;n#SubmitSignUp#0" expanded="false" />
@@ -854,28 +801,9 @@
             <element signature="n#!!block;n#ServerUserChannels#0" expanded="false" />
             <element signature="n#!!block;n#Logout#0" expanded="false" />
             <element signature="n#!!block;n#JoinChannelHandler#0" expanded="false" />
-            <element signature="n#!!block;n#AddChannelHandler#0" expanded="false" />
-            <marker date="1512593715506" expanded="true" signature="1493:1546" ph="SELECT usern... USERS" />
-            <marker date="1512593715506" expanded="true" signature="1965:2048" ph="SELECT token... TOKENS" />
-            <marker date="1512593715506" expanded="true" signature="2005:2047" ph="SELECT user_... USERS" />
-            <marker date="1512593715506" expanded="true" signature="2203:2245" ph="SELECT user_... USERS" />
-            <marker date="1512593715506" expanded="true" signature="3693:3736" ph="SELECT usern... USERS" />
-            <marker date="1512593715506" expanded="true" signature="3856:3929" ph="SELECT C.val... COMM" />
-            <marker date="1512593715506" expanded="true" signature="4397:4447" ph="INSERT INTO USERS... " />
-            <marker date="1512593715506" expanded="true" signature="4610:4771" ph="INSERT INTO COMM... " />
-            <marker date="1512593715506" expanded="true" signature="4658:4709" ph="SELECT U.use... USERS" />
-            <marker date="1512593715506" expanded="true" signature="4713:4766" ph="SELECT ct.ty... COMM_TYPE" />
-            <marker date="1512593715506" expanded="true" signature="4911:4945" ph="DELETE FROM USERS... " />
-            <marker date="1512593715506" expanded="true" signature="5000:5108" ph="INSERT INTO PREFERENCE... " />
-            <marker date="1512593715506" expanded="true" signature="5232:5260" ph="DELETE FROM COMM... " />
-            <marker date="1512593715506" expanded="true" signature="5290:5324" ph="DELETE FROM USERS... " />
-            <marker date="1512593715506" expanded="true" signature="5401:5501" ph="INSERT INTO TOKENS... " />
-            <marker date="1512593715506" expanded="true" signature="5594:5685" ph="DELETE FROM PREFERENCE... " />
-            <marker date="1512593715506" expanded="true" signature="5632:5684" ph="SELECT U.use... USERS" />
-            <marker date="1512593715506" expanded="true" signature="5719:5747" ph="DELETE FROM COMM... " />
-            <marker date="1512593715506" expanded="true" signature="5777:5811" ph="DELETE FROM USERS... " />
-            <marker date="1512593715506" expanded="true" signature="7093:7133" ph="SELECT user_... TOKENS" />
-            <marker date="1512593715506" expanded="true" signature="7268:7300" ph="DELETE FROM TOKENS... " />
+            <marker date="1512593854262" expanded="true" signature="5594:5685" ph="DELETE FROM PREFERENCE... " />
+            <marker date="1512593854262" expanded="true" signature="5632:5684" ph="SELECT U.use... USERS" />
+            <marker date="1512593854262" expanded="true" signature="5777:5811" ph="DELETE FROM USERS... " />
           </folding>
         </state>
       </provider>
