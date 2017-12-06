@@ -1,6 +1,7 @@
 package channel
 
 import (
+	"database/sql"
 )
 
 type User struct {
@@ -10,7 +11,7 @@ type User struct {
 	Communications	[]Communication	`json:"communications"`
 }
 
-func (s *Server) GetUser(userID int) (u User, err error) {
+func (s *Server) GetUser(userID int64) (u User, err error) {
 	u.Channels = make([]string, 0)
 	u.Communications = make([]Communication, 0)
 
@@ -60,12 +61,26 @@ func (s *Server) GetUser(userID int) (u User, err error) {
 	return
 }
 
-func (s *Server) GetUsername(userID int) (username string, err error) {
+func (s *Server) GetUsername(userID int64) (username string, err error) {
 	get, err := s.dataBase.Prepare("SELECT username FROM USERS WHERE user_id = ?")
 	if err != nil {
 		return
 	}
 
 	err = get.QueryRow(userID).Scan(&username)
+	return
+}
+
+func (s *Server) GetCommId(comm string, userID int64) (ID int64, err error) {
+	get, err := s.dataBase.Prepare("SELECET C.comm_id FROM COMM AS C WHERE C.user_id = ? AND C.val = ?")
+	if err != nil {
+		return
+	}
+
+	err = get.QueryRow(userID, comm).Scan(&ID)
+	if err == sql.ErrNoRows {
+		return -1, nil
+	}
+
 	return
 }
