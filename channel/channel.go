@@ -71,12 +71,12 @@ func (s *Server) AddChannel(channel Channel, userID int64, comm string) (err err
 		return
 	}
 
-	err = s.AddUserToChannel(int64(channelID), int64(userID), int(commID), true, "")
+	err = s.AddUserToChannel(int64(channelID), int64(userID), commID, true, "")
 
 	return
 }
 
-func (s *Server) AddUserToChannel(channelID int64, userID int64, commID int, isOwner bool, alias string) (err error) {
+func (s *Server) AddUserToChannel(channelID int64, userID int64, commID int64, isOwner bool, alias string) (err error) {
 
 
 	setAlias, err := s.dataBase.Prepare("INSERT INTO ALIAS(val, is_user_defined) VALUES(?, ?)")

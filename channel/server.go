@@ -10,8 +10,8 @@ import (
 	"github.com/satori/go.uuid"
 	"encoding/json"
 	"github.com/gorilla/sessions"
-	"log"
 )
+var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
 
 type Server struct {
 	dataBase		*sql.DB
@@ -35,8 +35,6 @@ func (s *Server) Setup(smtp string, port int, username string, psswrd string) {
 	s.dataBase = db
 }
 
-var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
-
 func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	// If method is GET serve an html login page
 	if req.Method != "POST" {
@@ -45,8 +43,15 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// Grab the username/password from the submitted post form
-	username := req.FormValue("username")
-	password := req.FormValue("password")
+	decoder := json.NewDecoder(req.Body)
+	var t Login
+	err := decoder.Decode(&t)
+	if err != nil {
+		http.Error(res, "Internal error", http.StatusInternalServerError)
+		return
+	}
+	defer req.Body.Close()
+	username, password := t.Username, t.Password
 
 	// Grab from the database
 	var databaseUsername  string
@@ -56,7 +61,7 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 
 	// Search the database for the username provided
 	// If it exists grab the password for validation
-	err := s.dataBase.QueryRow("SELECT username, password FROM USERS WHERE username=?", username).Scan(&databaseUsername, &databasePassword)
+	err = s.dataBase.QueryRow("SELECT username, password FROM USERS WHERE username=?", username).Scan(&databaseUsername, &databasePassword)
 	// If not then redirect to the login page
 	if err != nil {
 		http.Redirect(res, req, "/login", 301)
@@ -122,13 +127,19 @@ func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
 		http.ServeFile(res, req, "static/templates/signup.html")
 		return
 	}
-	email	 := req.FormValue("email")
-	username := req.FormValue("username")
-	password := req.FormValue("password")
+	decoder := json.NewDecoder(req.Body)
+	var t SignUp
+	err := decoder.Decode(&t)
+	if err != nil {
+		http.Error(res, "Internal error", http.StatusInternalServerError)
+		return
+	}
+	defer req.Body.Close()
 
 	var user string
+	username, email, password := t.Username, t.Email, t.Password
 
-	err := s.dataBase.QueryRow("SELECT username FROM USERS WHERE username=?", username).Scan(&user)
+	err = s.dataBase.QueryRow("SELECT username FROM USERS WHERE username=?", username).Scan(&user)
 
 	switch {
 	// Username is available
