@@ -218,6 +218,7 @@ func (s *Server) Run() {
 	router.HandleFunc("/api/activate/{token}", s.ActivateToken)
 	router.HandleFunc("/api/channels/{channel}", s.ServeChannel)
 	router.HandleFunc("/api/join", s.JoinChannelHandler)
+	router.HandleFunc("/api/add", s.AddChannelHandler)
 	router.HandleFunc("/api/userinfo", s.ServeUserInfo)
 	router.HandleFunc("/logout", s.Logout)
 
@@ -472,3 +473,42 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (s *Server) AddChannelHandler (w http.ResponseWriter, r *http.Request) {
+
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if !session.IsNew {
+		// Use the flash values.
+
+		id := session.Values["user-id"]
+		if userId, ok := id.(int64); ok {
+			decoder := json.NewDecoder(r.Body)
+			var t AddChannel
+			err := decoder.Decode(&t)
+			if err != nil {
+				http.Error(w, "Internal error", http.StatusInternalServerError)
+				return
+			}
+			defer r.Body.Close()
+
+			err = s.AddChannel(t.Channel, userId, t.Comm)
+			if err != nil {
+				http.Error(w, "Internal error", http.StatusInternalServerError)
+				return
+			}
+
+			w.Write([]byte("Success"))
+		} else {
+			http.Error(w, "Internal error", http.StatusInternalServerError)
+			return
+		}
+	} else {
+		// Set a new flash.
+		http.Error(w, "Please login first!", http.StatusForbidden)
+		return
+	}
+}
