@@ -86,3 +86,19 @@ func (s *Server) AddComm(comm string, commType string, userID int64) (err error)
 	defer get.Close()
 	return
 }
+
+func (s *Server) DeleteComm(comm string, userID int64) (err error) {
+	del, err := s.dataBase.Prepare("DELETE FROM COMM WHERE val = ? AND user_id = ?")
+	if err != nil {
+		return
+	}
+
+	defer del.Close()
+
+	res, err := del.Exec(comm, userID)
+	if n, _ := res.RowsAffected(); n == 0 {
+		return sql.ErrNoRows
+	}
+
+	return
+}

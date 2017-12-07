@@ -53,6 +53,7 @@ func (s *Server) Run() {
 	router.HandleFunc("/api/logout", s.Logout)
 	router.HandleFunc("/api/channels", s.ServeChannels)
 	router.HandleFunc("/api/comm/add", s.AddCommHandler)
+	router.HandleFunc("/api/comm/remove", s.DeleteCommHandler)
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
 	router.HandleFunc("/{_:.*}", s.Receive)
 
@@ -420,6 +421,55 @@ func (s *Server) AddCommHandler (w http.ResponseWriter, r *http.Request) {
 			}
 
 			WriteSuccess(w, "Communication method is added")
+			return
+
+		} else {
+			WriteError(w, ErrInternalServerError)
+			return
+		}
+	} else {
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+}
+
+func (s *Server) DeleteCommHandler (w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "POST" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+
+	if !session.IsNew {id := session.Values["user-id"]
+		if userId, ok := id.(int64); ok {
+			decoder := json.NewDecoder(r.Body)
+			var t DeleteComm
+			err := decoder.Decode(&t)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+			defer r.Body.Close()
+			comm := t.Comm
+
+			err = s.DeleteComm(comm, userId)
+			if err == sql.ErrNoRows {
+				WriteError(w, ErrNoCommOfUser)
+				return
+			}
+
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			WriteSuccess(w, "Communication method is deleted")
 			return
 
 		} else {

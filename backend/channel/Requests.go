@@ -27,3 +27,7 @@ type AddComm struct {
 	Comm		string	`json:"comm"`
 	CommType	string	`json:"comm_type"`
 }
+
+type DeleteComm struct {
+	Comm		string	`json:"comm"`
+}
