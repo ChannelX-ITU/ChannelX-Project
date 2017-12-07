@@ -1,12 +1,12 @@
 <form>
     <mat-form-field>
-        <input required matInput placeholder="Username" id="signup_username" type="text" name="username">
+        <input required matInput [(ngModel)]="username" placeholder="Username" id="signup_username" type="text" name="username">
     </mat-form-field>
     <mat-form-field>
-        <input required matInput placeholder="E-Mail" class="text-input" id="signup_email" type="text" name="email">
+        <input required matInput [(ngModel)]="email" placeholder="E-Mail" class="text-input" id="signup_email" type="text" name="email">
     </mat-form-field>
     <mat-form-field>
-        <input required matInput placeholder="Password" id="signup_password" type="password" name="password">
+        <input required matInput [(ngModel)]="password" placeholder="Password" id="signup_password" type="password" name="password">
     </mat-form-field>
     <br/>
     <mat-card-actions>
