@@ -203,6 +203,7 @@ func (s *Server) Run() {
 	router.HandleFunc("/api/add", s.AddChannelHandler)
 	router.HandleFunc("/api/userinfo", s.ServeUserInfo)
 	router.HandleFunc("/api/logout", s.Logout)
+	router.HandleFunc("/api/channels", s.ServeChannels)
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
 	router.HandleFunc("/{_:.*}", s.Recieve)
 
@@ -277,13 +278,13 @@ func (s *Server) ServeChannel(w http.ResponseWriter, r *http.Request) {
 
 			ch, err := s.GetChannel(channelID, userId)
 			if err != nil {
-				w.Write([]byte(err.Error()))
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 			cha, err := json.Marshal(ch)
 			if err != nil {
-				w.Write([]byte(err.Error()))
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
@@ -397,8 +398,6 @@ func (s *Server) Logout(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
-
 }
 
 func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
@@ -509,6 +508,40 @@ func (s *Server) AddChannelHandler (w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// Set a new flash.
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+}
+
+func (s *Server) ServeChannels (w http.ResponseWriter, r *http.Request) {
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+
+	if !session.IsNew {id := session.Values["user-id"]
+		if userId, ok := id.(int64); ok {
+			ci, err := s.GetChannelInfos(userId)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			cib, err := json.Marshal(ci)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			w.Write(cib)
+			return
+
+		} else {
+			WriteError(w, ErrInternalServerError)
+			return
+		}
+	} else {
 		WriteError(w, ErrNotLoggedIn)
 		return
 	}

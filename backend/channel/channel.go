@@ -6,10 +6,98 @@ import (
 
 type Channel struct {
 	Name			string			`json:"name"`
-	IsOwner			bool				`json:"is_owner,omitempty"`
+	IsOwner			bool			`json:"is_owner,omitempty"`
 	Preference		Preference		`json:"preference"`
 	Restrictions	[]Restriction	`json:"restrictions"`
 	Users			[]string		`json:"users,omitempty"`
+}
+
+type ChannelInfo struct {
+	Name	string		`json:"name"`
+	Count	int			`json:"user_count"`
+	Comm	string		`json:"comm"`
+}
+
+type ChannelsInfo struct {
+	Owned	[]ChannelInfo	`json:"owned"`
+	Subbed	[]ChannelInfo	`json:"subbed"`
+}
+
+func (s *Server) GetChannelInfo(userID int64, channelName string) (channelInfo ChannelInfo, isOwner bool, err error) {
+	channelID,err := s.GetChannelID(channelName)
+	if err != nil {
+		return
+	}
+
+	ch, err := s.GetChannel(channelID, userID)
+	if err != nil {
+		return
+	}
+
+	comm, err := s.GetCommOfUserInChannel(channelID, userID)
+	if err != nil {
+		return
+	}
+
+	isOwner, err = s.GetIsUserOwner(channelID, userID)
+	if err != nil {
+		return
+	}
+
+	channelInfo.Name = ch.Name
+	channelInfo.Count = len(ch.Users)
+	channelInfo.Comm = comm
+	return
+}
+
+func (s *Server) GetIsUserOwner(chanID int64, userID int64) (ok bool, err error) {
+	get, err := s.dataBase.Prepare("SELECT DISTINCT CU.is_owner FROM CHANNEL_USER AS CU WHERE CU.user_id = ? AND CU.channel_id =?")
+	if err != nil {
+		return
+	}
+
+	defer get.Close()
+
+	err = get.QueryRow(userID, chanID).Scan(&ok)
+	return
+}
+
+func (s *Server) GetChannelInfos(userID int64) (ci ChannelsInfo, err error) {
+	ci.Owned = make([]ChannelInfo, 0)
+	ci.Subbed = make([]ChannelInfo, 0)
+
+	arr, err := s.GetChannels(userID)
+	if err != nil {
+		return
+	}
+
+	for _, i := range arr {
+		cu, isOwner, err := s.GetChannelInfo(userID, i)
+		if err != nil {
+			continue
+		}
+
+		if isOwner {
+			ci.Owned = append(ci.Owned, cu)
+		} else {
+			ci.Subbed = append(ci.Subbed, cu)
+		}
+	}
+
+	err = nil
+	return
+}
+
+func (s *Server) GetCommOfUserInChannel(chanID int64, userID int64) (comm string, err error) {
+	get, err := s.dataBase.Prepare("SELECT DISTINCT C.val FROM CHANNEL_USER AS CU, COMM AS C WHERE CU.user_id = ? AND CU.channel_id = ? AND C.comm_id = CU.comm_id")
+	if err != nil {
+		return
+	}
+
+	defer get.Close()
+
+	err = get.QueryRow(userID, chanID).Scan(&comm)
+	return
 }
 
 func (s *Server) GetChannels(userID int64) (inf []string, err error) {

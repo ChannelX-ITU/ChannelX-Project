@@ -1,7 +1,7 @@
 package channel
 
 type Communication struct {
-	Type	string	`json:"type"`
+	Type	string	`json:"comm_type"`
 	Value	string	`json:"value"`
 }
 
