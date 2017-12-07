@@ -30,7 +30,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { BroadcastComponent } from './channel/broadcast/broadcast.component';
 import { EditChannelComponent } from './channel/edit-channel/edit-channel.component';
 import { IndexerPipe } from './pipes/indexer.pipe';
-import { IntervalComponent } from './interval/interval.component'
+import { IntervalComponent } from './interval/interval.component';
+import { CommFilterPipe } from './pipes/comm-filter.pipe'
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -54,7 +55,8 @@ if (environment.production){
     BroadcastComponent,
     EditChannelComponent,
     IndexerPipe,
-    IntervalComponent
+    IntervalComponent,
+    CommFilterPipe
   ],
   imports: [
     BrowserModule,

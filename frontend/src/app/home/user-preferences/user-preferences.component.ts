@@ -1,4 +1,9 @@
 import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
+import { AppState } from '../../state/app-state';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
+import { Communication } from '../../models/communication'
 
 @Component({
   selector: 'app-user-preferences',
@@ -7,19 +12,17 @@ import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 })
 export class UserPreferencesComponent implements OnInit {
 
-    emails = [
-      {value: '0', name: 'Default Mail', view: 'ihsanyigitergin@gmail.com'},
-      {value: '1', name: 'School Mail', view: 'erginihs@itu.edu.tr'}
-    ];
+  comms: Observable<Communication[]>;
 
-    phones = [
-      {value: '0', name: 'Default Phone', view: '+905546544365'},
-      {value: '1', name: 'School Phone', view: '+905318893565'}
-    ];
-
-  constructor() { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
+    this.comms = this.store
+    .select("user")
+    .pipe(map( 
+      (value) => value.user.communications
+      )
+    );
   }
 
 }
