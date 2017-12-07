@@ -5,7 +5,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/handlers"
 	"os"
-	"fmt"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
@@ -50,7 +49,7 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	var t Login
 	err := decoder.Decode(&t)
 	if err != nil {
-		http.Error(res, "Internal error", http.StatusInternalServerError)
+		WriteError(res, ErrInternalServerError)
 		return
 	}
 	defer req.Body.Close()
@@ -80,61 +79,40 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	}
 	err = s.dataBase.QueryRow("SELECT token FROM TOKENS WHERE user_id=(SELECT user_id FROM USERS WHERE username=?)", username).Scan(&databaseToken)
 	if err != sql.ErrNoRows {
-		res.Write([]byte("Please activate your account!"))
+		WriteError(res, ErrAccountNotActivated)
 		return
 	}
 
 	err = s.dataBase.QueryRow("SELECT user_id FROM USERS WHERE username=?", username).Scan(&userID)
 	if err != nil {
-		fmt.Println(err)
-		res.Write([]byte("Server error"))
+		WriteError(res, ErrInternalServerError)
 		return
 	}
-
-	/*
-	// If the login succeeded
-	us, err := s.GetUser(userID)
-	if err != nil {
-		fmt.Println(err)
-		res.Write([]byte("Server error"))
-		return
-	}
-
-	user, err := json.Marshal(us)
-	if err != nil {
-		fmt.Println(err)
-		res.Write([]byte("Server error"))
-		return
-	}
-	fmt.Println(s.AddChannel(Channel{"IdsaNdSfooC32NM", true, Preference{0,2131231321, 323, []Interval{Interval{21323, 2132}}}, []Restriction{Restriction{19, "EMAIL", "@itu.edu.tr", "=", "END"}}, make([]string, 0)}, 32, "cicekhu@gmail.com").Error())
-
-	res.Write(user)
-	*/
 
 	session, err := store.Get(req, "bist-sissin-ivir")
 	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
+		WriteError(res, ErrInternalServerError)
 		return
 	}
 
 	session.Values["user-id"] = userID
 	session.Values["logged-in"] = true
 	session.Save(req, res)
-	res.Write([]byte("Success"))
+	WriteSuccess(res, "Login successful")
 }
 
-func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
+func (s *Server) Singup(res http.ResponseWriter, req *http.Request) {
 
-	// Serve signup.html to get requests to /signup
 	if req.Method != "POST" {
-		http.ServeFile(res, req, "static/templates/signup.html")
+		WriteError(res, ErrWrongMethod)
 		return
 	}
+
 	decoder := json.NewDecoder(req.Body)
 	var t SignUp
 	err := decoder.Decode(&t)
 	if err != nil {
-		http.Error(res, "Internal error", http.StatusInternalServerError)
+		WriteError(res, ErrInternalServerError)
 		return
 	}
 	defer req.Body.Close()
@@ -149,37 +127,37 @@ func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
 	case err == sql.ErrNoRows:
 		err := s.dataBase.QueryRow("SELECT C.val FROM COMM AS C, COMM_TYPE AS C_T WHERE C_T.val=? AND C.val=?", "EMAIL", email).Scan(&user)
 		if err == nil {
-			http.Error(res, "E-Mail: " + email + " is already taken!", 409)
+			WriteError(res, ErrEmailTaken)
 			return
 		}
 		if err != sql.ErrNoRows {
-			http.Error(res, "Server error, unable to create your account.", 500)
+			WriteError(res, ErrInternalServerError)
 			return
 		}
 
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 
 		if err != nil {
-			http.Error(res, "4Server error, unable to create your account.", 500)
+			WriteError(res, ErrInternalServerError)
 			return
 		}
 
 		_, err = s.dataBase.Exec("INSERT INTO USERS(username, password) VALUES(?, ?)", username, hashedPassword)
 		if err != nil {
-			http.Error(res, "3Server error, unable to create your account.", 500)
+			WriteError(res, ErrInternalServerError)
 			return
 		}
 
 		_, err = s.dataBase.Exec("INSERT INTO COMM(user_id, type_id, val) VALUES((SELECT U.user_id FROM USERS AS U WHERE U.username=?), (SELECT ct.type_id FROM COMM_TYPE AS ct WHERE ct.val=?), ?)", username, "EMAIL", email)
 		if err != nil {
-			http.Error(res, "2Server error, unable to create your account.", 500)
+			WriteError(res, ErrInternalServerError)
 			s.dataBase.Exec("DELETE FROM USERS WHERE username=?", username)
 			return
 		}
 
 		_,err = s.dataBase.Exec("INSERT INTO PREFERENCE(user_id, start_date) VALUE ((SELECT U.user_id FROM USERS AS U WHERE U.username=?), 0)", username)
 		if err != nil {
-			http.Error(res, "1Server error, unable to create your account.", 500)
+			WriteError(res, ErrInternalServerError)
 			s.dataBase.Exec("DELETE FROM COMM WHERE val=?", email)
 			s.dataBase.Exec("DELETE FROM USERS WHERE username=?", username)
 			return
@@ -196,14 +174,14 @@ func (s *Server) SingupPage(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		s.mailMan.Send(Message{email, "Activation", "To activate your account please click the link: localhost:6969/activate/" + u1.String()})
-		res.Write([]byte("Activation mail is sent to " + email))
+		s.mailMan.Send(Message{email, "Activation", "To activate your account please click the link: http://localhost:6969/activate/" + u1.String()})
+		WriteSuccess(res, "Activation mail is sent to the user's mail")
 		return
 	case err != nil:
-		http.Error(res, "Server error, unable to create your account.", 500)
+		WriteError(res, ErrInternalServerError)
 		return
 	default:
-		http.Error(res, "Username: " + user + " is already taken!", 409)
+		WriteError(res, ErrUsernameTaken)
 	}
 }
 
@@ -217,8 +195,7 @@ func (s *Server) Run() {
 	fs := http.FileServer(http.Dir("static"))
 
 	router.HandleFunc("/", s.Recieve)
-	router.HandleFunc("/api/signup", s.SingupPage)
-	router.HandleFunc("/api/submitsignup", s.SubmitSignUp)
+	router.HandleFunc("/api/signup", s.Singup)
 	router.HandleFunc("/api/login", s.login)
 	router.HandleFunc("/api/activate/{token}", s.ActivateToken)
 	router.HandleFunc("/api/channels/{channel}", s.ServeChannel)
@@ -235,30 +212,26 @@ func (s *Server) Run() {
 }
 
 func (s *Server) ActivateToken(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
 	vars := mux.Vars(r)
 	token := vars["token"]
 
 	var databaseUser string
 	err := s.dataBase.QueryRow("SELECT user_id FROM TOKENS WHERE token=?", token).Scan(&databaseUser)
 	if err != nil {
-		http.Error(w, "Token not valid", http.StatusBadRequest)
+		WriteError(w, ErrInternalServerError)
 		return
 	}
 	s.dataBase.Exec("DELETE FROM TOKENS WHERE token=?", token)
-	w.Write([]byte("Success"))
+	WriteSuccess(w, "Account is activated")
 }
 
 func (s *Server) SignUp(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "static/templates/signup.html")
-}
-
-func (s *Server) SubmitSignUp(w http.ResponseWriter, r *http.Request)  {
-	fmt.Println("A form is submitted!")
-	r.ParseForm()
-	for key, val :=  range r.Form {
-		fmt.Println("Key:", key, "Value:", val)
-	}
-	w.Write([]byte("Danke!"))
 }
 
 func (s *Server) Close() {
@@ -269,7 +242,7 @@ func (s *Server) ServeChannel(w http.ResponseWriter, r *http.Request) {
 
 	session, err := store.Get(r, "bist-sissin-ivir")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		WriteError(w, ErrInternalServerError)
 		return
 	}
 
@@ -284,21 +257,21 @@ func (s *Server) ServeChannel(w http.ResponseWriter, r *http.Request) {
 			channelID, err := s.GetChannelID(channelName)
 
 			if err != nil {
-				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 			if channelID == -1 {
-				http.Error(w, "Channel not found", http.StatusBadRequest)
+				WriteError(w, ErrChannelNotExist)
 				return
 			}
 
 			if ok, err := s.CheckUserInChannel(userId, channelID); err != nil {
-				http.Error(w, "Internal error", http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			} else if !ok {
 				// Set a new flash.
-				http.Error(w, "User is not in that channel!", http.StatusBadRequest)
+				WriteError(w, ErrUserNotInChannel)
 				return
 			}
 
@@ -316,12 +289,11 @@ func (s *Server) ServeChannel(w http.ResponseWriter, r *http.Request) {
 
 			w.Write(cha)
 		} else {
-			http.Error(w, "Internal error", http.StatusInternalServerError)
+			WriteError(w, ErrInternalServerError)
 			return
 		}
 	} else {
-		// Set a new flash.
-		http.Error(w, "Please login first!", http.StatusForbidden)
+		WriteError(w, ErrNotLoggedIn)
 		return
 	}
 }
@@ -354,12 +326,12 @@ func (s *Server) ServeUserInfo(w http.ResponseWriter, r *http.Request) {
 
 			w.Write(user)
 		} else {
-			http.Error(w, "Internal error", http.StatusInternalServerError)
+			WriteError(w, ErrInternalServerError)
 			return
 		}
 	} else {
 		// Set a new flash.
-		http.Error(w, "Please login first!", http.StatusForbidden)
+		WriteError(w, ErrNotLoggedIn)
 		return
 	}
 }
@@ -368,7 +340,7 @@ func (s *Server) ServerUserChannels(w http.ResponseWriter, r *http.Request) {
 
 	session, err := store.Get(r, "bist-sissin-ivir")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		WriteError(w, ErrInternalServerError)
 		return
 	}
 
@@ -379,40 +351,54 @@ func (s *Server) ServerUserChannels(w http.ResponseWriter, r *http.Request) {
 		if userId, ok := id.(int64); ok {
 			us, err := s.GetUser(userId)
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 			user, err := json.Marshal(us)
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 
 			w.Write(user)
 		} else {
-			http.Error(w, "Internal error", http.StatusInternalServerError)
+			WriteError(w, ErrInternalServerError)
 			return
 		}
 	} else {
 		// Set a new flash.
-		http.Error(w, "Please login first!", http.StatusForbidden)
+		WriteError(w, ErrNotLoggedIn)
 		return
 	}
 }
 
 func (s *Server) Logout(w http.ResponseWriter, r *http.Request) {
 
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
 
-	cookie := &http.Cookie{
-		Name:   "bist-sissin-ivir",
-		Value:  "",
-		Path:   "/",
-		MaxAge: -1,
+	if !session.IsNew {
+		cookie := &http.Cookie{
+			Name:   "bist-sissin-ivir",
+			Value:  "",
+			Path:   "/",
+			MaxAge: -1,
 		}
 		http.SetCookie(w, cookie)
-		w.Write([]byte("Success"))
+		WriteSuccess(w, "Logout successful")
+	} else {
+		// Set a new flash.
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+
+
+
 }
 
 func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
@@ -432,7 +418,7 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 			var t JoinChannel
 			err := decoder.Decode(&t)
 			if err != nil {
-				http.Error(w, "Internal error", http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 			defer r.Body.Close()
@@ -440,44 +426,44 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 			channelID, err := s.GetChannelID(t.Channel)
 
 			if err != nil {
-				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 			if channelID == -1 {
-				http.Error(w, "Channel not found", http.StatusBadRequest)
+				WriteError(w, ErrChannelNotExist)
 				return
 			}
 
 			if ok, err := s.CheckUserInChannel(userId, channelID); err != nil {
-				http.Error(w, "Internal error", http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			} else if ok {
 				// Set a new flash.
-				http.Error(w, "User is already in that channel!", http.StatusBadRequest)
+				WriteError(w, ErrUserInChannel)
 				return
 			}
 
 			commID, err := s.GetCommID(t.Comm)
 			if err != nil {
-				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 			err = s.AddUserToChannel(channelID, userId, commID, false, t.Alias)
 			if err != nil {
-				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
-			w.Write([]byte("Success"))
+			WriteSuccess(w, "User is added to the channel")
 		} else {
-			http.Error(w, "Internal error", http.StatusInternalServerError)
+			WriteError(w, ErrInternalServerError)
 			return
 		}
 	} else {
 		// Set a new flash.
-		http.Error(w, "Please login first!", http.StatusForbidden)
+		WriteError(w, ErrNotLoggedIn)
 		return
 	}
 }
@@ -499,31 +485,31 @@ func (s *Server) AddChannelHandler (w http.ResponseWriter, r *http.Request) {
 			var t AddChannel
 			err := decoder.Decode(&t)
 			if err != nil {
-				http.Error(w, "Internal error", http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 			defer r.Body.Close()
 
 			channelID, _ := s.GetChannelID(t.Channel.Name)
 			if channelID != -1 {
-				http.Error(w, "Channel already exists!", http.StatusBadRequest)
+				WriteError(w, ErrChannelExist)
 				return
 			}
 
 			err = s.AddChannel(t.Channel, userId, t.Comm)
 			if err != nil {
-				http.Error(w, "Internal error", http.StatusInternalServerError)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
+			WriteSuccess(w, "Channel is created")
 
-			w.Write([]byte("Success"))
 		} else {
-			http.Error(w, "Internal error", http.StatusInternalServerError)
+			WriteError(w, ErrInternalServerError)
 			return
 		}
 	} else {
 		// Set a new flash.
-		http.Error(w, "Please login first!", http.StatusForbidden)
+		WriteError(w, ErrNotLoggedIn)
 		return
 	}
 }

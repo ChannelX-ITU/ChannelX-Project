@@ -5,13 +5,13 @@ import (
 )
 
 const (
-	smtp = "smtp.gmail.com"
-	port = 465
+	smtp     = "smtp.gmail.com"
+	port     = 465
 	username = "channel.x.itu@gmail.com"
-	psswrd = "BestTeamEver"
+	psswrd   = "BestTeamEver"
 )
 
-func main()  {
+func main() {
 	s := channel.Server{}
 	s.Setup(smtp, port, username, psswrd)
 	s.Run()
