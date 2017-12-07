@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs/Observable';
 import { Logger } from '@nsalaun/ng-logger'
 import { AppState } from '../state/app-state'
+import { User } from '../models/user';
+import { switchMap, map } from 'rxjs/operators';
 
 
 @Component({
@@ -13,16 +15,24 @@ import { AppState } from '../state/app-state'
 })
 export class ToolbarComponent implements OnInit {
 
-  logged_in : boolean
+  user : Observable<User>
+  logged_in : Observable<boolean>;
 
   constructor(private store: Store<AppState>, private router: Router, private logger: Logger) { }
 
   ngOnInit() {
       this.logger.info(this.store);
-      this.store.select('user').subscribe(data => {
-          this.logged_in = data.logged_in
-          this.logger.info(data)
+      this.store.select('user').subscribe( data => {
+        this.logger.log("Subscribe: " , data);
       })
+      this.user = this.store.select('user').pipe(map( (data, index) => {
+        this.logger.log("USER: " , data);
+        return data.user;
+      }));
+      this.logged_in = this.store.select('user').pipe(map( (data, index) => {
+        this.logger.log("LOGGED_IN: " , data);
+        return data.logged_in;
+      }))
   }
 
   logout() {

@@ -1,14 +1,14 @@
 <mat-toolbar color="primary">
-    <span><a routerLink="/home">ChannelX | {{logged_in}}</a></span> 
+    <span><a routerLink="/home">ChannelX <span *ngIf="user | async">| {{user.username | async}}</span></a></span> 
     <span class="extend-filler"></span>
 
     <!-- Sign in olmadıkça home gösterme -->
-    <span *ngIf="logged_in"><a routerLink="/home">Home</a></span>
+    <span class="menu-item" *ngIf="logged_in | async"><a routerLink="/home">Home</a></span>
 
     <!-- Sign in olduysa login gösterme -->
-    <span *ngIf="!logged_in"><a routerLink="/login">Signin/Signup</a></span>
+    <span class="menu-item" *ngIf="!(logged_in | async)"><a routerLink="/login">Signin/Signup</a></span>
 
     <!-- Sign in olmadıkça logout gösterme -->
-    <span *ngIf="logged_in"><a (click)="logout()">Logout</a></span>
-    <span><a routerLink="/about">About</a></span>
+    <span class="menu-item" *ngIf="logged_in | async"><a (click)="logout()">Logout</a></span>
+    <span class="menu-item"><a routerLink="/about">About</a></span>
 </mat-toolbar>
