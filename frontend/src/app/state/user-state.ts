@@ -4,3 +4,8 @@ export class UserState {
         
     }
 }
+
+export interface LoginAction {
+    type: string,
+    user: User
+} 

@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie'
 import { Store } from '@ngrx/store'
 import { UserState } from '../../state/user-state'
 import { NotificationsService } from 'angular2-notifications'
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -31,14 +32,17 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.cookies.get("test")
-    this.client.post<User>("/api/login", {
+    this.client.post("/api/login", {
       username: this.username,
       password: this.password
-    }).subscribe(
+    }, {responseType: 'text'}).pipe(switchMap( data => {
+      this.logger.log("Got data @ map: ", data);
+      return this.client.get<User>("/api/userinfo");
+    })).subscribe(
       data => {
         this.logger.log("Got data: ", data)
 
-        this.store.dispatch({ type: "LOGIN" })
+        this.store.dispatch({ type: "LOGIN", user: data })
         
         this.router.navigateByUrl("/home", {
           skipLocationChange: false
