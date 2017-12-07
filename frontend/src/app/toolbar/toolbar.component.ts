@@ -21,16 +21,12 @@ export class ToolbarComponent implements OnInit {
   constructor(private store: Store<AppState>, private router: Router, private logger: Logger) { }
 
   ngOnInit() {
-      this.logger.info(this.store);
       this.store.select('user').subscribe( data => {
-        this.logger.log("Subscribe: " , data);
       })
       this.user = this.store.select('user').pipe(map( (data, index) => {
-        this.logger.log("USER: " , data);
         return data.user;
       }));
       this.logged_in = this.store.select('user').pipe(map( (data, index) => {
-        this.logger.log("LOGGED_IN: " , data);
         return data.logged_in;
       }))
   }
