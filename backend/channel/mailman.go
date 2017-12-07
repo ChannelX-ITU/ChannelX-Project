@@ -26,8 +26,6 @@ func (m *Mailman) Setup(smtp string, port int, username string, password string)
 	m.username = username
 	m.password = password
 	m.dial = gomail.NewDialer(m.smtp, m.port, m.username, m.password)
-
-	
 }
 
 func (m *Mailman) Run()  {

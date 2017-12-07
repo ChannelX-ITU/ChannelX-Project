@@ -6,7 +6,7 @@ import (
 
 const (
 	smtp = "smtp.gmail.com"
-	port = 587
+	port = 465
 	username = "channel.x.itu@gmail.com"
 	psswrd = "BestTeamEver"
 )

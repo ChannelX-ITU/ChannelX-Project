@@ -5,7 +5,7 @@ type Interval struct {
 	Duration	int		`json:"duration"`
 }
 
-func (s *Server) GetInterval(prefID int) (inf []Interval, err error) {
+func (s *Server) GetInterval(prefID int64) (inf []Interval, err error) {
 	inf = make([]Interval, 0)
 	get, err := s.dataBase.Prepare("SELECT start_time_in_minutes, duration FROM INTER WHERE preference_id = ?")
 	if err != nil {

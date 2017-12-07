@@ -6,13 +6,13 @@ import (
 
 type Channel struct {
 	Name			string			`json:"name"`
-	IsOwner			int				`json:"is_owner,omitempty"`
+	IsOwner			bool				`json:"is_owner,omitempty"`
 	Preference		Preference		`json:"preference"`
 	Restrictions	[]Restriction	`json:"restrictions"`
 	Users			[]string		`json:"users,omitempty"`
 }
 
-func (s *Server) GetChannels(userID int) (inf []string, err error) {
+func (s *Server) GetChannels(userID int64) (inf []string, err error) {
 	inf = make([]string, 0)
 	get, err := s.dataBase.Prepare("SELECT DISTINCT C.name FROM USERS AS U, CHANNEL AS C, CHANNEL_USER AS CU WHERE C.channel_id = CU.channel_id AND CU.user_id = ?")
 	if err != nil {
@@ -38,7 +38,7 @@ func (s *Server) GetChannels(userID int) (inf []string, err error) {
 	return
 }
 
-func (s *Server) AddChannel(channel Channel, userID int, comm string) (err error) {
+func (s *Server) AddChannel(channel Channel, userID int64, comm string) (err error) {
 	set, err := s.dataBase.Prepare("INSERT INTO CHANNEL(name) VALUES(?)")
 	if err != nil {
 		return
@@ -56,7 +56,7 @@ func (s *Server) AddChannel(channel Channel, userID int, comm string) (err error
 		return
 	}
 
-	prefID, err := s.AddPreference(channel.Preference, int(channelID))
+	prefID, err := s.AddPreference(channel.Preference, channelID)
 	if err != nil {
 		return
 	}
@@ -71,12 +71,12 @@ func (s *Server) AddChannel(channel Channel, userID int, comm string) (err error
 		return
 	}
 
-	err = s.AddUserToChannel(int64(channelID), int64(userID), int(commID), true, "")
+	err = s.AddUserToChannel(int64(channelID), int64(userID), commID, true, "")
 
 	return
 }
 
-func (s *Server) AddUserToChannel(channelID int64, userID int64, commID int, isOwner bool, alias string) (err error) {
+func (s *Server) AddUserToChannel(channelID int64, userID int64, commID int64, isOwner bool, alias string) (err error) {
 
 
 	setAlias, err := s.dataBase.Prepare("INSERT INTO ALIAS(val, is_user_defined) VALUES(?, ?)")
@@ -134,4 +134,100 @@ func (s *Server) GetCommID(comm string) (commID int64, err error) {
 
 	err = get.QueryRow(comm).Scan(&commID)
 	return
+}
+
+func (s *Server) GetChannel(channelID int64, userID int64) (ch Channel, err error) {
+	ch.Name, err = s.GetChannelName(channelID)
+	if err != nil {
+		return
+	}
+
+	var ownerID int64
+	ch.Users, ownerID, err = s.GetChannelUsers(channelID)
+	if err != nil {
+		return
+	}
+
+	if ownerID == userID {
+		ch.IsOwner = true
+	}
+
+	ch.Preference, err = s.GetPreferenceForChannel(channelID)
+	if err != nil {
+		return
+	}
+
+	ch.Restrictions, err = s.GetRestrictions(ch.Preference.prefID)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func (s *Server) GetChannelName(channelID int64) (name string, err error) {
+	get, err := s.dataBase.Prepare("SELECT name FROM CHANNEL WHERE channel_id = ?")
+	if err != nil {
+		return
+	}
+
+	defer get.Close()
+
+	err = get.QueryRow(channelID).Scan(&name)
+	return
+}
+
+func (s *Server) GetChannelUsers(channelID int64) (users []string, owner int64, err error) {
+	get, err := s.dataBase.Prepare("SELECT CU.is_owner, A.val, CU.user_id FROM ALIAS AS A, CHANNEL_USER AS CU, CHANNEL AS C WHERE A.alias_id = CU.alias_id AND CU.channel_id = C.channel_id AND C.channel_id = ?")
+
+	rows, err := get.Query(channelID)
+	if rows == nil || err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	users = make([]string, 0)
+	var hold string
+	var isOwner bool
+	var ownerID int64
+	for rows.Next() {
+		rows.Scan(&isOwner, &hold,&ownerID)
+		users = append(users, hold)
+		if isOwner {
+			owner = ownerID
+		}
+	}
+
+	return
+}
+
+func (s *Server) GetChannelID(name string) (ID int64, err error) {
+	get, err := s.dataBase.Prepare("SELECT C.channel_id FROM CHANNEL AS C WHERE C.name = ?")
+	if err != nil {
+		return
+	}
+
+	err = get.QueryRow(name).Scan(&ID)
+	if err == sql.ErrNoRows {
+		return -1, nil
+	}
+
+	return
+}
+
+func (s *Server) CheckUserInChannel(userID int64, channelID int64) (ok bool, err error) {
+	get, err := s.dataBase.Prepare("SELECT channel_id FROM CHANNEL_USER WHERE user_id = ? AND channel_id = ?")
+	if err != nil {
+		return
+	}
+
+	var ID int64
+
+	err = get.QueryRow(userID, channelID).Scan(&ID)
+	if err == sql.ErrNoRows {
+		return false, nil
+	}
+
+	return true, err
 }
