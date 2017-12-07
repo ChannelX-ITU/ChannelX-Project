@@ -2,26 +2,26 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title> Owned Channels </mat-panel-title>
-      <mat-panel-description> Your created channels </mat-panel-description>
+      <mat-spinner class="table-loader" *ngIf="!loaded" [diameter]=24 [strokeWidth]=4></mat-spinner>
     </mat-expansion-panel-header>
-    <mat-table #table [dataSource]="dataSource">
+    <mat-table #table [dataSource]="ownedDataSource">
       <!--Channel Name Column-->
       <ng-container matColumnDef="ChannelName">
         <mat-header-cell *matHeaderCellDef> Channel Name </mat-header-cell>
-        <mat-cell *matCellDef="let element"><a mat-button routerLink="/channel">{{element.ChannelName}}</a></mat-cell>
+        <mat-cell *matCellDef="let element"><a mat-button routerLink="/channel">{{element.name}}</a></mat-cell>
         <!-- Also bind the selected channel id!!!! -->
       </ng-container>
 
       <!--Channel User Count Column-->
       <ng-container matColumnDef="UserCount">
         <mat-header-cell *matHeaderCellDef> User Count </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.UserCount}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.user_count}} </mat-cell>
       </ng-container>
 
       <!--Channel Prefered Comm Column-->
       <ng-container matColumnDef="CommType">
         <mat-header-cell *matHeaderCellDef> Comm Type </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.CommType}} </mat-cell>
+        <mat-cell *matCellDef="let element"> {{element.comm}} </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -31,8 +31,30 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>   Subscribed Channels </mat-panel-title>
-      <mat-panel-description> Your subscribed channels </mat-panel-description>
+      <mat-spinner class="table-loader" *ngIf="!loaded" [diameter]=24 [strokeWidth]=4></mat-spinner>
     </mat-expansion-panel-header>
-    <span> Fill this area with channel buttons as well </span>
+    <mat-table #table [dataSource]="subscribedDataSource">
+      <!--Channel Name Column-->
+      <ng-container matColumnDef="ChannelName">
+        <mat-header-cell *matHeaderCellDef> Channel Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"><a mat-button routerLink="/channel">{{element.name}}</a></mat-cell>
+        <!-- Also bind the selected channel id!!!! -->
+      </ng-container>
+
+      <!--Channel User Count Column-->
+      <ng-container matColumnDef="UserCount">
+        <mat-header-cell *matHeaderCellDef> User Count </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.user_count}} </mat-cell>
+      </ng-container>
+
+      <!--Channel Prefered Comm Column-->
+      <ng-container matColumnDef="CommType">
+        <mat-header-cell *matHeaderCellDef> Comm Type </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.comm}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
   </mat-expansion-panel>
 </mat-accordion>
