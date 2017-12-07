@@ -37,7 +37,32 @@ func (s *Server) Setup(smtp string, port int, username string, psswrd string) {
 	s.dataBase = db
 }
 
-func (s *Server) login(res http.ResponseWriter, req *http.Request) {
+func (s *Server) Run() {
+	s.mailMan.Run()
+	router := mux.NewRouter()
+	fs := http.FileServer(http.Dir("static"))
+
+	router.HandleFunc("/", s.Receive)
+	router.HandleFunc("/api/signUp", s.SignUp)
+	router.HandleFunc("/api/login", s.Login)
+	router.HandleFunc("/api/activate/{token}", s.ActivateToken)
+	router.HandleFunc("/api/channels/{channel}", s.ServeChannel)
+	router.HandleFunc("/api/channels/join", s.JoinChannelHandler)
+	router.HandleFunc("/api/channels/add", s.AddChannelHandler)
+	router.HandleFunc("/api/userinfo", s.ServeUserInfo)
+	router.HandleFunc("/api/logout", s.Logout)
+	router.HandleFunc("/api/channels", s.ServeChannels)
+	router.HandleFunc("/api/comm/add", s.AddCommHandler)
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
+	router.HandleFunc("/{_:.*}", s.Receive)
+
+	loggedHandler := handlers.CombinedLoggingHandler(os.Stdout, router)
+
+	http.ListenAndServe(":6969", loggedHandler)
+}
+
+
+func (s *Server) Login(res http.ResponseWriter, req *http.Request) {
 	// If method is GET serve an html login page
 	if req.Method != "POST" {
 		http.ServeFile(res, req, "static/templates/login.html")
@@ -66,7 +91,7 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	err = s.dataBase.QueryRow("SELECT username, password FROM USERS WHERE username=?", username).Scan(&databaseUsername, &databasePassword)
 	// If not then redirect to the login page
 	if err != nil {
-		http.Redirect(res, req, "/login", 301)
+		WriteError(res, ErrInvalidLoginCredentials)
 		return
 	}
 
@@ -74,7 +99,7 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	err = bcrypt.CompareHashAndPassword([]byte(databasePassword), []byte(password))
 	// If wrong password redirect to the login
 	if err != nil {
-		http.Redirect(res, req, "/login", 301)
+		WriteError(res, ErrInvalidLoginCredentials)
 		return
 	}
 	err = s.dataBase.QueryRow("SELECT token FROM TOKENS WHERE user_id=(SELECT user_id FROM USERS WHERE username=?)", username).Scan(&databaseToken)
@@ -101,7 +126,7 @@ func (s *Server) login(res http.ResponseWriter, req *http.Request) {
 	WriteSuccess(res, "Login successful")
 }
 
-func (s *Server) Singup(res http.ResponseWriter, req *http.Request) {
+func (s *Server) SignUp(res http.ResponseWriter, req *http.Request) {
 
 	if req.Method != "POST" {
 		WriteError(res, ErrWrongMethod)
@@ -185,32 +210,10 @@ func (s *Server) Singup(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (s *Server) Recieve(res http.ResponseWriter, req *http.Request) {
+func (s *Server) Receive(res http.ResponseWriter, req *http.Request) {
 	http.ServeFile(res, req, "static/index.html")
 }
 
-func (s *Server) Run() {
-	s.mailMan.Run()
-	router := mux.NewRouter()
-	fs := http.FileServer(http.Dir("static"))
-
-	router.HandleFunc("/", s.Recieve)
-	router.HandleFunc("/api/signup", s.Singup)
-	router.HandleFunc("/api/login", s.login)
-	router.HandleFunc("/api/activate/{token}", s.ActivateToken)
-	router.HandleFunc("/api/channels/{channel}", s.ServeChannel)
-	router.HandleFunc("/api/join", s.JoinChannelHandler)
-	router.HandleFunc("/api/add", s.AddChannelHandler)
-	router.HandleFunc("/api/userinfo", s.ServeUserInfo)
-	router.HandleFunc("/api/logout", s.Logout)
-	router.HandleFunc("/api/channels", s.ServeChannels)
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
-	router.HandleFunc("/{_:.*}", s.Recieve)
-
-	loggedHandler := handlers.CombinedLoggingHandler(os.Stdout, router)
-
-	http.ListenAndServe(":6969", loggedHandler)
-}
 
 func (s *Server) ActivateToken(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
@@ -229,150 +232,6 @@ func (s *Server) ActivateToken(w http.ResponseWriter, r *http.Request) {
 	}
 	s.dataBase.Exec("DELETE FROM TOKENS WHERE token=?", token)
 	WriteSuccess(w, "Account is activated")
-}
-
-func (s *Server) SignUp(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "static/templates/signup.html")
-}
-
-func (s *Server) Close() {
-	s.dataBase.Close()
-}
-
-func (s *Server) ServeChannel(w http.ResponseWriter, r *http.Request) {
-
-	session, err := store.Get(r, "bist-sissin-ivir")
-	if err != nil {
-		WriteError(w, ErrInternalServerError)
-		return
-	}
-
-	if !session.IsNew {
-		// Use the flash values.
-
-		id := session.Values["user-id"]
-		if userId, ok := id.(int64); ok {
-			vars := mux.Vars(r)
-			channelName := vars["channel"]
-
-			channelID, err := s.GetChannelID(channelName)
-
-			if err != nil {
-				WriteError(w, ErrInternalServerError)
-				return
-			}
-
-			if channelID == -1 {
-				WriteError(w, ErrChannelNotExist)
-				return
-			}
-
-			if ok, err := s.CheckUserInChannel(userId, channelID); err != nil {
-				WriteError(w, ErrInternalServerError)
-				return
-			} else if !ok {
-				// Set a new flash.
-				WriteError(w, ErrUserNotInChannel)
-				return
-			}
-
-			ch, err := s.GetChannel(channelID, userId)
-			if err != nil {
-				WriteError(w, ErrInternalServerError)
-				return
-			}
-
-			cha, err := json.Marshal(ch)
-			if err != nil {
-				WriteError(w, ErrInternalServerError)
-				return
-			}
-
-			w.Write(cha)
-		} else {
-			WriteError(w, ErrInternalServerError)
-			return
-		}
-	} else {
-		WriteError(w, ErrNotLoggedIn)
-		return
-	}
-}
-
-func (s *Server) ServeUserInfo(w http.ResponseWriter, r *http.Request) {
-
-	session, err := store.Get(r, "bist-sissin-ivir")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if !session.IsNew {
-		// Use the flash values.
-
-		id := session.Values["user-id"]
-		if userId, ok := id.(int64); ok {
-			us, err := s.GetUser(userId)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-
-			user, err := json.Marshal(us)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-
-
-			w.Write(user)
-		} else {
-			WriteError(w, ErrInternalServerError)
-			return
-		}
-	} else {
-		// Set a new flash.
-		WriteError(w, ErrNotLoggedIn)
-		return
-	}
-}
-
-func (s *Server) ServerUserChannels(w http.ResponseWriter, r *http.Request) {
-
-	session, err := store.Get(r, "bist-sissin-ivir")
-	if err != nil {
-		WriteError(w, ErrInternalServerError)
-		return
-	}
-
-	if !session.IsNew {
-		// Use the flash values.
-
-		id := session.Values["user-id"]
-		if userId, ok := id.(int64); ok {
-			us, err := s.GetUser(userId)
-			if err != nil {
-				WriteError(w, ErrInternalServerError)
-				return
-			}
-
-			user, err := json.Marshal(us)
-			if err != nil {
-				WriteError(w, ErrInternalServerError)
-				return
-			}
-
-
-			w.Write(user)
-		} else {
-			WriteError(w, ErrInternalServerError)
-			return
-		}
-	} else {
-		// Set a new flash.
-		WriteError(w, ErrNotLoggedIn)
-		return
-	}
 }
 
 func (s *Server) Logout(w http.ResponseWriter, r *http.Request) {
@@ -400,7 +259,13 @@ func (s *Server) Logout(w http.ResponseWriter, r *http.Request) {
 
 }
 
+
 func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "POST" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
 
 	session, err := store.Get(r, "bist-sissin-ivir")
 	if err != nil {
@@ -469,6 +334,11 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) AddChannelHandler (w http.ResponseWriter, r *http.Request) {
 
+	if r.Method != "POST" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
 	session, err := store.Get(r, "bist-sissin-ivir")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -513,7 +383,62 @@ func (s *Server) AddChannelHandler (w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (s *Server) AddCommHandler (w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "POST" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+
+	if !session.IsNew {id := session.Values["user-id"]
+		if userId, ok := id.(int64); ok {
+			decoder := json.NewDecoder(r.Body)
+			var t AddComm
+			err := decoder.Decode(&t)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+			defer r.Body.Close()
+			comm, commType := t.Comm, t.CommType
+
+			err = s.AddComm(comm, commType, userId)
+			if err == sql.ErrNoRows {
+				WriteError(w, ErrCommIsTaken)
+				return
+			}
+
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			WriteSuccess(w, "Communication method is added")
+			return
+
+		} else {
+			WriteError(w, ErrInternalServerError)
+			return
+		}
+	} else {
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+}
+
+
 func (s *Server) ServeChannels (w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
 	session, err := store.Get(r, "bist-sissin-ivir")
 	if err != nil {
 		WriteError(w, ErrInternalServerError)
@@ -545,4 +470,159 @@ func (s *Server) ServeChannels (w http.ResponseWriter, r *http.Request) {
 		WriteError(w, ErrNotLoggedIn)
 		return
 	}
+}
+
+func (s *Server) ServerUserChannels(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "GET" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+
+	if !session.IsNew {
+		// Use the flash values.
+
+		id := session.Values["user-id"]
+		if userId, ok := id.(int64); ok {
+			us, err := s.GetUser(userId)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			user, err := json.Marshal(us)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+
+			w.Write(user)
+		} else {
+			WriteError(w, ErrInternalServerError)
+			return
+		}
+	} else {
+		// Set a new flash.
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+}
+
+func (s *Server) ServeChannel(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "GET" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+
+	if !session.IsNew {
+		// Use the flash values.
+
+		id := session.Values["user-id"]
+		if userId, ok := id.(int64); ok {
+			vars := mux.Vars(r)
+			channelName := vars["channel"]
+
+			channelID, err := s.GetChannelID(channelName)
+
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			if channelID == -1 {
+				WriteError(w, ErrChannelNotExist)
+				return
+			}
+
+			if ok, err := s.CheckUserInChannel(userId, channelID); err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			} else if !ok {
+				// Set a new flash.
+				WriteError(w, ErrUserNotInChannel)
+				return
+			}
+
+			ch, err := s.GetChannel(channelID, userId)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			cha, err := json.Marshal(ch)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			w.Write(cha)
+		} else {
+			WriteError(w, ErrInternalServerError)
+			return
+		}
+	} else {
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+}
+
+func (s *Server) ServeUserInfo(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "GET" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if !session.IsNew {
+		// Use the flash values.
+
+		id := session.Values["user-id"]
+		if userId, ok := id.(int64); ok {
+			us, err := s.GetUser(userId)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			user, err := json.Marshal(us)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			w.Write(user)
+		} else {
+			WriteError(w, ErrInternalServerError)
+			return
+		}
+	} else {
+		// Set a new flash.
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+}
+
+
+func (s *Server) Close() {
+	s.dataBase.Close()
 }

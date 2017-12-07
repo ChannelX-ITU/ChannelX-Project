@@ -27,9 +27,10 @@ var (
 	ErrInternalServerError = ChannelError{"Err_Internal_Server_Error", "Something went really wrong ", http.StatusInternalServerError}
 	ErrWrongMethod = ChannelError{"Err_Wrong_Method", "This endpoint excepts a different http method", http.StatusMethodNotAllowed}
 	ErrAccountNotActivated = ChannelError{"Err_Account_Not_Activated", "This account is not activated", http.StatusPreconditionFailed}
-	ErrNotLoggedIn = ChannelError{"Err_Not_Logged_In", "This action requires login", http.StatusPreconditionFailed}
+	ErrNotLoggedIn = ChannelError{"Err_Not_Logged_In", "This action requires login", http.StatusForbidden}
 	ErrChannelExist = ChannelError{"Err_Channel_Exists", "A channel already exists with that name", http.StatusPreconditionFailed}
 	ErrUserInChannel = ChannelError{"Err_User_In_Channel", "User is already a participant in that channel", http.StatusBadRequest}
+	ErrCommIsTaken = ChannelError{"Err_Comm_Is_Taken", "This communication method is already registered", http.StatusBadRequest}
 )
 
 func WriteSuccess(w http.ResponseWriter, message string) {

@@ -15,32 +15,6 @@ func (s *Server) GetUser(userID int64) (u User, err error) {
 	u.Channels = make([]string, 0)
 	u.Communications = make([]Communication, 0)
 
-	/*
-	defer rows.Close()
-
-	for rows.Next() {
-
-		// Scan the value to []byte
-		err = rows.Scan(&u.Username, &channelName, &u.Preference.StartDate, &u.Preference.Duration, &com.Value, &com.Type)
-		fmt.Println(u.Username)
-
-		if err != nil {
-			fmt.Print(err.Error()) // Just for example purpose. You should use proper error handling instead of panic
-			continue
-		}
-
-		sort.Strings(u.Channels)
-
-		if sort.SearchStrings(u.Channels, channelName) >= len(u.Channels) {
-			u.Channels = append(u.Channels, channelName)
-		}
-
-		if !ComInSlice(u.Communications, com) {
-			u.Communications = append(u.Communications, com)
-		}
-	}
-	*/
-
 	u.Username, err = s.GetUsername(userID)
 	if err != nil {
 		return
@@ -82,5 +56,33 @@ func (s *Server) GetCommId(comm string, userID int64) (ID int64, err error) {
 		return -1, nil
 	}
 
+	return
+}
+
+func (s *Server) AddComm(comm string, commType string, userID int64) (err error) {
+	get, err := s.dataBase.Prepare("SELECT * FROM COMM WHERE val = ?")
+	if err != nil {
+		return
+	}
+
+	_, err = get.Query(comm)
+	if err != sql.ErrNoRows {
+		err = sql.ErrNoRows
+		return
+	}
+
+	get, err = s.dataBase.Prepare("INSERT INTO COMM (user_id, type_id, val) VALUES (?, ?, ?)")
+	if err != nil {
+		return
+	}
+
+	t, err := s.GetCommType(commType)
+	if err != nil {
+		return
+	}
+
+	_, err = get.Exec(userID, t, comm)
+
+	defer get.Close()
 	return
 }

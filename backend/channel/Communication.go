@@ -27,3 +27,19 @@ func (s *Server) GetCommunication(commID int64) (com []Communication, err error)
 
 	return
 }
+
+func (s *Server) GetCommType(commType string) (id uint64, err error) {
+	get, err := s.dataBase.Prepare("SELECT type_id FROM COMM_TYPE WHERE val = ?")
+	if err != nil {
+		return
+	}
+
+	err = get.QueryRow(commType).Scan(&id)
+	if err != nil {
+		return
+	}
+
+	defer get.Close()
+
+	return
+}

@@ -22,3 +22,8 @@ type AddChannel struct {
 	Comm		string	`json:"comm"`
 	Alias		string	`json:"alias,omitempty"`
 }
+
+type AddComm struct {
+	Comm		string	`json:"comm"`
+	CommType	string	`json:"comm_type"`
+}
