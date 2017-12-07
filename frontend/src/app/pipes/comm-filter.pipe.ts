@@ -11,7 +11,7 @@ export class CommFilterPipe implements PipeTransform {
 
   transform(value: Communication[], type: String): Communication[] {
       this.logger.log("Filtering", value, "with", type);
-    return value.filter( val => val.type === type);
+    return value.filter( val => val.comm_type === type);
   }
 
 }

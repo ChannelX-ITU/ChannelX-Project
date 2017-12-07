@@ -1,4 +1,4 @@
 export class Communication {
-    type: string;
+    comm_type: string;
     value: string;
 }
