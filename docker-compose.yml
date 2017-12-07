@@ -10,7 +10,7 @@ services:
      - "3306:3306"
     volumes:
      - ./db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
-     - ./db/mysql:/var/lib/mysql
+     - alpine_mysql:/var/lib/mysql
   backend:
     build: .
     depends_on: 
@@ -29,3 +29,4 @@ services:
     entrypoint: startup.sh
 volumes:
   alpine_node_modules:
+  alpine_mysql:
