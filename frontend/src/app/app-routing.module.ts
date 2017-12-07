@@ -25,7 +25,7 @@ const routes: Routes = [
   },
   { path: 'about', component: AboutComponent },
   { path: 'home', component: HomeComponent,
-      canActivate: [  ],
+      canActivate: [ AuthGuard ],
       children: [
           { path: "", redirectTo: "channels", pathMatch: "full" },
           { path: "channels", component: ChannelsComponent },
