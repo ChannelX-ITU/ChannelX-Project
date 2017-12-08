@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
 
@@ -32,7 +32,11 @@ import { EditChannelComponent } from './channel/edit-channel/edit-channel.compon
 import { IndexerPipe } from './pipes/indexer.pipe';
 import { IntervalComponent } from './interval/interval.component';
 import { CommFilterPipe } from './pipes/comm-filter.pipe';
-import { RouteChildBinderService } from './services/route-child-binder.service'
+import { RouteChildBinderService } from './services/route-child-binder.service';
+import { FloorPipe } from './pipes/floor.pipe';
+import { CeilPipe } from './pipes/ceil.pipe'
+
+import { ErrorNotifyInterceptor } from './interceptors/error-notify.interceptor'
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -57,7 +61,9 @@ if (environment.production){
     EditChannelComponent,
     IndexerPipe,
     IntervalComponent,
-    CommFilterPipe
+    CommFilterPipe,
+    FloorPipe,
+    CeilPipe
   ],
   imports: [
     BrowserModule,
@@ -71,7 +77,11 @@ if (environment.production){
     StoreModule.forRoot({ user: userAuth }),
     SimpleNotificationsModule.forRoot()
   ],
-  providers: [ AuthGuard, RouteChildBinderService ],
+  providers: [ AuthGuard, RouteChildBinderService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ErrorNotifyInterceptor,
+    multi: true,
+  } ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
