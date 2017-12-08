@@ -319,3 +319,46 @@ func (s *Server) CheckUserInChannel(userID int64, channelID int64) (ok bool, err
 
 	return true, err
 }
+
+func (s *Server) GetAllCommInChannel(channelID int64) (comms []Communication, err error) {
+	comms = make([]Communication, 0)
+	get, err := s.dataBase.Prepare("SELECT C.val, CT.val FROM CHANNEL_USER AS CU, COMM AS C, COMM_TYPE AS CT WHERE CU.channel_id = ? AND CU.comm_id = C.comm_id AND C.type_id = CT.type_id")
+	if err != nil {
+		return
+	}
+
+	defer get.Close()
+
+	rows, err := get.Query(channelID)
+	if err != nil || rows == nil {
+		return
+	}
+
+	for rows.Next() {
+		i := Communication{}
+		err = rows.Scan(&i.Value, &i.Type)
+		if err != nil {
+			return
+		}
+
+		comms = append(comms, i)
+	}
+
+	err = nil
+	return
+}
+
+func (s *Server) GetOwnerCommInChannel(channelID int64) (comm Communication, err error) {
+	get, err := s.dataBase.Prepare("SELECT C.val, CT.val FROM CHANNEL_USER AS CU, COMM AS C, COMM_TYPE AS CT WHERE CU.channel_id = ? AND CU.comm_id = C.comm_id AND C.type_id = CT.type_id AND CU.is_owner")
+	if err != nil {
+		return
+	}
+	defer get.Close()
+
+	err = get.QueryRow(channelID).Scan(&comm.Value, &comm.Type)
+	return
+}
+
+func (s *Server) CheckTimeForSend(channelID int64) (ok bool, err error) {
+	return true, nil
+}

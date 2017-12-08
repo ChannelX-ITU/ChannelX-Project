@@ -31,3 +31,9 @@ type AddComm struct {
 type DeleteComm struct {
 	Comm		string	`json:"comm"`
 }
+
+type SendMessage struct {
+	Channel		int64	`json:"channel"`
+	Subject		string	`json:"subject"`
+	Message		string	`json:"message"`
+}

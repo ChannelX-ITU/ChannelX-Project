@@ -11,6 +11,7 @@ import (
 	"github.com/satori/go.uuid"
 	"encoding/json"
 	"github.com/gorilla/sessions"
+	"unicode"
 )
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
 
@@ -644,8 +645,6 @@ func (s *Server) ServeUserInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !session.IsNew {
-		// Use the flash values.
-
 		id := session.Values["user-id"]
 		if userId, ok := id.(int64); ok {
 			us, err := s.GetUser(userId)
@@ -667,6 +666,80 @@ func (s *Server) ServeUserInfo(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// Set a new flash.
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+}
+
+
+func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+
+	if !session.IsNew {id := session.Values["user-id"]
+		if userId, ok := id.(int64); ok {
+			decoder := json.NewDecoder(r.Body)
+			var t SendMessage
+			err := decoder.Decode(&t)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+			defer r.Body.Close()
+			if ok, err := s.CheckUserInChannel(userId, t.Channel); ok {
+				if ok, err := s.GetIsUserOwner(userId, t.Channel); ok {
+					comm, err := s.GetAllCommInChannel(t.Channel)
+					if err != nil {
+						WriteError(w, ErrInternalServerError)
+						return
+					}
+
+					for _, val := range comm {
+						s.SendMessage(t, val)
+					}
+
+					WriteSuccess(w, "Message is sent to channel")
+				} else if err != nil {
+					WriteError(w, ErrInternalServerError)
+					return
+				} else {
+					if ok, err := s.CheckTimeForSend(t.Channel); ok {
+						comm, err := s.GetOwnerCommInChannel(t.Channel)
+						if err != nil {
+							WriteError(w, ErrInternalServerError)
+							return
+						}
+
+						s.SendMessage(t, comm)
+						WriteSuccess(w, "Message is sent to the owner")
+					} else if err != nil {
+						WriteError(w, ErrInternalServerError)
+						return
+					} else {
+						WriteError(w, ErrNotInInterval)
+						return
+					}
+				}
+			} else if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			} else {
+				WriteError(w, ErrUserNotInChannel)
+				return
+			}
+		} else {
+			WriteError(w, ErrInternalServerError)
+			return
+		}
+	} else {
 		WriteError(w, ErrNotLoggedIn)
 		return
 	}

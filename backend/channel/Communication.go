@@ -43,3 +43,13 @@ func (s *Server) GetCommType(commType string) (id uint64, err error) {
 
 	return
 }
+
+func (s *Server) SendMessage(mes SendMessage, comm Communication) {
+	switch comm.Type {
+	case "SMS":
+		return
+
+	case "EMAIL":
+		s.mailMan.Send(Message{To:comm.Value, Sub:mes.Subject, Msg:mes.Message})
+	}
+}

@@ -18,6 +18,7 @@ type ChannelError struct {
 }
 
 var (
+	ErrNotInInterval = ChannelError{"Err_Not_In_Interval", "Message can not be send because of the restriction on time interval", http.StatusPreconditionFailed}
 	ErrInvalidLoginCredentials = ChannelError{"Err_Invalid_Login_Credentials", "Username or password is incorrect", http.StatusBadRequest}
 	ErrUsernameTaken = ChannelError{"Err_Username_Taken", "This username is already taken", http.StatusBadRequest}
 	ErrEmailTaken = ChannelError{"Err_Email_Taken", "This email is already taken", http.StatusBadRequest}
