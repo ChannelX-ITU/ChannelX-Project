@@ -11,7 +11,6 @@ import (
 	"github.com/satori/go.uuid"
 	"encoding/json"
 	"github.com/gorilla/sessions"
-	"unicode"
 )
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
 
