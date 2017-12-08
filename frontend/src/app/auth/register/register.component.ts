@@ -28,14 +28,11 @@ export class RegisterComponent implements OnInit {
             username: this.username,
             password: this.password,
             email: this.email
-        }, {responseType: "text"}).subscribe(
+        }).subscribe(
             resp => {
                 this.router.navigateByUrl("/login").then(_ =>{
-                    this.notifications.success("Register successful!", resp);
+                    this.notifications.success("Register successful!", resp["message"]);
                 });
-            },
-            err => {
-                this.notifications.error("Couldn't Register", err.error);
             }
         )
     }
