@@ -5,6 +5,8 @@ WORKDIR /app
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh musl-dev go
 
+RUN apk add --no-cache ca-certificates
+
 RUN mkdir -p /app/backend /app/frontend
 
 RUN mkdir -p /app/go 
