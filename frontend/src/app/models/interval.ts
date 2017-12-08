@@ -1,4 +1,3 @@
 export class Interval {
-    start: number;
-    duration: number;
+    constructor(public start: number = 0, public duration: number = 0) {}
 }

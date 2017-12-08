@@ -1,26 +1,17 @@
 <form>
-  <mat-form-field>
-    <mat-select #commType
-    name="CommType" name="CommType" placeholder="Choose Comm Type">
-    <mat-option *ngFor="let comm of ['EMAIL', 'SMS']" [value]="comm">
-      {{comm}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<div *ngIf="commType.value === 'EMAIL'">
-  <mat-form-field>
-    <mat-select placeholder="Choose E-mail">
-      <mat-option *ngFor="let email of comms | async | commFilter: 'EMAIL'" [value]="email.value">
-        {{email.value}}
+  <div class="row"> 
+    <mat-form-field>
+      <mat-select #commType
+      name="CommType" name="CommType" placeholder="Choose Communication Type">
+      <mat-option *ngFor="let comm of ['EMAIL', 'SMS']" [value]="comm">
+        {{comm}}
       </mat-option>
     </mat-select>
   </mat-form-field>
-</div>
-<div *ngIf="commType.value === 'SMS'">
   <mat-form-field>
-    <mat-select placeholder="Choose Phone">
-      <mat-option *ngFor="let phone of comms | async | commFilter: 'SMS'" [value]="phone.value">
-        {{phone.value}}
+    <mat-select placeholder="Choose Communication">
+      <mat-option *ngFor="let email of comms | async | commFilter: commType.value" [value]="email.value">
+        {{email.value}}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -34,8 +25,8 @@
   </button>
 </div>
 <br/>
-<span>Ya</span>
-<button mat-raised-button>SAVE</button>
-<span>Ya</span>
-<button mat-raised-button color="warn">LEAVE</button>
+<mat-card-actions>
+  <button mat-button (click)="save()">SAVE</button>
+  <button mat-button color="warn">LEAVE</button>
+</mat-card-actions>
 </form>

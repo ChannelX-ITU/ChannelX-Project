@@ -38,9 +38,17 @@ export class EditChannelComponent implements OnInit {
     this.comms = this.store
     .select("user")
     .pipe(map( 
-      (value) => value.user.communications
+      (value) => value.user ? value.user.communications : new Array<Communication>()
       )
     );
+  }
+
+  save() {
+    let intervals = this.intervals.map( value => value.toIntervals()).reduce((acc, value) => {
+      value.forEach( value => acc.push(value));
+      return acc;
+    }, []);
+    this.logger.log("Intervals: " , intervals);
   }
 
   convertIntervals(channel: Channel) {

@@ -17,5 +17,14 @@ button.fab {
     position: absolute;
     left: 0;
     bottom: 0;
-    margin: 16px;
+    margin: 8px;
+}
+
+div.row {
+    display: flex;
+    flex-direction: row;
+}
+
+mat-form-field {
+    margin: 0 5px 0 5px;
 }
