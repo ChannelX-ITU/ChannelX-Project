@@ -1,5 +1,11 @@
 package channel
 
+import (
+	"net/url"
+	"strings"
+	"net/http"
+)
+
 type Communication struct {
 	Type	string	`json:"comm_type"`
 	Value	string	`json:"value"`
@@ -47,9 +53,30 @@ func (s *Server) GetCommType(commType string) (id uint64, err error) {
 func (s *Server) SendMessage(mes SendMessage, comm Communication) {
 	switch comm.Type {
 	case "SMS":
+		SendSMS(mes, comm)
 		return
 
 	case "EMAIL":
 		s.mailMan.Send(Message{To:comm.Value, Sub:mes.Subject, Msg:mes.Message})
+		return
 	}
+}
+
+func SendSMS(mes SendMessage, comm Communication) {
+	accountSid := "AC5122131b79a439f9fe9d00b12e731c9f"
+	authToken := "e10f95591a3091b840e046137fa4f495"
+	from := "+12109636969"
+	to := comm.Value
+	urlStr := "https://api.twilio.com/2010-04-01/Accounts/AC5122131b79a439f9fe9d00b12e731c9f/Messages.json"
+	msgData := url.Values{}
+	msgData.Set("To",to)
+	msgData.Set("From",from)
+	msgData.Set("Body",mes.Subject + " - " + mes.Message)
+	msgDataReader := *strings.NewReader(msgData.Encode())
+	client := &http.Client{}
+	req, _ := http.NewRequest("POST", urlStr, &msgDataReader)
+	req.SetBasicAuth(accountSid, authToken)
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	client.Do(req)
 }
