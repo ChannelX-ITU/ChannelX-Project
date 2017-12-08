@@ -1,4 +1,7 @@
 export class Communication {
-    comm_type: string;
-    value: string;
+    constructor(
+        public comm_type: string = "EMAIL",
+        public value: string = ""
+        ) {}
+    
 }

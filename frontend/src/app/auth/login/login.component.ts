@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.client.post("/api/login", {
       username: this.username,
       password: this.password
-    }, {responseType: 'text'}).pipe(switchMap( data => {
+    }).pipe(switchMap( data => {
       this.logger.log("Got data @ map: ", data);
       return this.client.get<User>("/api/userinfo");
     })).subscribe(

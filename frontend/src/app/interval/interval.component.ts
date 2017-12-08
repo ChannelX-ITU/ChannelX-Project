@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 import { Interval } from '../models/interval'
+import { Logger } from '@nsalaun/ng-logger';
 
 @Component({
     selector: 'app-interval',
@@ -16,7 +17,7 @@ export class IntervalComponent implements OnInit {
     @Output()
     intervalsChange: EventEmitter<IntervalInterface[]> = new EventEmitter<IntervalInterface[]>();
 
-    constructor() { }
+    constructor(private logger: Logger) { }
 
     ngOnInit() {
     }
@@ -27,7 +28,6 @@ export class IntervalComponent implements OnInit {
         });
         this.intervalsChange.emit(this.intervals);
     }
-
 }
 
 
@@ -38,8 +38,20 @@ export class IntervalInterface {
 
     constructor(interval: Interval = null) {
         if (interval === null) return;
-        this.start = interval.start % 1440;
-        this.end = (interval.start + interval.duration) % 1440;
+        this.start = this.closestMultiple((interval.start % 1440), 15);
+        this.end = this.closestMultiple((interval.start + interval.duration) % 1440, 15);
         this.days.push(((interval.start / 1440) | 0) % 7); //js hack to convert float to int
+    }
+
+    closestMultiple(value: number, multiple: number) : number {
+        return ((value / multiple) | 0) * multiple;
+    }
+
+    toIntervals() : Interval[] {
+        return this.days.map((value) => {
+            let start = value * 1440 + this.start;
+            let duration = value * 1440 + this.end - start;
+            return new Interval(start, duration);
+        })
     }
 }
