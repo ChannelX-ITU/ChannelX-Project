@@ -11,7 +11,7 @@ import (
 	"github.com/satori/go.uuid"
 	"encoding/json"
 	"github.com/gorilla/sessions"
-)
+	)
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
 
 type Server struct {
@@ -43,12 +43,12 @@ func (s *Server) Run() {
 	fs := http.FileServer(http.Dir("static"))
 
 	router.HandleFunc("/", s.Receive)
-	router.HandleFunc("/api/signUp", s.SignUp)
+	router.HandleFunc("/api/signup", s.SignUp)
 	router.HandleFunc("/api/login", s.Login)
 	router.HandleFunc("/api/activate/{token}", s.ActivateToken)
-	router.HandleFunc("/api/channels/{channel}", s.ServeChannel)
 	router.HandleFunc("/api/channels/join", s.JoinChannelHandler)
 	router.HandleFunc("/api/channels/add", s.AddChannelHandler)
+	router.HandleFunc("/api/channels/{channel}", s.ServeChannel)
 	router.HandleFunc("/api/userinfo", s.ServeUserInfo)
 	router.HandleFunc("/api/logout", s.Logout)
 	router.HandleFunc("/api/channels", s.ServeChannels)
@@ -275,8 +275,6 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !session.IsNew {
-		// Use the flash values.
-
 		id := session.Values["user-id"]
 		if userId, ok := id.(int64); ok {
 			decoder := json.NewDecoder(r.Body)
@@ -410,7 +408,7 @@ func (s *Server) AddCommHandler (w http.ResponseWriter, r *http.Request) {
 			comm, commType := t.Comm, t.CommType
 
 			err = s.AddComm(comm, commType, userId)
-			if err == sql.ErrNoRows {
+			if err == sql.ErrTxDone {
 				WriteError(w, ErrCommIsTaken)
 				return
 			}

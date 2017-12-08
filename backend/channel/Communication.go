@@ -40,12 +40,12 @@ func (s *Server) GetCommType(commType string) (id uint64, err error) {
 		return
 	}
 
+	defer get.Close()
+
 	err = get.QueryRow(commType).Scan(&id)
 	if err != nil {
 		return
 	}
-
-	defer get.Close()
 
 	return
 }

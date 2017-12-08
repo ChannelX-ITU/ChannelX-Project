@@ -60,14 +60,16 @@ func (s *Server) GetCommId(comm string, userID int64) (ID int64, err error) {
 }
 
 func (s *Server) AddComm(comm string, commType string, userID int64) (err error) {
-	get, err := s.dataBase.Prepare("SELECT * FROM COMM WHERE val = ?")
+	get, err := s.dataBase.Prepare("SELECT val FROM COMM WHERE val = ?")
 	if err != nil {
 		return
 	}
 
-	_, err = get.Query(comm)
+	var st string
+
+	err = get.QueryRow(comm).Scan(&st)
 	if err != sql.ErrNoRows {
-		err = sql.ErrNoRows
+		err = sql.ErrTxDone
 		return
 	}
 
