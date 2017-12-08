@@ -31,7 +31,8 @@ import { BroadcastComponent } from './channel/broadcast/broadcast.component';
 import { EditChannelComponent } from './channel/edit-channel/edit-channel.component';
 import { IndexerPipe } from './pipes/indexer.pipe';
 import { IntervalComponent } from './interval/interval.component';
-import { CommFilterPipe } from './pipes/comm-filter.pipe'
+import { CommFilterPipe } from './pipes/comm-filter.pipe';
+import { RouteChildBinderService } from './services/route-child-binder.service'
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -70,7 +71,7 @@ if (environment.production){
     StoreModule.forRoot({ user: userAuth }),
     SimpleNotificationsModule.forRoot()
   ],
-  providers: [ AuthGuard ],
+  providers: [ AuthGuard, RouteChildBinderService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

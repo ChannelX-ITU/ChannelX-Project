@@ -33,10 +33,10 @@ const routes: Routes = [
           { path: "create", component: CreateChannelComponent }
       ]
   },
-  { path: 'channel', component: ChannelComponent,
-      canActivate: [  ],
+  { path: 'channel/:id', component: ChannelComponent,
+      canActivate: [ AuthGuard ],
       children: [
-        { path: "", redirectTo: "settings", pathMatch: "full" },
+        { path: "", redirectTo: "broadcast", pathMatch: "full" },
         { path: "settings", component: EditChannelComponent },
         { path: "broadcast", component: BroadcastComponent }
       ] 
