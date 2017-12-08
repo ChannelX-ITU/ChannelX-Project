@@ -6,6 +6,7 @@ import { Logger } from '@nsalaun/ng-logger'
 import { AppState } from '../state/app-state'
 import { User } from '../models/user';
 import { switchMap, map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class ToolbarComponent implements OnInit {
   user : Observable<User>
   logged_in : Observable<boolean>;
 
-  constructor(private store: Store<AppState>, private router: Router, private logger: Logger) { }
+  constructor(private store: Store<AppState>, private router: Router, private logger: Logger, private client: HttpClient) { }
 
   ngOnInit() {
       this.store.select('user').subscribe( data => {
@@ -32,8 +33,10 @@ export class ToolbarComponent implements OnInit {
   }
 
   logout() {
+    this.client.get("/api/logout").subscribe( success => {
       this.store.dispatch({ type: "LOGOUT" })
       this.router.navigateByUrl("/login")
+    })
   }
 
 }
