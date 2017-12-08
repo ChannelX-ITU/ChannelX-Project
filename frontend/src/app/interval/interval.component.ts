@@ -32,7 +32,14 @@ export class IntervalComponent implements OnInit {
 
 
 export class IntervalInterface {
-    days: number[];
-    start: number;
-    end: number;
+    days: number[] = [];
+    start: number = 0;
+    end: number = 0;
+
+    constructor(interval: Interval = null) {
+        if (interval === null) return;
+        this.start = interval.start % 1440;
+        this.end = (interval.start + interval.duration) % 1440;
+        this.days.push(((interval.start / 1440) | 0) % 7); //js hack to convert float to int
+    }
 }

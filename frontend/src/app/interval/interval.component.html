@@ -13,8 +13,8 @@
     <br/>
     <mat-form-field>
       <mat-select placeholder="Choose Active Hour Begin" ([value])="interval.end">
-        <mat-option *ngFor="let hour of 24 | indexer" [value]="hour">
-          {{hour}}:00
+        <mat-option *ngFor="let hour of 1440 | indexer" [value]="hour">
+          {{(hour / 60) | number:'2.0-0'}}:{{hour % 60}}
         </mat-option>
       </mat-select>
     </mat-form-field>

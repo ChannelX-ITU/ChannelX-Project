@@ -1,31 +1,32 @@
 <form>
   <mat-form-field>
-    <mat-select [(ngModel)]="selectedNav" (change)="setNav(selectedNav)"
+    <mat-select #commType
     name="CommType" name="CommType" placeholder="Choose Comm Type">
-    <mat-option *ngFor="let commType of commTypes" [value]="commType.view">
-      {{commType.view}}
+    <mat-option *ngFor="let comm of ['EMAIL', 'SMS']" [value]="comm">
+      {{comm}}
     </mat-option>
   </mat-select>
 </mat-form-field>
-<div *ngIf="regTypeSelectedOption === 'email'">
+<div *ngIf="commType.value === 'EMAIL'">
   <mat-form-field>
     <mat-select placeholder="Choose E-mail">
-      <mat-option *ngFor="let email of emails" [value]="email.view">
-        {{email.name}} - {{email.view}}
+      <mat-option *ngFor="let email of comms | async | commFilter: 'EMAIL'" [value]="email.value">
+        {{email.value}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 </div>
-<div *ngIf="regTypeSelectedOption === 'sms'">
+<div *ngIf="commType.value === 'SMS'">
   <mat-form-field>
     <mat-select placeholder="Choose Phone">
-      <mat-option *ngFor="let phone of phones" [value]="phone.view">
-        {{phone.name}} - {{phone.view}}
+      <mat-option *ngFor="let phone of comms | async | commFilter: 'SMS'" [value]="phone.value">
+        {{phone.value}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 </div>
 <br/>
+<!-- <span>{{channel.name | async}}</span> -->
 <div class="intervals">
   <app-interval class="intervals" [(intervals)]="intervals"></app-interval>
   <button mat-mini-fab class="fab" (click)="createNew()">
