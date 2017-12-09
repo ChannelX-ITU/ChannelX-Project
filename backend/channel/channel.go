@@ -418,6 +418,11 @@ func (s *Server) DeleteUserFromChannel( channelID int64, userID int64, isOwner b
 			}
 		}
 
+		_, err = s.dataBase.Exec("DELETE FROM CHANNEL WHERE channel_id=?", channelID)//every channel users are deleted
+		if err != nil {
+			return err
+		}
+
 		return nil
 	}else {
 		err = s.dataBase.QueryRow("SELECT alias_id FROM CHANNEL_USER WHERE channel_id=? AND user_id=?", channelID, userID).Scan(&data)
