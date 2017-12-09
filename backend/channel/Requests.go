@@ -24,7 +24,7 @@ type AddChannel struct {
 }
 
 type AddComm struct {
-	Comm		string	`json:"comm"`
+	Comm		string	`json:"value"`
 	CommType	string	`json:"comm_type"`
 }
 
