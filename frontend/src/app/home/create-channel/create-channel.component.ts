@@ -1,4 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Communication } from '../../models/communication';
+import { AppState } from '../../state/app-state';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-create-channel',
@@ -8,14 +13,22 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 export class CreateChannelComponent implements OnInit {
 
 
+    intervals: Communication[] = [];
+
+    comms: Observable<Communication[]>;
     regTypeSelectedOption: string = "";
     selectedNav: any;
 
-    constructor() { }
+    constructor(private store: Store<AppState>) { }
 
     ngOnInit() {
         this.selectedNav = 'select value';
-
+        this.comms = this.store
+        .select("user")
+        .pipe(map( 
+          (value) => value.user.communications
+          )
+        );
     }
     
     setNav(nav:any){

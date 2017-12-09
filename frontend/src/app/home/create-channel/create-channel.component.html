@@ -9,31 +9,12 @@
   <mat-step label="Configure Communication Type" [stepControl]="commForm">
     <form>
       <mat-form-field>
-        <mat-select [(ngModel)]="selectedNav" (change)="setNav(selectedNav)"
-        name="CommType" name="CommType" placeholder="Choose Comm Type">
-        <mat-option *ngFor="let commType of commTypes" [value]="commType.view">
-          {{commType.view}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div *ngIf="regTypeSelectedOption === 'email'">
-      <mat-form-field>
-        <mat-select placeholder="Choose E-mail">
-          <mat-option *ngFor="let email of emails" [value]="email.view">
-            {{email.name}} - {{email.view}}
+        <mat-select placeholder="Choose Communication">
+          <mat-option *ngFor="let comm of comms | async" [value]="comm.value">
+            {{comm.value}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </div>
-    <div *ngIf="regTypeSelectedOption === 'sms'">
-      <mat-form-field>
-        <mat-select placeholder="Choose Phone">
-          <mat-option *ngFor="let phone of phones" [value]="phone.view">
-            {{phone.name}} - {{phone.view}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
   </form>
 </mat-step>
 <mat-step label="Configure Active Hours" [stepControl]="timeForm">
@@ -51,39 +32,12 @@
     </mat-form-field>
     <br/>
     <div>
-      <mat-card id="interval">
-        <mat-form-field>
-          <mat-select placeholder="Choose Active Days" multiple>
-            <mat-option *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; let i = index" [value]="index">
-              {{day}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <br/>
-        <mat-form-field>
-          <mat-select placeholder="Choose Active Hour Begin">
-            <mat-option *ngFor="let hour of 24 | indexer" [value]="hour">
-              {{hour}}:00
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <br/>
-        <mat-form-field>
-          <mat-select placeholder="Choose Active Hour Finish">
-            <mat-option *ngFor="let hour of 24 | indexer" [value]="hour">
-              {{hour}}:00
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button mat-mini-fab>+</button>
-      </mat-card>
+      <app-interval [(intervals)]="intervals"></app-interval>
     </div>
     <br/>
     <span matToolTip="ToolTip!">Load the preset while loading this page</span>
     <mat-card-actions>
-      <div>
-        <button mat-button>Submit</button>
-      </div>
+        <button mat-button>CREATE</button>
     </mat-card-actions>
   </form>
 </mat-step>

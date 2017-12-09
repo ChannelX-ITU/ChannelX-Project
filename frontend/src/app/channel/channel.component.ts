@@ -12,8 +12,7 @@ import { Logger } from '@nsalaun/ng-logger';
   selector: 'app-channel',
   templateUrl: './channel.component.html',
   styleUrls: ['./channel.component.scss'],
-  providers: [RouteChildBinderService],
-  encapsulation: ViewEncapsulation.None
+  providers: [RouteChildBinderService]
 })
 
 export class ChannelComponent implements OnInit {

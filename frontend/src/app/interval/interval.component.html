@@ -1,3 +1,5 @@
+
+<div class="intervals">
 <mat-card class="interval" *ngFor="let interval of intervals">
   <div class="content">
     <button mat-button class="close" (click)="close(interval)">
@@ -30,3 +32,7 @@
     </mat-form-field>
   </div>
 </mat-card>
+<button mat-mini-fab class="fab" (click)="createNew()">
+  <mat-icon>add</mat-icon>
+</button>
+</div>

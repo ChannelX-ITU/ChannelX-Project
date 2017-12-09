@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { Communication } from '../../models/communication'
 import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-user-preferences',
@@ -36,7 +37,8 @@ export class UserPreferencesComponent implements OnInit {
     this.client.post("/api/comm/add", {
       comm_type: this.addComm.comm_type,
       value: this.addComm.value
-    }).subscribe( value => {
+    }).toPromise().then(_ => this.client.get<User>("/api/userinfo").toPromise()).then( value => {
+      this.store.dispatch({type: "REFRESH", user: value})
       this.logger.log(value);
     },
     err => {

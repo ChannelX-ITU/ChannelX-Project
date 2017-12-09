@@ -1,29 +1,16 @@
 <form>
   <div class="row"> 
-    <mat-form-field>
-      <mat-select #commType
-      name="CommType" name="CommType" placeholder="Choose Communication Type">
-      <mat-option *ngFor="let comm of ['EMAIL', 'SMS']" [value]="comm">
-        {{comm}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
   <mat-form-field>
     <mat-select placeholder="Choose Communication">
-      <mat-option *ngFor="let email of comms | async | commFilter: commType.value" [value]="email.value">
-        {{email.value}}
+      <mat-option *ngFor="let comm of comms | async" [value]="comm.value">
+        {{comm.value}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 </div>
 <br/>
 <!-- <span>{{channel.name | async}}</span> -->
-<div class="intervals">
-  <app-interval class="intervals" [(intervals)]="intervals"></app-interval>
-  <button mat-mini-fab class="fab" (click)="createNew()">
-    <mat-icon>add</mat-icon>
-  </button>
-</div>
+<app-interval [(intervals)]="intervals"></app-interval>
 <br/>
 <mat-card-actions>
   <button mat-button (click)="save()">SAVE</button>

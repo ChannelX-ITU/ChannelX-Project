@@ -15,8 +15,7 @@ import { RouteChildBinderService } from '../../services/route-child-binder.servi
 @Component({
   selector: 'app-edit-channel',
   templateUrl: './edit-channel.component.html',
-  styleUrls: ['./edit-channel.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./edit-channel.component.scss']
 })
 export class EditChannelComponent implements OnInit {
 
@@ -24,6 +23,8 @@ export class EditChannelComponent implements OnInit {
 
   comms: Observable<Communication[]>;
   intervals: IntervalInterface[] = [];
+
+  currentChannel: Channel;
 
   constructor(
     private logger: Logger, 
@@ -38,7 +39,7 @@ export class EditChannelComponent implements OnInit {
     this.comms = this.store
     .select("user")
     .pipe(map( 
-      (value) => value.user ? value.user.communications : new Array<Communication>()
+      (value) => value.user ? value.user.communications.sort((a,b) => (a.comm_type > b.comm_type) ? 1 : -1) : new Array<Communication>()
       )
     );
   }

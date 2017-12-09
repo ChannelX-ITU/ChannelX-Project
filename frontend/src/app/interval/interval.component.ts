@@ -5,8 +5,7 @@ import { Logger } from '@nsalaun/ng-logger';
 @Component({
     selector: 'app-interval',
     templateUrl: './interval.component.html',
-    styleUrls: ['./interval.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['./interval.component.scss']
 })
 
 export class IntervalComponent implements OnInit {
@@ -27,6 +26,12 @@ export class IntervalComponent implements OnInit {
             return value != interval;
         });
         this.intervalsChange.emit(this.intervals);
+    }
+
+    createNew()
+    {
+      this.intervals.push(new IntervalInterface())
+      this.logger.log(this.intervals);
     }
 }
 
