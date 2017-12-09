@@ -33,7 +33,8 @@ var (
 	ErrUserInChannel = ChannelError{"Err_User_In_Channel", "User is already a participant in that channel", http.StatusBadRequest}
 	ErrCommIsTaken = ChannelError{"Err_Comm_Is_Taken", "This communication method is already taken", http.StatusBadRequest}
 	ErrNoCommOfUser = ChannelError{"Err_Not_Comm_Of_User", "This communication method is not registered for the user", http.StatusBadRequest}
-)
+	ErrCommInUse = ChannelError{"Err_Comm_In_Use", "This communication method is assigned to a channel", http.StatusBadRequest}
+	)
 
 func WriteSuccess(w http.ResponseWriter, message string) {
 	s, _ := json.Marshal(ChannelResponse{Status:"Success", Message:message, Error:nil})

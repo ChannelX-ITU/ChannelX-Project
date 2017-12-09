@@ -11,7 +11,7 @@ import (
 	"github.com/satori/go.uuid"
 	"encoding/json"
 	"github.com/gorilla/sessions"
-	)
+)
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
 
 type Server struct {
@@ -463,6 +463,11 @@ func (s *Server) DeleteCommHandler (w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			if err == sql.ErrTxDone {
+				WriteError(w, ErrCommInUse)
+				return
+			}
+
 			if err != nil {
 				WriteError(w, ErrInternalServerError)
 				return
@@ -668,7 +673,6 @@ func (s *Server) ServeUserInfo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-
 
 func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {

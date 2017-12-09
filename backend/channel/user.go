@@ -98,9 +98,16 @@ func (s *Server) DeleteComm(comm string, userID int64) (err error) {
 	defer del.Close()
 
 	res, err := del.Exec(comm, userID)
-	if n, _ := res.RowsAffected(); n == 0 {
-		return sql.ErrNoRows
+	if err != nil {
+		return sql.ErrTxDone
 	}
+
+	if res != nil {
+		if n, _ := res.RowsAffected(); n == 0 {
+			return sql.ErrNoRows
+		}
+	}
+
 
 	return
 }
