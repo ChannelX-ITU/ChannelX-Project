@@ -2,6 +2,8 @@ $content-padding: 24px 24px 0 24px;
 
 .padded-content {
     padding: $content-padding;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -22,4 +24,8 @@ div.mat-tab-links > a.mat-tab-link {
         box-shadow:none;
         border-color:transparent;
     }
+}
+
+span.channel-name {
+    margin-bottom: 24px;
 }

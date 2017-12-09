@@ -25,7 +25,7 @@ export class ChannelComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute, 
+    private activatedRoute: ActivatedRoute,
     private client: HttpClient,
     private notifications: NotificationsService,
     private childBinder: RouteChildBinderService<ChannelResponse, boolean>,
@@ -47,6 +47,6 @@ export class ChannelComponent implements OnInit {
 
   }
 
-  
+
 
 }

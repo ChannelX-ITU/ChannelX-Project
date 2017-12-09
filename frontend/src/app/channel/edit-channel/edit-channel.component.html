@@ -13,6 +13,6 @@
 <br/>
 <mat-card-actions>
   <button mat-button (click)="save()">SAVE</button>
-  <button mat-button color="warn" *ngIf="channel | async">{{(channel | async).is_owner ? 'DELETE' : 'LEAVE'}}</button>
+  <button mat-button color="warn" *ngIf="channel | async" (click)="destroy()">{{(channel | async).is_owner ? 'DELETE' : 'LEAVE'}}</button>
 </mat-card-actions>
 </div>
