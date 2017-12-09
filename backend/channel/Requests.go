@@ -44,7 +44,6 @@ type LeaveChannel struct {
 
 type ChannelWrapper struct {
 	Channel Channel 	`json:"channel"`
-	Comm		string	`json:"value"`
-	CommType	string 	`json:"comm_type"`
+	Comm	Communication	`json:"comm"`
 	Alias 		string 	`json:"alias"`
 }

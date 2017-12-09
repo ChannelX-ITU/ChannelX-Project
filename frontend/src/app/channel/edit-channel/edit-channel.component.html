@@ -1,7 +1,7 @@
-<form>
+<div *ngIf="currentChannel">
   <div class="row"> 
   <mat-form-field>
-    <mat-select placeholder="Choose Communication">
+    <mat-select placeholder="Choose Communication" [(ngModel)]="currentChannel.comm.value">
       <mat-option *ngFor="let comm of comms | async" [value]="comm.value">
         {{comm.value}}
       </mat-option>
@@ -9,11 +9,10 @@
   </mat-form-field>
 </div>
 <br/>
-<!-- <span>{{channel.name | async}}</span> -->
-<app-preferences *ngIf="currentChannel" [(preference)]="currentChannel.preference"></app-preferences>
+<app-preferences  [(preference)]="currentChannel.channel.preference" [readOnly]="!currentChannel.channel.is_owner"></app-preferences>
 <br/>
 <mat-card-actions>
   <button mat-button (click)="save()">SAVE</button>
   <button mat-button color="warn" *ngIf="channel | async">{{(channel | async).is_owner ? 'DELETE' : 'LEAVE'}}</button>
 </mat-card-actions>
-</form>
+</div>

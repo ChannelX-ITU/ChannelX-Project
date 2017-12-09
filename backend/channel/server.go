@@ -636,7 +636,7 @@ func (s *Server) ServeChannel(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			cha, err := json.Marshal(ChannelWrapper{Channel:ch, Comm:co, Alias:al, CommType:ct})
+			cha, err := json.Marshal(ChannelWrapper{Channel:ch, Comm:Communication{Type: ct, Value:co}, Alias:al})
 			if err != nil {
 				WriteError(w, ErrInternalServerError)
 				return

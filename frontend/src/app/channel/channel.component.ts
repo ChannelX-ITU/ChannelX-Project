@@ -1,6 +1,6 @@
 import {ViewChild, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Channel } from '../models/channel';
+import { ChannelResponse } from '../models/channel';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { NotificationsService } from 'angular2-notifications'
@@ -28,14 +28,14 @@ export class ChannelComponent implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private client: HttpClient,
     private notifications: NotificationsService,
-    private childBinder: RouteChildBinderService<Channel, boolean>,
+    private childBinder: RouteChildBinderService<ChannelResponse, boolean>,
     private logger: Logger) { }
 
   ngOnInit() {
     this.channelId = this.activatedRoute.snapshot.params["id"];
     this.logger.log("id:", this.channelId)
     
-    this.client.get<Channel>("/api/channels/" + this.channelId).subscribe(value => {
+    this.client.get<ChannelResponse>("/api/channels/" + this.channelId).subscribe(value => {
       this.childBinder.notifyChild(value);
       this.logger.log("channel comp: ", value);
     }, error => {
