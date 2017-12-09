@@ -1,44 +1,32 @@
-<mat-horizontal-stepper [linear]="true">
-  <mat-step label="Name Your Channel" [stepControl]="nameForm">
-    <form>
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step label="Name Your Channel" [stepControl]="nameGroup">
+    <form [formGroup]="nameGroup" class="step-container">
       <mat-form-field>
-        <input matInput placeholder="Channel Name" id="channel_name" type="text" name="channelName" required>
+        <input formControlName="channelName" matInput placeholder="Channel Name" id="channel_name" type="text" name="channelName" required [(ngModel)]="channel.name">
       </mat-form-field>
     </form>
   </mat-step>
-  <mat-step label="Configure Communication Type" [stepControl]="commForm">
-    <form>
+  <mat-step label="Configure Communication Type" [stepControl]="commGroup">
+    <form [formGroup]="commGroup" class="step-container">
       <mat-form-field>
-        <mat-select placeholder="Choose Communication">
+        <mat-select formControlName="commValue" placeholder="Choose Communication" [(ngModel)]="channel.comm" required>
           <mat-option *ngFor="let comm of comms | async" [value]="comm.value">
             {{comm.value}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-  </form>
-</mat-step>
-<mat-step label="Configure Active Hours" [stepControl]="timeForm">
-  <form>
-    <br/>
-    <mat-form-field>
-      <input matTooltip="Tooltip!" matInput [matDatepicker]="startPicker" placeholder="Choose a Starting Date">
-      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-      <mat-datepicker touchUi="true" #startPicker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput [matDatepicker]="endPicker" placeholder="Choose a Closure Date">
-      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-      <mat-datepicker touchUi="true" #endPicker></mat-datepicker>
-    </mat-form-field>
-    <br/>
-    <div>
-      <!-- <app-interval [(intervals)]="intervals"></app-interval> -->
-    </div>
-    <br/>
-    <span matToolTip="ToolTip!">Load the preset while loading this page</span>
-    <mat-card-actions>
-        <button mat-button>CREATE</button>
-    </mat-card-actions>
-  </form>
-</mat-step>
+    </form>
+  </mat-step>
+  <mat-step label="Configure Active Hours" [stepControl]="timeForm">
+    <form>
+      <div>
+        <app-preferences [(preference)]="channel.preference"></app-preferences>
+      </div>
+    </form>
+  </mat-step>
 </mat-horizontal-stepper>
+<mat-card-actions>
+      <button mat-button (click)="proceed()">
+      {{(stepper.selectedIndex < 2) ? 'NEXT' : 'CREATE'}}
+    </button>
+</mat-card-actions>

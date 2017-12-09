@@ -27,7 +27,7 @@ export class UserPreferencesComponent implements OnInit {
   ngOnInit() {
     this.store
     .select("user")
-    .subscribe(val => this.user = val.user);
+    .subscribe(val => {this.user = val.user; console.log(val.user)});
   }
 
   removeCommunication(c: Communication) {
@@ -42,6 +42,10 @@ export class UserPreferencesComponent implements OnInit {
     this.addComm.add(this.client).subscribe( user => {
       this.store.dispatch({type: "REFRESH", user: user})
     })
+  }
+
+  save() {
+    console.log(this.user);
   }
 
 }

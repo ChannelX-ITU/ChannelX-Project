@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SimpleNotificationsModule } from 'angular2-notifications';
@@ -75,6 +75,7 @@ if (environment.production){
     MaterialModulesModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     NgLoggerModule.forRoot(LOG_LEVEL),
     CookieModule.forRoot(),
     StoreModule.forRoot({ user: userAuth }),

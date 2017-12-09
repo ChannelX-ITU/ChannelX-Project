@@ -81,12 +81,12 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <!-- <app-interval [(intervals)]="user.preferences.intervals"></app-interval> -->
+        <app-preferences [(preference)]="user.preferences"></app-preferences>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
 <mat-card-actions style="margin-bottom: -8px; padding-left: 16px;">
-  <button mat-button (click)="console.log('save')">SAVE</button>
+  <button mat-button (click)="save()">SAVE</button>
 </mat-card-actions>
 
