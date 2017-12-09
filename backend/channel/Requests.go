@@ -37,3 +37,7 @@ type SendMessage struct {
 	Subject		string
 	Message		string	`json:"message"`
 }
+
+type LeaveChannel struct {
+	Channel		string	`json:"channel"`
+}

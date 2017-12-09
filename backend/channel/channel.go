@@ -362,3 +362,48 @@ func (s *Server) GetOwnerCommInChannel(channelID int64) (comm Communication, err
 func (s *Server) CheckTimeForSend(channelID int64) (ok bool, err error) {
 	return true, nil
 }
+
+func (s *Server) DeleteUserFromChannel( channelID int64, userID int64, isOwner bool) (err error) {
+	var data string
+
+	if isOwner {	//owner ise
+		err = s.dataBase.QueryRow("SELECT preference_id FROM PREFERENCE WHERE channel_id=?", channelID).Scan(&data)//pref data is needed for restriction and interval infos
+		if err != nil {
+			return
+		}
+		_, err = s.dataBase.Exec("DELETE FROM INTER WHERE preference_id=?", data)//interval is deleted
+		if err != nil {
+			return
+		}
+		_, err = s.dataBase.Exec("DELETE FROM RESTRICTION WHERE preference_id=?", data)//restrictions are deleted
+		if err != nil {
+			return
+		}
+
+		_, err = s.dataBase.Exec("DELETE FROM PREFERENCE WHERE preference_id=?", data)//preference is deleted
+		if err != nil {
+			return
+		}
+		_, err = s.dataBase.Exec("DELETE FROM ALIAS WHERE channel_id=?", channelID)//every single alias' for each user in channel are deleted
+		if err != nil {
+			return
+		}
+		_, err = s.dataBase.Exec("DELETE FROM CHANNEL_USER WHERE channel_id=?", channelID)//every channel users are deleted
+		if err != nil {
+			return
+		}
+		return nil
+	}else {
+		err = s.dataBase.QueryRow("SELECT alias_id FROM CHANNEL_USER WHERE channel_id=? AND user_id=?", channelID, userID).Scan(&data)
+		_, err = s.dataBase.Exec("DELETE FROM ALIAS WHERE alias_id=?", data)//alias is deleted
+		if err != nil {
+			return
+		}
+
+		_, err = s.dataBase.Exec("DELETE FROM CHANNEL_USER WHERE channel_id=? AND user_id=?", channelID, userID)//channel_user is deleted
+		if err != nil {
+			return
+		}
+	}
+	return nil
+}

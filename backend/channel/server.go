@@ -765,3 +765,73 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) Close() {
 	s.dataBase.Close()
 }
+
+func (s *Server) LeaveChannelHandler ( w http.ResponseWriter, r *http.Request) {
+	//check if method is POST
+	if r.Method != "POST" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	//check if user logged in
+	if !session.IsNew {
+		id := session.Values["user-id"]
+		// userId is being pulled from session
+		if userId, ok := id.(int64); ok {
+			decoder := json.NewDecoder(r.Body)
+			var t LeaveChannel
+			err := decoder.Decode(&t)
+			// whether json object is parsed truely
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+			defer r.Body.Close()
+
+			channelID, _ := s.GetChannelID(t.Channel)
+			//if channelID could not be token
+			if channelID == -1 {
+				WriteError(w, ErrChannelNotExist)
+				return
+			}
+
+			isOwner, err := s.GetIsUserOwner(channelID, userId)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+			}
+
+			if ok, err := s.CheckUserInChannel(userId, channelID); err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			} else if ok {
+				// Set a new flash.
+				WriteError(w, ErrUserNotInChannel)
+				return
+			}
+
+			//leaving part
+			err = s.DeleteUserFromChannel(channelID, userId, isOwner)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+			if isOwner {
+				WriteSuccess(w, "Left channel successfully and channel is closed.")
+			} else {
+				WriteSuccess(w, "Left channel successfully.")
+			}
+
+		} else {
+			WriteError(w, ErrInternalServerError)
+			return
+		}
+	} else {
+		// Set a new flash.
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+}
