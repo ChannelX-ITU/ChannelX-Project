@@ -34,6 +34,6 @@ type DeleteComm struct {
 
 type SendMessage struct {
 	Channel		string	`json:"channel"`
-	Subject		string	`json:"subject"`
+	Subject		string
 	Message		string	`json:"message"`
 }

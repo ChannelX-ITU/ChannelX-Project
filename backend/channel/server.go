@@ -11,8 +11,7 @@ import (
 	"github.com/satori/go.uuid"
 	"encoding/json"
 	"github.com/gorilla/sessions"
-	"fmt"
-)
+	)
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
 
 type Server struct {
@@ -202,7 +201,7 @@ func (s *Server) SignUp(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		s.mailMan.Send(Message{email, "Activation", "To activate your account please click the link: http://localhost:6969/activate/" + u1.String()})
+		s.mailMan.Send(Message{email, "Activation", "To activate your account please click the link: http://localhost:6969/api/ctivate/" + u1.String()})
 		WriteSuccess(res, "Activation mail is sent to the user's mail")
 		return
 	case err != nil:
@@ -672,7 +671,7 @@ func (s *Server) ServeUserInfo(w http.ResponseWriter, r *http.Request) {
 
 
 func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
+	if r.Method != "POST" {
 		WriteError(w, ErrWrongMethod)
 		return
 	}
@@ -705,6 +704,8 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			t.Subject = "You have a message from channel " + t.Channel
+
 			if ok, err := s.CheckUserInChannel(userId, channelID); ok {
 				if ok, err := s.GetIsUserOwner(channelID, userId); ok {
 					comm, err := s.GetAllCommInChannel(channelID)
@@ -720,7 +721,6 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 					WriteSuccess(w, "Message is sent to channel")
 				} else if err != nil {
 					WriteError(w, ErrInternalServerError)
-					fmt.Println(err.Error())
 					return
 				} else {
 					if ok, err := s.CheckTimeForSend(channelID); ok {
