@@ -80,3 +80,19 @@ func SendSMS(mes SendMessage, comm Communication) {
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	client.Do(req)
 }
+
+func (s *Server) GetCommTypeName(commType string) (id string, err error) {
+	get, err := s.dataBase.Prepare("SELECT CT.val FROM COMM_TYPE AS CT, COMM AS C WHERE C.val = ? AND CT.type_id = C.type_id")
+	if err != nil {
+		return
+	}
+
+	defer get.Close()
+
+	err = get.QueryRow(commType).Scan(&id)
+	if err != nil {
+		return
+	}
+
+	return
+}

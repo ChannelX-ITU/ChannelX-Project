@@ -48,6 +48,7 @@ func (s *Server) Run() {
 	router.HandleFunc("/api/activate/{token}", s.ActivateToken)
 	router.HandleFunc("/api/channels/join", s.JoinChannelHandler)
 	router.HandleFunc("/api/channels/add", s.AddChannelHandler)
+	router.HandleFunc("/api/channels/leave", s.LeaveChannelHandler)
 	router.HandleFunc("/api/channels/{channel}", s.ServeChannel)
 	router.HandleFunc("/api/userinfo", s.ServeUserInfo)
 	router.HandleFunc("/api/logout", s.Logout)
@@ -592,13 +593,13 @@ func (s *Server) ServeChannel(w http.ResponseWriter, r *http.Request) {
 
 			channelID, err := s.GetChannelID(channelName)
 
-			if err != nil {
-				WriteError(w, ErrInternalServerError)
+			if channelID == -1 {
+				WriteError(w, ErrChannelNotExist)
 				return
 			}
 
-			if channelID == -1 {
-				WriteError(w, ErrChannelNotExist)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
@@ -617,7 +618,25 @@ func (s *Server) ServeChannel(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			cha, err := json.Marshal(ch)
+			al, err := s.GetAlias(userId, channelID)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			co, err := s.GetCommOfUserInChannel(channelID, userId)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			ct, err := s.GetCommTypeName(co)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			cha, err := json.Marshal(ChannelWrapper{Channel:ch, Comm:co, Alias:al, CommType:ct})
 			if err != nil {
 				WriteError(w, ErrInternalServerError)
 				return
@@ -785,32 +804,37 @@ func (s *Server) LeaveChannelHandler ( w http.ResponseWriter, r *http.Request) {
 			decoder := json.NewDecoder(r.Body)
 			var t LeaveChannel
 			err := decoder.Decode(&t)
-			// whether json object is parsed truely
+			// whether json object is parsed correctly
 			if err != nil {
 				WriteError(w, ErrInternalServerError)
 				return
 			}
 			defer r.Body.Close()
 
-			channelID, _ := s.GetChannelID(t.Channel)
+			channelID, err := s.GetChannelID(t.Channel)
 			//if channelID could not be token
 			if channelID == -1 {
 				WriteError(w, ErrChannelNotExist)
 				return
 			}
 
-			isOwner, err := s.GetIsUserOwner(channelID, userId)
 			if err != nil {
 				WriteError(w, ErrInternalServerError)
+				return
 			}
 
 			if ok, err := s.CheckUserInChannel(userId, channelID); err != nil {
 				WriteError(w, ErrInternalServerError)
 				return
-			} else if ok {
+			} else if !ok {
 				// Set a new flash.
 				WriteError(w, ErrUserNotInChannel)
 				return
+			}
+
+			isOwner, err := s.GetIsUserOwner(channelID, userId)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
 			}
 
 			//leaving part

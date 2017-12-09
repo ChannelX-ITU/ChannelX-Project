@@ -111,3 +111,13 @@ func (s *Server) DeleteComm(comm string, userID int64) (err error) {
 
 	return
 }
+
+func (s *Server) GetAlias(userID int64, channelID int64) (alias string, er error) {
+	get, err := s.dataBase.Prepare("SELECT A.val FROM CHANNEL_USER AS CU, ALIAS AS A WHERE CU.channel_id = ? AND CU.user_id = ? AND A.alias_id = CU.alias_id")
+	if err != nil {
+		return
+	}
+
+	err = get.QueryRow(channelID, userID).Scan(&alias)
+	return
+}

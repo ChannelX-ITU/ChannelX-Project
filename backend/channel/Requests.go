@@ -29,7 +29,7 @@ type AddComm struct {
 }
 
 type DeleteComm struct {
-	Comm		string	`json:"comm"`
+	Comm		string	`json:"value"`
 }
 
 type SendMessage struct {
@@ -40,4 +40,11 @@ type SendMessage struct {
 
 type LeaveChannel struct {
 	Channel		string	`json:"channel"`
+}
+
+type ChannelWrapper struct {
+	Channel Channel 	`json:"channel"`
+	Comm		string	`json:"value"`
+	CommType	string 	`json:"comm_type"`
+	Alias 		string 	`json:"alias"`
 }
