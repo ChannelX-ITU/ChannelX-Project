@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
 import { HttpClient } from '@angular/common/http'
 import { Logger } from '@nsalaun/ng-logger'
 import { User } from '../../models/user'
@@ -19,32 +19,40 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
 
+  redirectUrl: string = "/home";
+
   constructor(private client: HttpClient, 
     private logger: Logger, 
     private cookies: CookieService,
     private router: Router,
     private store: Store<UserState>,
-    private notifications: NotificationsService) { }
+    private notifications: NotificationsService,
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.cookies.put("test", "yiha");
+    this.activatedRoute.queryParams.subscribe(value => {
+      let redirect =  value["r"]
+      if (redirect) {
+        this.redirectUrl = redirect;
+      }
+    });
+    
+
   }
 
   login() {
-    this.cookies.get("test")
     this.client.post("/api/login", {
       username: this.username,
       password: this.password
-    }).pipe(switchMap( data => {
-      this.logger.log("Got data @ map: ", data);
-      return this.client.get<User>("/api/userinfo");
-    })).subscribe(
-      data => {
-        this.store.dispatch({ type: "LOGIN", user: data })
-        this.router.navigateByUrl("/home")
-      },
-      error => {
-      }
+    }).pipe(
+    switchMap( data => this.client.get<User>("/api/userinfo"))
+    ).subscribe(
+    data => {
+      this.store.dispatch({ type: "LOGIN", user: data })
+      this.router.navigateByUrl(this.redirectUrl)
+    },
+    error => {
+    }
     )
   }
 

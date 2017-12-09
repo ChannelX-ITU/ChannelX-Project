@@ -58,7 +58,7 @@ export class EditChannelComponent implements OnInit {
 
   destroy() {
     this.client.post("/api/channels/leave", {
-      channel: this.currentChannel.channel
+      channel: this.currentChannel.channel.name
     }).subscribe();
   }
 

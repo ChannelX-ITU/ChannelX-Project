@@ -37,12 +37,8 @@ export class ChannelComponent implements OnInit {
     
     this.client.get<ChannelResponse>("/api/channels/" + this.channelId).subscribe(value => {
       this.childBinder.notifyChild(value);
-      this.logger.log("channel comp: ", value);
     }, error => {
-      this.logger.log("channel err: ", error);
-      this.router.navigateByUrl("/home/channels").then(_ => {
-        this.notifications.error("Error", error.message)
-      })
+      this.router.navigateByUrl("/home/channels")
     })
 
   }

@@ -3,7 +3,7 @@ import { ChannelComponent } from '../channel.component';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger'
-import { Channel } from '../../models/channel';
+import { Channel, ChannelResponse } from '../../models/channel';
 import { RouteChildBinderService } from '../../services/route-child-binder.service';
 
 @Component({
@@ -16,26 +16,23 @@ export class BroadcastComponent implements OnInit {
   constructor(
       private client: HttpClient,
       private logger: Logger,
-      private childBinder: RouteChildBinderService<Channel, boolean>) { }
+      private childBinder: RouteChildBinderService<ChannelResponse, boolean>) { }
 
   message: string;
-  channelName: string;
   channel: Observable<Channel>;
-  currentChannel: Channel = null;
+  currentChannel: ChannelResponse = null;
 
   ngOnInit() {
-    this.childBinder.fromParent.subscribe(value => this.channelName = value.name)
-  }
-
-  SendMessage(){
-
-    this.channel = this.childBinder.fromParent;
     this.childBinder.fromParent.subscribe(value => {
       this.logger.log("child:", value);
       this.currentChannel = value;
     });
+  }
+
+  sendMessage(){
+
     this.client.post("/api/send", {
-      channel: this.currentChannel.name,
+      channel: this.currentChannel.channel.name,
       message: this.message
     }).subscribe(
 
