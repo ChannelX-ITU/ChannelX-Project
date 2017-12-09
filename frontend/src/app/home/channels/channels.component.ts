@@ -30,8 +30,11 @@ export class ChannelsComponent implements OnInit {
   displayedColumns = ['ChannelName', 'UserCount', 'CommType'];
   ownedDataSource = new MatTableDataSource<ChannelInterface>();
   subscribedDataSource = new MatTableDataSource<ChannelInterface>();
-
+  comms: Observable<Communication[]>;
   loaded = false;
+
+  channelName: string;
+  comm: string;
 
   constructor(private store: Store<AppState>, private client: HttpClient, private logger: Logger) { }
 
@@ -41,7 +44,23 @@ export class ChannelsComponent implements OnInit {
       this.subscribedDataSource.data = data.subbed;
       this.loaded = true;
       this.logger.log("Channels:", data);
-    })
+    });
+    this.comms = this.store
+    .select("user")
+    .pipe(map(
+      (value) => value.user.communications
+      )
+    );
+  }
+
+  joinChannel()
+  {
+    this.client.post("/api/channels/join", {
+      channel: this.channelName,
+      message: this.comm
+    }).subscribe(
+
+    );
   }
 
 }
