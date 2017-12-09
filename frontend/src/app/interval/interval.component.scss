@@ -30,7 +30,6 @@ button.close {
 div.intervals {
     position: relative;
     min-height: 300px;
-    padding-left: 64px;
 }
 
 button.fab {
@@ -38,4 +37,11 @@ button.fab {
     left: 0;
     bottom: 0;
     margin: 8px;
+}
+
+span.center-flex {
+        flex: 1;
+        align-self: center;
+        text-align: center;
+
 }

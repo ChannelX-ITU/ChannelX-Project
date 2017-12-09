@@ -1,15 +1,15 @@
 <mat-form-field>
-  <input matTooltip="Tooltip!" matInput [matDatepicker]="startPicker" placeholder="Choose a Start Date">
+  <input [min]="preferenceInterface.min" matInput [matDatepicker]="startPicker" placeholder="Choose a Start Date" [(ngModel)]="preferenceInterface.start" (dateChange)="dateChange($event)" (ngModelChange)="preferenceInterface.updateValue(newValue)" [disabled]="readOnly == true">
   <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-  <mat-datepicker touchUi="false" #startPicker></mat-datepicker>
+  <mat-datepicker #startPicker></mat-datepicker>
 </mat-form-field>
 <mat-form-field>
-  <input matInput [matDatepicker]="endPicker" placeholder="Choose an End Date">
+  <input matTooltip="If start date equals end date, there won't be any limit" matInput [min]="preferenceInterface.start" [matDatepicker]="endPicker" placeholder="Choose an End Date" [(ngModel)]="preferenceInterface.end" (dateChange)="dateChange($event)" (ngModelChange)="preferenceInterface.updateValue(newValue)" [disabled]="readOnly == true">
   <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-  <mat-datepicker touchUi="false" #endPicker></mat-datepicker>
+  <mat-datepicker #endPicker></mat-datepicker>
 </mat-form-field>
 <br/>
 <div>
-  <app-interval [(data)]="preference.intervals"></app-interval>
+  <app-interval [(data)]="preference.intervals" [readOnly]="readOnly"></app-interval>
 </div>
 <br/>

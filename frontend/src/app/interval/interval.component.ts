@@ -15,6 +15,9 @@ import { merge, filter } from 'rxjs/operators';
 export class IntervalComponent implements OnInit {
 
     @Input()
+    readOnly: boolean = false;
+
+    @Input()
     data: Interval[];
 
     @Output()
@@ -25,29 +28,14 @@ export class IntervalComponent implements OnInit {
     constructor(private logger: Logger) { }
 
     ngOnInit() {
-        let testData = new Array<IntervalInterface>(2).fill(new IntervalInterface());
-        testData.map( val => val.onChange.asObservable()).reduce((acc, value) => {
-            acc.pipe(merge(value));
-            return acc;
-        }).subscribe( val => {
-            console.log(val);
-        })
-        testData.forEach(val => val.updateValue(1));
         IntervalInterface.convertIntervals(this.intervals, this.data);
 
-        console.log("this.intervals=", this.intervals);
+        // console.log("this.intervals=", this.intervals);
         this.intervals.forEach( val => {
             val.onChange.asObservable().subscribe( _ => {
                 this.updateIntervals()
             })
         })
-        // this.intervalWatcher.pipe(merge());
-        // this.intervalWatcher.asObservable().pipe(filter( val => {
-        //     console.log("Filtering: ", val);
-        //     return val
-        // } )).subscribe( _ => {
-        //     this.updateIntervals();
-        // });
     }
 
     updateIntervals() {

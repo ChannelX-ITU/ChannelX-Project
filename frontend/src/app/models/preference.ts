@@ -1,7 +1,9 @@
 import { Interval } from './interval'
 
 export class Preference {
-    start_date: number;
-    duration: number;
-    intervals: Interval[];
+    constructor(
+        public start_date: number = Date.now(),
+        public duration: number = 0,
+        public intervals: Interval[] = [])
+    {}
 }

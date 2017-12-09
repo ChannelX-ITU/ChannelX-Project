@@ -1,5 +1,6 @@
 
-<div class="intervals">
+<div class="intervals" [style.padding-left]="readOnly ? '0px' : '64px'">
+  <span class="center-flex" *ngIf="intervals.length == 0">Channel is open 7/24</span>
 <mat-card class="interval" *ngFor="let interval of intervals">
   <div class="content">
     <button mat-button class="close" (click)="close(interval)">
@@ -32,7 +33,7 @@
     </mat-form-field>
   </div>
 </mat-card>
-<button mat-mini-fab class="fab" (click)="createNew()">
+<button mat-mini-fab class="fab" (click)="createNew()" *ngIf="!readOnly">
   <mat-icon>add</mat-icon>
 </button>
 </div>
