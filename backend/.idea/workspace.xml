@@ -11,11 +11,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="server.go" pinned="false" current-in-tab="false">
+      <file leaf-file-name="server.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/channel/server.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="466" column="42" lean-forward="false" selection-start-line="466" selection-start-column="30" selection-end-line="466" selection-end-column="42" />
+            <state relative-caret-position="1785">
+              <caret line="643" column="0" lean-forward="true" selection-start-line="643" selection-start-column="0" selection-end-line="643" selection-end-column="0" />
               <folding>
                 <element signature="e#17#261#0" expanded="true" />
                 <element signature="e#340#405#0" expanded="false" />
@@ -29,39 +29,19 @@
                 <element signature="n#!!block;n#JoinChannelHandler#0" expanded="false" />
                 <element signature="n#!!block;n#AddChannelHandler#0" expanded="false" />
                 <element signature="n#!!block;n#AddCommHandler#0" expanded="false" />
+                <element signature="n#!!block;n#DeleteCommHandler#0" expanded="false" />
                 <element signature="n#!!block;n#ServeChannels#0" expanded="false" />
                 <element signature="n#!!block;n#ServerUserChannels#0" expanded="false" />
-                <element signature="n#!!block;n#ServeChannel#0" expanded="false" />
                 <element signature="n#!!block;n#ServeUserInfo#0" expanded="false" />
                 <element signature="n#!!block;n#SendMessageHandler#0" expanded="false" />
                 <element signature="n#!!block;n#Close#0" expanded="false" />
-                <marker date="1512823344688" expanded="true" signature="2548:2601" ph="SELECT usern... USERS" />
-                <marker date="1512823344688" expanded="true" signature="3030:3113" ph="SELECT token... TOKENS" />
-                <marker date="1512823344688" expanded="true" signature="3070:3112" ph="SELECT user_... USERS" />
-                <marker date="1512823344688" expanded="true" signature="3257:3299" ph="SELECT user_... USERS" />
-                <marker date="1512823344688" expanded="true" signature="4088:4131" ph="SELECT usern... USERS" />
-                <marker date="1512823344688" expanded="true" signature="4251:4324" ph="SELECT C.val... COMM" />
-                <marker date="1512823344688" expanded="true" signature="4703:4753" ph="INSERT INTO USERS... " />
-                <marker date="1512823344688" expanded="true" signature="4886:5047" ph="INSERT INTO COMM... " />
-                <marker date="1512823344688" expanded="true" signature="4934:4985" ph="SELECT U.use... USERS" />
-                <marker date="1512823344688" expanded="true" signature="4989:5042" ph="SELECT ct.ty... COMM_TYPE" />
-                <marker date="1512823344688" expanded="true" signature="5157:5191" ph="DELETE FROM USERS... " />
-                <marker date="1512823344688" expanded="true" signature="5246:5354" ph="INSERT INTO PREFERENCE... " />
-                <marker date="1512823344688" expanded="true" signature="5448:5476" ph="DELETE FROM COMM... " />
-                <marker date="1512823344688" expanded="true" signature="5506:5540" ph="DELETE FROM USERS... " />
-                <marker date="1512823344688" expanded="true" signature="5617:5717" ph="INSERT INTO TOKENS... " />
-                <marker date="1512823344688" expanded="true" signature="5810:5901" ph="DELETE FROM PREFERENCE... " />
-                <marker date="1512823344688" expanded="true" signature="5848:5900" ph="SELECT U.use... USERS" />
-                <marker date="1512823344688" expanded="true" signature="5935:5963" ph="DELETE FROM COMM... " />
-                <marker date="1512823344688" expanded="true" signature="5993:6027" ph="DELETE FROM USERS... " />
-                <marker date="1512823344688" expanded="true" signature="6762:6802" ph="SELECT user_... TOKENS" />
-                <marker date="1512823344688" expanded="true" signature="6919:6951" ph="DELETE FROM TOKENS... " />
+                <element signature="n#!!block;n#LeaveChannelHandler#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="error.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="error.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/channel/error.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="555">
@@ -76,14 +56,16 @@
       <file leaf-file-name="user.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/channel/user.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="101" column="28" lean-forward="false" selection-start-line="101" selection-start-column="28" selection-end-line="101" selection-end-column="28" />
+            <state relative-caret-position="870">
+              <caret line="121" column="10" lean-forward="false" selection-start-line="121" selection-start-column="10" selection-end-line="121" selection-end-column="10" />
               <folding>
                 <element signature="e#17#43#0" expanded="true" />
-                <marker date="1512823253027" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
-                <marker date="1512823253027" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
-                <marker date="1512823253027" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
-                <marker date="1512823253027" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+                <marker date="1512836025243" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
+                <marker date="1512836025243" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
+                <marker date="1512836025243" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
+                <marker date="1512836025243" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+                <marker date="1512836025243" expanded="true" signature="2297:2369" ph="INSERT INTO COMM... " />
+                <marker date="1512836025243" expanded="true" signature="2297:2417" ph="SELECT A.val... CHANNEL_USER" />
               </folding>
             </state>
           </provider>
@@ -92,8 +74,8 @@
       <file leaf-file-name="Requests.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/channel/Requests.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="21" lean-forward="false" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
+            <state relative-caret-position="705">
+              <caret line="47" column="12" lean-forward="false" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -112,12 +94,15 @@
       <file leaf-file-name="Communication.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/channel/Communication.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="52" column="17" lean-forward="false" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
+            <state relative-caret-position="210">
+              <caret line="83" column="73" lean-forward="false" selection-start-line="83" selection-start-column="73" selection-end-line="83" selection-end-column="73" />
               <folding>
                 <element signature="e#82#153#0" expanded="false" />
                 <element signature="n#!!block;n#GetCommunication#0" expanded="false" />
+                <element signature="n#!!block;n#GetCommType#0" expanded="false" />
+                <element signature="n#!!block;n#SendMessage#0" expanded="false" />
                 <element signature="n#!!block;n#SendSMS#0" expanded="false" />
+                <element signature="n#!!block;n#GetCommTypeName#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -126,8 +111,8 @@
       <file leaf-file-name="channel.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/channel/channel.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="27" lean-forward="false" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
+            <state relative-caret-position="265">
+              <caret line="267" column="17" lean-forward="false" selection-start-line="267" selection-start-column="17" selection-end-line="267" selection-end-column="17" />
               <folding>
                 <element signature="e#17#43#0" expanded="true" />
                 <element signature="e#303#402#0" expanded="false" />
@@ -139,16 +124,33 @@
                 <element signature="n#!!block;n#AddChannel#0" expanded="false" />
                 <element signature="n#!!block;n#AddUserToChannel#0" expanded="false" />
                 <element signature="n#!!block;n#GetCommID#0" expanded="false" />
-                <element signature="n#!!block;n#GetChannel#0" expanded="false" />
                 <element signature="n#!!block;n#GetChannelName#0" expanded="false" />
                 <element signature="n#!!block;n#GetChannelUsers#0" expanded="false" />
                 <element signature="n#!!block;n#CheckUserInChannel#0" expanded="false" />
                 <element signature="n#!!block;n#GetAllCommInChannel#0" expanded="false" />
                 <element signature="n#!!block;n#GetOwnerCommInChannel#0" expanded="false" />
-                <element signature="n#!!block;n#CheckTimeForSend#0" expanded="false" />
-                <marker date="1512723116678" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
-                <marker date="1512723116678" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+                <marker date="1512834806553" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
+                <marker date="1512834806553" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+                <marker date="1512834806553" expanded="true" signature="7797:7852" ph="SELECT prefe... PREFERENCE" />
+                <marker date="1512834806553" expanded="true" signature="7994:8033" ph="DELETE FROM INTER... " />
+                <marker date="1512834806553" expanded="true" signature="8123:8168" ph="DELETE FROM RESTRICTION... " />
+                <marker date="1512834806553" expanded="true" signature="8264:8308" ph="DELETE FROM PREFERENCE... " />
+                <marker date="1512834806553" expanded="true" signature="8400:8436" ph="DELETE FROM ALIAS... " />
+                <marker date="1512834806553" expanded="true" signature="8568:8611" ph="DELETE FROM CHANNEL_USER... " />
+                <marker date="1512834806553" expanded="true" signature="8741:8807" ph="SELECT alias... CHANNEL_USER" />
+                <marker date="1512834806553" expanded="true" signature="8869:8903" ph="DELETE FROM ALIAS... " />
+                <marker date="1512834806553" expanded="true" signature="8991:9048" ph="DELETE FROM CHANNEL_USER... " />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Resource.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/channel/Resource.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -183,7 +185,6 @@
         <option value="$PROJECT_DIR$/service/service.go" />
         <option value="$PROJECT_DIR$/user/user.go" />
         <option value="$PROJECT_DIR$/channel/settings.go" />
-        <option value="$PROJECT_DIR$/channel/channel.go" />
         <option value="$PROJECT_DIR$/message/message.go" />
         <option value="$PROJECT_DIR$/channel/sender.go" />
         <option value="$PROJECT_DIR$/main.go" />
@@ -192,11 +193,12 @@
         <option value="$PROJECT_DIR$/static/templates/signup.html" />
         <option value="$PROJECT_DIR$/static/templates/login.html" />
         <option value="$PROJECT_DIR$/server/server.go" />
-        <option value="$PROJECT_DIR$/channel/Communication.go" />
-        <option value="$PROJECT_DIR$/channel/Requests.go" />
-        <option value="$PROJECT_DIR$/channel/user.go" />
-        <option value="$PROJECT_DIR$/channel/server.go" />
         <option value="$PROJECT_DIR$/channel/error.go" />
+        <option value="$PROJECT_DIR$/channel/channel.go" />
+        <option value="$PROJECT_DIR$/channel/user.go" />
+        <option value="$PROJECT_DIR$/channel/Requests.go" />
+        <option value="$PROJECT_DIR$/channel/Communication.go" />
+        <option value="$PROJECT_DIR$/channel/server.go" />
       </list>
     </option>
   </component>
@@ -298,10 +300,10 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -321,18 +323,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="4" />
+      <option name="time" value="10" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/channel/sender.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="1" lean-forward="true" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/channel/mailman.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
@@ -362,15 +357,22 @@
             <element signature="n#!!block;n#AddChannel#0" expanded="false" />
             <element signature="n#!!block;n#AddUserToChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetCommID#0" expanded="false" />
-            <element signature="n#!!block;n#GetChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetChannelName#0" expanded="false" />
             <element signature="n#!!block;n#GetChannelUsers#0" expanded="false" />
             <element signature="n#!!block;n#CheckUserInChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetAllCommInChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetOwnerCommInChannel#0" expanded="false" />
-            <element signature="n#!!block;n#CheckTimeForSend#0" expanded="false" />
-            <marker date="1512723116678" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
-            <marker date="1512723116678" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+            <marker date="1512834806553" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
+            <marker date="1512834806553" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+            <marker date="1512834806553" expanded="true" signature="7797:7852" ph="SELECT prefe... PREFERENCE" />
+            <marker date="1512834806553" expanded="true" signature="7994:8033" ph="DELETE FROM INTER... " />
+            <marker date="1512834806553" expanded="true" signature="8123:8168" ph="DELETE FROM RESTRICTION... " />
+            <marker date="1512834806553" expanded="true" signature="8264:8308" ph="DELETE FROM PREFERENCE... " />
+            <marker date="1512834806553" expanded="true" signature="8400:8436" ph="DELETE FROM ALIAS... " />
+            <marker date="1512834806553" expanded="true" signature="8568:8611" ph="DELETE FROM CHANNEL_USER... " />
+            <marker date="1512834806553" expanded="true" signature="8741:8807" ph="SELECT alias... CHANNEL_USER" />
+            <marker date="1512834806553" expanded="true" signature="8869:8903" ph="DELETE FROM ALIAS... " />
+            <marker date="1512834806553" expanded="true" signature="8991:9048" ph="DELETE FROM CHANNEL_USER... " />
           </folding>
         </state>
       </provider>
@@ -381,10 +383,12 @@
           <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding>
             <element signature="e#17#43#0" expanded="true" />
-            <marker date="1512823253027" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
-            <marker date="1512823253027" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
-            <marker date="1512823253027" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
-            <marker date="1512823253027" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+            <marker date="1512836025243" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
+            <marker date="1512836025243" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
+            <marker date="1512836025243" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
+            <marker date="1512836025243" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+            <marker date="1512836025243" expanded="true" signature="2297:2369" ph="INSERT INTO COMM... " />
+            <marker date="1512836025243" expanded="true" signature="2297:2417" ph="SELECT A.val... CHANNEL_USER" />
           </folding>
         </state>
       </provider>
@@ -483,10 +487,12 @@
           <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding>
             <element signature="e#17#43#0" expanded="true" />
-            <marker date="1512823253027" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
-            <marker date="1512823253027" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
-            <marker date="1512823253027" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
-            <marker date="1512823253027" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+            <marker date="1512836025243" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
+            <marker date="1512836025243" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
+            <marker date="1512836025243" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
+            <marker date="1512836025243" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+            <marker date="1512836025243" expanded="true" signature="2297:2369" ph="INSERT INTO COMM... " />
+            <marker date="1512836025243" expanded="true" signature="2297:2417" ph="SELECT A.val... CHANNEL_USER" />
           </folding>
         </state>
       </provider>
@@ -506,15 +512,22 @@
             <element signature="n#!!block;n#AddChannel#0" expanded="false" />
             <element signature="n#!!block;n#AddUserToChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetCommID#0" expanded="false" />
-            <element signature="n#!!block;n#GetChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetChannelName#0" expanded="false" />
             <element signature="n#!!block;n#GetChannelUsers#0" expanded="false" />
             <element signature="n#!!block;n#CheckUserInChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetAllCommInChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetOwnerCommInChannel#0" expanded="false" />
-            <element signature="n#!!block;n#CheckTimeForSend#0" expanded="false" />
-            <marker date="1512723116678" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
-            <marker date="1512723116678" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+            <marker date="1512834806553" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
+            <marker date="1512834806553" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+            <marker date="1512834806553" expanded="true" signature="7797:7852" ph="SELECT prefe... PREFERENCE" />
+            <marker date="1512834806553" expanded="true" signature="7994:8033" ph="DELETE FROM INTER... " />
+            <marker date="1512834806553" expanded="true" signature="8123:8168" ph="DELETE FROM RESTRICTION... " />
+            <marker date="1512834806553" expanded="true" signature="8264:8308" ph="DELETE FROM PREFERENCE... " />
+            <marker date="1512834806553" expanded="true" signature="8400:8436" ph="DELETE FROM ALIAS... " />
+            <marker date="1512834806553" expanded="true" signature="8568:8611" ph="DELETE FROM CHANNEL_USER... " />
+            <marker date="1512834806553" expanded="true" signature="8741:8807" ph="SELECT alias... CHANNEL_USER" />
+            <marker date="1512834806553" expanded="true" signature="8869:8903" ph="DELETE FROM ALIAS... " />
+            <marker date="1512834806553" expanded="true" signature="8991:9048" ph="DELETE FROM CHANNEL_USER... " />
           </folding>
         </state>
       </provider>
@@ -556,15 +569,22 @@
             <element signature="n#!!block;n#AddChannel#0" expanded="false" />
             <element signature="n#!!block;n#AddUserToChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetCommID#0" expanded="false" />
-            <element signature="n#!!block;n#GetChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetChannelName#0" expanded="false" />
             <element signature="n#!!block;n#GetChannelUsers#0" expanded="false" />
             <element signature="n#!!block;n#CheckUserInChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetAllCommInChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetOwnerCommInChannel#0" expanded="false" />
-            <element signature="n#!!block;n#CheckTimeForSend#0" expanded="false" />
-            <marker date="1512723116678" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
-            <marker date="1512723116678" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+            <marker date="1512834806553" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
+            <marker date="1512834806553" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+            <marker date="1512834806553" expanded="true" signature="7797:7852" ph="SELECT prefe... PREFERENCE" />
+            <marker date="1512834806553" expanded="true" signature="7994:8033" ph="DELETE FROM INTER... " />
+            <marker date="1512834806553" expanded="true" signature="8123:8168" ph="DELETE FROM RESTRICTION... " />
+            <marker date="1512834806553" expanded="true" signature="8264:8308" ph="DELETE FROM PREFERENCE... " />
+            <marker date="1512834806553" expanded="true" signature="8400:8436" ph="DELETE FROM ALIAS... " />
+            <marker date="1512834806553" expanded="true" signature="8568:8611" ph="DELETE FROM CHANNEL_USER... " />
+            <marker date="1512834806553" expanded="true" signature="8741:8807" ph="SELECT alias... CHANNEL_USER" />
+            <marker date="1512834806553" expanded="true" signature="8869:8903" ph="DELETE FROM ALIAS... " />
+            <marker date="1512834806553" expanded="true" signature="8991:9048" ph="DELETE FROM CHANNEL_USER... " />
           </folding>
         </state>
       </provider>
@@ -575,10 +595,12 @@
           <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding>
             <element signature="e#17#43#0" expanded="true" />
-            <marker date="1512823253027" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
-            <marker date="1512823253027" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
-            <marker date="1512823253027" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
-            <marker date="1512823253027" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+            <marker date="1512836025243" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
+            <marker date="1512836025243" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
+            <marker date="1512836025243" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
+            <marker date="1512836025243" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+            <marker date="1512836025243" expanded="true" signature="2297:2369" ph="INSERT INTO COMM... " />
+            <marker date="1512836025243" expanded="true" signature="2297:2417" ph="SELECT A.val... CHANNEL_USER" />
           </folding>
         </state>
       </provider>
@@ -678,6 +700,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/channel/error.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="37" column="0" lean-forward="true" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+          <folding>
+            <element signature="e#17#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/channel/Resource.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/channel/Restriction.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -686,30 +726,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/channel/Communication.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="52" column="17" lean-forward="false" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
-          <folding>
-            <element signature="e#82#153#0" expanded="false" />
-            <element signature="n#!!block;n#GetCommunication#0" expanded="false" />
-            <element signature="n#!!block;n#SendSMS#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/channel/Requests.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="21" lean-forward="false" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/channel/channel.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="27" lean-forward="false" selection-start-line="10" selection-start-column="27" selection-end-line="10" selection-end-column="27" />
+        <state relative-caret-position="265">
+          <caret line="267" column="17" lean-forward="false" selection-start-line="267" selection-start-column="17" selection-end-line="267" selection-end-column="17" />
           <folding>
             <element signature="e#17#43#0" expanded="true" />
             <element signature="e#303#402#0" expanded="false" />
@@ -721,37 +741,69 @@
             <element signature="n#!!block;n#AddChannel#0" expanded="false" />
             <element signature="n#!!block;n#AddUserToChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetCommID#0" expanded="false" />
-            <element signature="n#!!block;n#GetChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetChannelName#0" expanded="false" />
             <element signature="n#!!block;n#GetChannelUsers#0" expanded="false" />
             <element signature="n#!!block;n#CheckUserInChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetAllCommInChannel#0" expanded="false" />
             <element signature="n#!!block;n#GetOwnerCommInChannel#0" expanded="false" />
-            <element signature="n#!!block;n#CheckTimeForSend#0" expanded="false" />
-            <marker date="1512723116678" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
-            <marker date="1512723116678" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+            <marker date="1512834806553" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
+            <marker date="1512834806553" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+            <marker date="1512834806553" expanded="true" signature="7797:7852" ph="SELECT prefe... PREFERENCE" />
+            <marker date="1512834806553" expanded="true" signature="7994:8033" ph="DELETE FROM INTER... " />
+            <marker date="1512834806553" expanded="true" signature="8123:8168" ph="DELETE FROM RESTRICTION... " />
+            <marker date="1512834806553" expanded="true" signature="8264:8308" ph="DELETE FROM PREFERENCE... " />
+            <marker date="1512834806553" expanded="true" signature="8400:8436" ph="DELETE FROM ALIAS... " />
+            <marker date="1512834806553" expanded="true" signature="8568:8611" ph="DELETE FROM CHANNEL_USER... " />
+            <marker date="1512834806553" expanded="true" signature="8741:8807" ph="SELECT alias... CHANNEL_USER" />
+            <marker date="1512834806553" expanded="true" signature="8869:8903" ph="DELETE FROM ALIAS... " />
+            <marker date="1512834806553" expanded="true" signature="8991:9048" ph="DELETE FROM CHANNEL_USER... " />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/channel/user.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="101" column="28" lean-forward="false" selection-start-line="101" selection-start-column="28" selection-end-line="101" selection-end-column="28" />
+        <state relative-caret-position="870">
+          <caret line="121" column="10" lean-forward="false" selection-start-line="121" selection-start-column="10" selection-end-line="121" selection-end-column="10" />
           <folding>
             <element signature="e#17#43#0" expanded="true" />
-            <marker date="1512823253027" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
-            <marker date="1512823253027" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
-            <marker date="1512823253027" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
-            <marker date="1512823253027" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+            <marker date="1512836025243" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
+            <marker date="1512836025243" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
+            <marker date="1512836025243" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
+            <marker date="1512836025243" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+            <marker date="1512836025243" expanded="true" signature="2297:2369" ph="INSERT INTO COMM... " />
+            <marker date="1512836025243" expanded="true" signature="2297:2417" ph="SELECT A.val... CHANNEL_USER" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/channel/Requests.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="705">
+          <caret line="47" column="12" lean-forward="false" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/channel/Communication.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="83" column="73" lean-forward="false" selection-start-line="83" selection-start-column="73" selection-end-line="83" selection-end-column="73" />
+          <folding>
+            <element signature="e#82#153#0" expanded="false" />
+            <element signature="n#!!block;n#GetCommunication#0" expanded="false" />
+            <element signature="n#!!block;n#GetCommType#0" expanded="false" />
+            <element signature="n#!!block;n#SendMessage#0" expanded="false" />
+            <element signature="n#!!block;n#SendSMS#0" expanded="false" />
+            <element signature="n#!!block;n#GetCommTypeName#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/channel/server.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="466" column="42" lean-forward="false" selection-start-line="466" selection-start-column="30" selection-end-line="466" selection-end-column="42" />
+        <state relative-caret-position="1785">
+          <caret line="643" column="0" lean-forward="true" selection-start-line="643" selection-start-column="0" selection-end-line="643" selection-end-column="0" />
           <folding>
             <element signature="e#17#261#0" expanded="true" />
             <element signature="e#340#405#0" expanded="false" />
@@ -765,43 +817,13 @@
             <element signature="n#!!block;n#JoinChannelHandler#0" expanded="false" />
             <element signature="n#!!block;n#AddChannelHandler#0" expanded="false" />
             <element signature="n#!!block;n#AddCommHandler#0" expanded="false" />
+            <element signature="n#!!block;n#DeleteCommHandler#0" expanded="false" />
             <element signature="n#!!block;n#ServeChannels#0" expanded="false" />
             <element signature="n#!!block;n#ServerUserChannels#0" expanded="false" />
-            <element signature="n#!!block;n#ServeChannel#0" expanded="false" />
             <element signature="n#!!block;n#ServeUserInfo#0" expanded="false" />
             <element signature="n#!!block;n#SendMessageHandler#0" expanded="false" />
             <element signature="n#!!block;n#Close#0" expanded="false" />
-            <marker date="1512823344688" expanded="true" signature="2548:2601" ph="SELECT usern... USERS" />
-            <marker date="1512823344688" expanded="true" signature="3030:3113" ph="SELECT token... TOKENS" />
-            <marker date="1512823344688" expanded="true" signature="3070:3112" ph="SELECT user_... USERS" />
-            <marker date="1512823344688" expanded="true" signature="3257:3299" ph="SELECT user_... USERS" />
-            <marker date="1512823344688" expanded="true" signature="4088:4131" ph="SELECT usern... USERS" />
-            <marker date="1512823344688" expanded="true" signature="4251:4324" ph="SELECT C.val... COMM" />
-            <marker date="1512823344688" expanded="true" signature="4703:4753" ph="INSERT INTO USERS... " />
-            <marker date="1512823344688" expanded="true" signature="4886:5047" ph="INSERT INTO COMM... " />
-            <marker date="1512823344688" expanded="true" signature="4934:4985" ph="SELECT U.use... USERS" />
-            <marker date="1512823344688" expanded="true" signature="4989:5042" ph="SELECT ct.ty... COMM_TYPE" />
-            <marker date="1512823344688" expanded="true" signature="5157:5191" ph="DELETE FROM USERS... " />
-            <marker date="1512823344688" expanded="true" signature="5246:5354" ph="INSERT INTO PREFERENCE... " />
-            <marker date="1512823344688" expanded="true" signature="5448:5476" ph="DELETE FROM COMM... " />
-            <marker date="1512823344688" expanded="true" signature="5506:5540" ph="DELETE FROM USERS... " />
-            <marker date="1512823344688" expanded="true" signature="5617:5717" ph="INSERT INTO TOKENS... " />
-            <marker date="1512823344688" expanded="true" signature="5810:5901" ph="DELETE FROM PREFERENCE... " />
-            <marker date="1512823344688" expanded="true" signature="5848:5900" ph="SELECT U.use... USERS" />
-            <marker date="1512823344688" expanded="true" signature="5935:5963" ph="DELETE FROM COMM... " />
-            <marker date="1512823344688" expanded="true" signature="5993:6027" ph="DELETE FROM USERS... " />
-            <marker date="1512823344688" expanded="true" signature="6762:6802" ph="SELECT user_... TOKENS" />
-            <marker date="1512823344688" expanded="true" signature="6919:6951" ph="DELETE FROM TOKENS... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/channel/error.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="37" column="0" lean-forward="true" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding>
-            <element signature="e#17#56#0" expanded="true" />
+            <element signature="n#!!block;n#LeaveChannelHandler#0" expanded="false" />
           </folding>
         </state>
       </provider>
