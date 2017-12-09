@@ -25,7 +25,7 @@ export class ChannelComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute, 
+    private activatedRoute: ActivatedRoute,
     private client: HttpClient,
     private notifications: NotificationsService,
     private childBinder: RouteChildBinderService<Channel, boolean>,
@@ -34,7 +34,7 @@ export class ChannelComponent implements OnInit {
   ngOnInit() {
     this.channelId = this.activatedRoute.snapshot.params["id"];
     this.logger.log("id:", this.channelId)
-    
+
     this.client.get<Channel>("/api/channels/" + this.channelId).subscribe(value => {
       this.childBinder.notifyChild(value);
       this.logger.log("channel comp: ", value);
@@ -47,6 +47,6 @@ export class ChannelComponent implements OnInit {
 
   }
 
-  
+
 
 }

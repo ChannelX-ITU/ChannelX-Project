@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChannelComponent } from '../channel.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-broadcast',
@@ -7,9 +9,24 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class BroadcastComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+      private client: HttpClient) { }
+
+  message: string;
+  channelName: string;
 
   ngOnInit() {
+  }
+
+  SendMessage(){
+    
+    this.channelName = document.getElementById('channelName').innerHTML;
+    this.client.post("/api/send", {
+      channel: this.channelName,
+      message: this.message
+    }).subscribe(
+
+    );
   }
 
 }
