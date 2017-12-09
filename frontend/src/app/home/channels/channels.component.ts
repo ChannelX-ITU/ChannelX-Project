@@ -27,10 +27,18 @@ interface ChannelInterface {
 })
 export class ChannelsComponent implements OnInit {
 
+
   displayedColumns = ['ChannelName', 'UserCount', 'CommType'];
   ownedDataSource = new MatTableDataSource<ChannelInterface>();
   subscribedDataSource = new MatTableDataSource<ChannelInterface>();
   comms: Observable<Communication[]>;
+  channels: UserChannels;
+
+  accordions = [
+    { source: this.ownedDataSource , title: "Owned Channels"},
+    { source: this.subscribedDataSource, title: "Subscribed Channels"}
+  ]
+  
   loaded = false;
 
   channelName: string;
@@ -40,15 +48,16 @@ export class ChannelsComponent implements OnInit {
 
   ngOnInit() {
     this.client.get<UserChannels>("/api/channels").subscribe( data => {
-      this.ownedDataSource.data = data.owned;
-      this.subscribedDataSource.data = data.subbed;
       this.loaded = true;
       this.logger.log("Channels:", data);
+      this.channels = data;
+      this.ownedDataSource.data = this.channels.owned;
+      this.subscribedDataSource.data = this.channels.subbed;
     });
     this.comms = this.store
     .select("user")
     .pipe(map(
-      (value) => value.user.communications
+      (value) => value.user ? value.user.communications : []
       )
     );
   }
@@ -57,24 +66,10 @@ export class ChannelsComponent implements OnInit {
   {
     this.client.post("/api/channels/join", {
       channel: this.channelName,
-      message: this.comm
+      comm: this.comm
     }).subscribe(
 
     );
   }
 
 }
-
-export interface Element {
-  ChannelName: string;
-  UserCount: number;
-  CommType: string;
-  IsActive: number;
-}
-
-const ELEMENT_DATA: Element[] = [
-{ChannelName: 'BluePanda', UserCount: 10, CommType: 'Email', IsActive: 1},
-{ChannelName: 'RedIguana', UserCount: 12, CommType: 'Email', IsActive: 1},
-{ChannelName: 'GreyChipmunk', UserCount: 23, CommType: 'Email', IsActive: 1},
-{ChannelName: 'FlyingWhale', UserCount: 2, CommType: 'SMS', IsActive: 1}
-];
