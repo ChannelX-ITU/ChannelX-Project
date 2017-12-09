@@ -10,10 +10,10 @@
 </div>
 <br/>
 <!-- <span>{{channel.name | async}}</span> -->
-<app-interval [(intervals)]="intervals"></app-interval>
+<app-preferences *ngIf="currentChannel" [(preference)]="currentChannel.preference"></app-preferences>
 <br/>
 <mat-card-actions>
   <button mat-button (click)="save()">SAVE</button>
-  <button mat-button color="warn">LEAVE</button>
+  <button mat-button color="warn" *ngIf="channel | async">{{(channel | async).is_owner ? 'DELETE' : 'LEAVE'}}</button>
 </mat-card-actions>
 </form>

@@ -1,0 +1,15 @@
+<mat-form-field>
+  <input matTooltip="Tooltip!" matInput [matDatepicker]="startPicker" placeholder="Choose a Start Date">
+  <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+  <mat-datepicker touchUi="false" #startPicker></mat-datepicker>
+</mat-form-field>
+<mat-form-field>
+  <input matInput [matDatepicker]="endPicker" placeholder="Choose an End Date">
+  <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+  <mat-datepicker touchUi="false" #endPicker></mat-datepicker>
+</mat-form-field>
+<br/>
+<div>
+  <app-interval [(data)]="preference.intervals"></app-interval>
+</div>
+<br/>

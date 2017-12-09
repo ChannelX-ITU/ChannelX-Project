@@ -17,7 +17,7 @@ export class UserPreferencesComponent implements OnInit {
 
   addComm: Communication = new Communication();
 
-  comms: Observable<Communication[]>;
+  user: User = new User();
 
   constructor(
     private store: Store<AppState>,
@@ -25,24 +25,22 @@ export class UserPreferencesComponent implements OnInit {
     private logger: Logger) { }
 
   ngOnInit() {
-    this.comms = this.store
+    this.store
     .select("user")
-    .pipe(map( 
-      (value) => value.user.communications
-      )
-    );
+    .subscribe(val => this.user = val.user);
+  }
+
+  removeCommunication(c: Communication) {
+    let comm = new Communication(c.comm_type, c.value)
+
+    comm.remove(this.client).subscribe( user => {
+      this.store.dispatch({type: "REFRESH", user: user})
+    })
   }
 
   addCommunication() {
-    this.client.post("/api/comm/add", {
-      comm_type: this.addComm.comm_type,
-      value: this.addComm.value
-    }).toPromise().then(_ => this.client.get<User>("/api/userinfo").toPromise()).then( value => {
-      this.store.dispatch({type: "REFRESH", user: value})
-      this.logger.log(value);
-    },
-    err => {
-      this.logger.log(err);
+    this.addComm.add(this.client).subscribe( user => {
+      this.store.dispatch({type: "REFRESH", user: user})
     })
   }
 

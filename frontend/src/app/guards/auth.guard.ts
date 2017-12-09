@@ -25,7 +25,6 @@ export class AuthGuard implements CanActivate {
         state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
         let sessionToken = this.cookies.get("bist-sissin-ivir");
-        this.logger.log("token: ", sessionToken);
 
         if (sessionToken != "") {
             return this.client.get<User>("/api/userinfo").pipe(onErrorResumeNext(of(null))).map((value) => {

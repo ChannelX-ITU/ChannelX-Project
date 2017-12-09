@@ -31,7 +31,6 @@ export class RegisterComponent implements OnInit {
         }).subscribe(
             resp => {
                 this.router.navigateByUrl("/login").then(_ =>{
-                    this.notifications.success("Register successful!", resp["message"]);
                 });
             }
         )

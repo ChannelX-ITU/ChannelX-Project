@@ -6,7 +6,7 @@
       <mat-icon>close</mat-icon>
     </button>
     <mat-form-field>
-      <mat-select placeholder="Choose Active Days" multiple [(ngModel)]="interval.days">
+      <mat-select placeholder="Choose Active Days" multiple [(ngModel)]="interval.days" (ngModelChange)="interval.updateValue(newValue)">
         <mat-option *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; let i = index" [value]="i">
           {{day}}
         </mat-option>
@@ -14,7 +14,7 @@
     </mat-form-field>
     <br/>
     <mat-form-field>
-      <mat-select placeholder="Choose Active Hour Begin" [(ngModel)]="interval.start">
+      <mat-select placeholder="Choose Active Hour Begin" [(ngModel)]="interval.start" (ngModelChange)="interval.updateValue(newValue)">
         <mat-option *ngFor="let hour of 96 | indexer" [value]="hour*15">
           {{(hour / 4) | floor | number:'2.0-0'}}:{{((hour * 15) % 60) | number: '2.0-0'}}
         </mat-option>
@@ -22,7 +22,7 @@
     </mat-form-field>
     <br/>
     <mat-form-field>
-      <mat-select placeholder="Choose Active Hour Finish" [(ngModel)]="interval.end">
+      <mat-select placeholder="Choose Active Hour Finish" [(ngModel)]="interval.end" (ngModelChange)="interval.updateValue(newValue)">
         <ng-container *ngFor="let hour of 96 | indexer">
           <mat-option  *ngIf="hour*15 >= interval.start" [value]="hour*15">
             {{(hour / 4) | floor | number:'2.0-0'}}:{{((hour * 15) % 60) | number: '2.0-0'}}
