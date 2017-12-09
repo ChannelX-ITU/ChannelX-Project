@@ -14,8 +14,13 @@
       <file leaf-file-name="server.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/channel/server.go">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="1785">
               <caret line="643" column="0" lean-forward="true" selection-start-line="643" selection-start-column="0" selection-end-line="643" selection-end-column="0" />
+=======
+            <state relative-caret-position="372">
+              <caret line="49" column="63" lean-forward="true" selection-start-line="49" selection-start-column="63" selection-end-line="49" selection-end-column="63" />
+>>>>>>> Stashed changes
               <folding>
                 <element signature="e#17#261#0" expanded="true" />
                 <element signature="e#340#405#0" expanded="false" />
@@ -41,6 +46,7 @@
           </provider>
         </entry>
       </file>
+<<<<<<< Updated upstream
       <file leaf-file-name="error.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/channel/error.go">
           <provider selected="true" editor-type-id="text-editor">
@@ -160,7 +166,62 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="30">
               <caret line="2" column="5" lean-forward="false" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
+=======
+      <file leaf-file-name="Requests.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/channel/Requests.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="1" lean-forward="true" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+>>>>>>> Stashed changes
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="channel.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/channel/channel.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+              <folding>
+                <element signature="e#17#43#0" expanded="true" />
+                <element signature="e#303#402#0" expanded="false" />
+                <element signature="e#422#506#0" expanded="false" />
+                <element signature="n#!!block;n#GetChannelInfo#0" expanded="false" />
+                <element signature="n#!!block;n#GetChannelInfos#0" expanded="false" />
+                <element signature="n#!!block;n#GetCommOfUserInChannel#0" expanded="false" />
+                <element signature="n#!!block;n#GetChannels#0" expanded="false" />
+                <element signature="n#!!block;n#AddChannel#0" expanded="false" />
+                <element signature="n#!!block;n#AddUserToChannel#0" expanded="false" />
+                <element signature="n#!!block;n#GetCommID#0" expanded="false" />
+                <element signature="n#!!block;n#GetChannelName#0" expanded="false" />
+                <element signature="n#!!block;n#GetChannelUsers#0" expanded="false" />
+                <element signature="n#!!block;n#CheckUserInChannel#0" expanded="false" />
+                <element signature="n#!!block;n#GetAllCommInChannel#0" expanded="false" />
+                <element signature="n#!!block;n#GetOwnerCommInChannel#0" expanded="false" />
+                <marker date="1512834806553" expanded="true" signature="1162:1255" ph="SELECT DISTI... CHANNEL_USER" />
+                <marker date="1512834806553" expanded="true" signature="1946:2072" ph="SELECT DISTI... CHANNEL_USER" />
+                <marker date="1512834806553" expanded="true" signature="2313:2439" ph="SELECT DISTI... USERS" />
+                <marker date="1512834806553" expanded="true" signature="2797:2832" ph="INSERT INTO CHANNEL... " />
+                <marker date="1512834806553" expanded="true" signature="3509:3561" ph="INSERT INTO ALIAS... " />
+                <marker date="1512834806553" expanded="true" signature="4006:4102" ph="INSERT INTO CHANNEL_USER... " />
+                <marker date="1512834806553" expanded="true" signature="4333:4371" ph="SELECT comm_... COMM" />
+                <marker date="1512834806553" expanded="true" signature="5089:5134" ph="SELECT name CHANNEL" />
+                <marker date="1512834806553" expanded="true" signature="5367:5539" ph="SELECT CU.is... ALIAS" />
+                <marker date="1512834806553" expanded="true" signature="5965:6019" ph="SELECT C.cha... CHANNEL" />
+                <marker date="1512834806553" expanded="true" signature="6270:6342" ph="SELECT chann... CHANNEL_USER" />
+                <marker date="1512834806553" expanded="true" signature="6669:6819" ph="SELECT C.val... CHANNEL_USER" />
+                <marker date="1512834806553" expanded="true" signature="7240:7406" ph="SELECT C.val... CHANNEL_USER" />
+                <marker date="1512834806553" expanded="true" signature="7797:7852" ph="SELECT prefe... PREFERENCE" />
+                <marker date="1512834806553" expanded="true" signature="7994:8033" ph="DELETE FROM INTER... " />
+                <marker date="1512834806553" expanded="true" signature="8123:8168" ph="DELETE FROM RESTRICTION... " />
+                <marker date="1512834806553" expanded="true" signature="8264:8308" ph="DELETE FROM PREFERENCE... " />
+                <marker date="1512834806553" expanded="true" signature="8400:8436" ph="DELETE FROM ALIAS... " />
+                <marker date="1512834806553" expanded="true" signature="8568:8611" ph="DELETE FROM CHANNEL_USER... " />
+                <marker date="1512834806553" expanded="true" signature="8741:8807" ph="SELECT alias... CHANNEL_USER" />
+                <marker date="1512834806553" expanded="true" signature="8869:8903" ph="DELETE FROM ALIAS... " />
+                <marker date="1512834806553" expanded="true" signature="8991:9048" ph="DELETE FROM CHANNEL_USER... " />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -726,10 +787,48 @@
         </state>
       </provider>
     </entry>
+<<<<<<< Updated upstream
     <entry file="file://$PROJECT_DIR$/channel/channel.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="265">
           <caret line="267" column="17" lean-forward="false" selection-start-line="267" selection-start-column="17" selection-end-line="267" selection-end-column="17" />
+=======
+    <entry file="file://$PROJECT_DIR$/channel/user.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1785">
+          <caret line="121" column="10" lean-forward="false" selection-start-line="121" selection-start-column="10" selection-end-line="121" selection-end-column="10" />
+          <folding>
+            <element signature="e#17#43#0" expanded="true" />
+            <marker date="1512836025243" expanded="true" signature="800:844" ph="SELECT usern... USERS" />
+            <marker date="1512836025243" expanded="true" signature="1361:1395" ph="SELECT val F... COMM" />
+            <marker date="1512836025243" expanded="true" signature="1574:1631" ph="INSERT INTO COMM... " />
+            <marker date="1512836025243" expanded="true" signature="1898:1944" ph="DELETE FROM COMM... " />
+            <marker date="1512836025243" expanded="true" signature="2297:2369" ph="INSERT INTO COMM... " />
+            <marker date="1512836025243" expanded="true" signature="2297:2417" ph="SELECT A.val... CHANNEL_USER" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/channel/Communication.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="83" column="73" lean-forward="true" selection-start-line="83" selection-start-column="73" selection-end-line="83" selection-end-column="73" />
+          <folding>
+            <element signature="e#82#153#0" expanded="false" />
+            <element signature="n#!!block;n#GetCommunication#0" expanded="false" />
+            <element signature="n#!!block;n#GetCommType#0" expanded="false" />
+            <element signature="n#!!block;n#SendMessage#0" expanded="false" />
+            <element signature="n#!!block;n#SendSMS#0" expanded="false" />
+            <element signature="n#!!block;n#GetCommTypeName#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/channel/channel.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+>>>>>>> Stashed changes
           <folding>
             <element signature="e#17#43#0" expanded="true" />
             <element signature="e#303#402#0" expanded="false" />
@@ -761,6 +860,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< Updated upstream
     <entry file="file://$PROJECT_DIR$/channel/user.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="870">
@@ -797,13 +897,25 @@
             <element signature="n#!!block;n#SendSMS#0" expanded="false" />
             <element signature="n#!!block;n#GetCommTypeName#0" expanded="false" />
           </folding>
+=======
+    <entry file="file://$PROJECT_DIR$/channel/Requests.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="1" lean-forward="true" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+          <folding />
+>>>>>>> Stashed changes
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/channel/server.go">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
         <state relative-caret-position="1785">
           <caret line="643" column="0" lean-forward="true" selection-start-line="643" selection-start-column="0" selection-end-line="643" selection-end-column="0" />
+=======
+        <state relative-caret-position="372">
+          <caret line="49" column="63" lean-forward="true" selection-start-line="49" selection-start-column="63" selection-end-line="49" selection-end-column="63" />
+>>>>>>> Stashed changes
           <folding>
             <element signature="e#17#261#0" expanded="true" />
             <element signature="e#340#405#0" expanded="false" />
