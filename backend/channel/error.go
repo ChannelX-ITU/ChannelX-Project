@@ -34,7 +34,20 @@ var (
 	ErrCommIsTaken = ChannelError{"Err_Comm_Is_Taken", "This communication method is already taken", http.StatusBadRequest}
 	ErrNoCommOfUser = ChannelError{"Err_Not_Comm_Of_User", "This communication method is not registered for the user", http.StatusBadRequest}
 	ErrCommInUse = ChannelError{"Err_Comm_In_Use", "This communication method is assigned to a channel", http.StatusBadRequest}
-	)
+
+	ErrGelbori = ChannelError{"at", "avrat", http.StatusInternalServerError}
+	ErrGelbori1 = ChannelError{"at", "avrat1", http.StatusInternalServerError}
+	ErrGelbori2 = ChannelError{"at", "avrat2", http.StatusInternalServerError}
+	ErrGelbori3 = ChannelError{"at", "avrat3", http.StatusInternalServerError}
+	ErrGelbori4 = ChannelError{"at", "avrat4", http.StatusInternalServerError}
+	ErrGelbori5 = ChannelError{"at", "avrat5", http.StatusInternalServerError}
+	ErrGelbori6 = ChannelError{"at", "avrat6", http.StatusInternalServerError}
+	ErrGelbori7 = ChannelError{"at", "avrat7", http.StatusInternalServerError}
+	ErrGelbori8 = ChannelError{"at", "avrat8", http.StatusInternalServerError}
+	ErrGelbori9 = ChannelError{"at", "avrat9", http.StatusInternalServerError}
+
+
+)
 
 func WriteSuccess(w http.ResponseWriter, message string) {
 	s, _ := json.Marshal(ChannelResponse{Status:"Success", Message:message, Error:nil})

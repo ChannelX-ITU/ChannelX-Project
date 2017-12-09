@@ -793,7 +793,7 @@ func (s *Server) LeaveChannelHandler ( w http.ResponseWriter, r *http.Request) {
 	}
 	session, err := store.Get(r, "bist-sissin-ivir")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error() + " sakineeee", http.StatusInternalServerError)
 		return
 	}
 	//check if user logged in
@@ -806,7 +806,7 @@ func (s *Server) LeaveChannelHandler ( w http.ResponseWriter, r *http.Request) {
 			err := decoder.Decode(&t)
 			// whether json object is parsed correctly
 			if err != nil {
-				WriteError(w, ErrInternalServerError)
+				WriteError(w, ErrGelbori)
 				return
 			}
 			defer r.Body.Close()
@@ -814,33 +814,33 @@ func (s *Server) LeaveChannelHandler ( w http.ResponseWriter, r *http.Request) {
 			channelID, err := s.GetChannelID(t.Channel)
 			//if channelID could not be token
 			if channelID == -1 {
-				WriteError(w, ErrChannelNotExist)
+				WriteError(w, ErrGelbori1)
 				return
 			}
 
 			if err != nil {
-				WriteError(w, ErrInternalServerError)
+				WriteError(w, ErrGelbori2)
 				return
 			}
 
 			if ok, err := s.CheckUserInChannel(userId, channelID); err != nil {
-				WriteError(w, ErrInternalServerError)
+				WriteError(w, ErrGelbori3)
 				return
 			} else if !ok {
 				// Set a new flash.
-				WriteError(w, ErrUserNotInChannel)
+				WriteError(w, ErrGelbori4)
 				return
 			}
 
 			isOwner, err := s.GetIsUserOwner(channelID, userId)
 			if err != nil {
-				WriteError(w, ErrInternalServerError)
+				WriteError(w, ErrGelbori5)
 			}
 
 			//leaving part
 			err = s.DeleteUserFromChannel(channelID, userId, isOwner)
 			if err != nil {
-				WriteError(w, ErrInternalServerError)
+				WriteError(w, ErrGelbori6)
 				return
 			}
 			if isOwner {
