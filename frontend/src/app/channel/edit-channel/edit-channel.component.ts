@@ -19,12 +19,12 @@ import { RouteChildBinderService } from '../../services/route-child-binder.servi
 })
 export class EditChannelComponent implements OnInit {
 
+
   channel: Observable<Channel>;
 
   comms: Observable<Communication[]>;
-  intervals: IntervalInterface[] = [];
 
-  currentChannel: Channel;
+  currentChannel: Channel = null;
 
   constructor(
     private logger: Logger, 
@@ -32,9 +32,10 @@ export class EditChannelComponent implements OnInit {
     private childBinder: RouteChildBinderService<Channel, boolean>) { }
 
   ngOnInit() {
+    this.channel = this.childBinder.fromParent;
     this.childBinder.fromParent.subscribe(value => {
       this.logger.log("child:", value);
-      this.convertIntervals(value)
+      this.currentChannel = value;
     });
     this.comms = this.store
     .select("user")
@@ -45,40 +46,11 @@ export class EditChannelComponent implements OnInit {
   }
 
   save() {
-    let intervals = this.intervals.map( value => value.toIntervals()).reduce((acc, value) => {
-      value.forEach( value => acc.push(value));
-      return acc;
-    }, []);
-    this.logger.log("Intervals: " , intervals);
+    // let intervals = this.intervals.map( value => value.toIntervals()).reduce((acc, value) => {
+    //   value.forEach( value => acc.push(value));
+    //   return acc;
+    // }, []);
+    this.logger.log("Current channel: " , this.currentChannel);
   }
 
-  convertIntervals(channel: Channel) {
-    this.logger.log("convert:", channel);
-    if (!channel) return;
-    this.intervals.length = 0;
-    channel.preference.intervals.reduce((prev: IntervalInterface[], next: Interval) => {
-      let interval = new IntervalInterface(next);
-      this.logger.log("Created ", interval, "from", next);
-      let duplicate = prev.find((value: IntervalInterface) => {
-        return value.start === interval.start && value.end === interval.end;
-      })
-      if (duplicate) {
-        if ( duplicate.days.find( value => value == interval.days[0] ) === undefined) {
-          duplicate.days.push(interval.days[0]);
-        }
-      } else {
-        prev.push(interval);
-      }
-      return prev;
-    }, []).forEach((value) => {
-      this.logger.log("interval: ", value);
-      this.intervals.push(value);
-    })
-  }
-
-  createNew()
-  {
-    this.intervals.push(new IntervalInterface())
-    this.logger.log(this.intervals);
-  }
 }

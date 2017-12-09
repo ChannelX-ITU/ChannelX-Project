@@ -21,7 +21,6 @@ import {
   MatTooltipModule,
   MatProgressSpinnerModule
 } from '@angular/material';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -37,7 +36,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
       MatListModule,
       MatGridListModule,
       MatIconModule,
-      NoopAnimationsModule,
 	  MatOptionModule,
 	  MatSelectModule,
 	  MatNativeDateModule,
