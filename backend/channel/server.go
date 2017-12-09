@@ -202,7 +202,7 @@ func (s *Server) SignUp(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		s.mailMan.Send(Message{email, "Activation", "To activate your account please click the link: http://localhost:6969/api/ctivate/" + u1.String()})
+		s.mailMan.Send(Message{email, "Activation", "To activate your account please click the link: http://localhost:6969/api/activate/" + u1.String()})
 		WriteSuccess(res, "Activation mail is sent to the user's mail")
 		return
 	case err != nil:

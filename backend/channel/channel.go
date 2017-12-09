@@ -2,6 +2,7 @@ package channel
 
 import (
 	"database/sql"
+	"fmt"
 )
 
 type Channel struct {
@@ -369,6 +370,7 @@ func (s *Server) DeleteUserFromChannel( channelID int64, userID int64, isOwner b
 	if isOwner {	//owner ise
 		err = s.dataBase.QueryRow("SELECT preference_id FROM PREFERENCE WHERE channel_id=?", channelID).Scan(&data)//pref data is needed for restriction and interval infos
 		if err != nil {
+			fmt.Println(err.Error())
 			return
 		}
 		_, err = s.dataBase.Exec("DELETE FROM INTER WHERE preference_id=?", data)//interval is deleted
@@ -377,6 +379,7 @@ func (s *Server) DeleteUserFromChannel( channelID int64, userID int64, isOwner b
 		}
 		_, err = s.dataBase.Exec("DELETE FROM RESTRICTION WHERE preference_id=?", data)//restrictions are deleted
 		if err != nil {
+
 			return
 		}
 
@@ -384,23 +387,46 @@ func (s *Server) DeleteUserFromChannel( channelID int64, userID int64, isOwner b
 		if err != nil {
 			return
 		}
-		_, err = s.dataBase.Exec("DELETE FROM ALIAS WHERE channel_id=?", channelID)//every single alias' for each user in channel are deleted
-		if err != nil {
-			return
+
+		arr := make([]int64, 0)
+
+		row, err := s.dataBase.Query("SELECT alias_id FROM CHANNEL_USER WHERE channel_id=?", channelID)
+		if err != nil || row == nil {
+			return err
 		}
+
+		var i int64
+
+		for row.Next() {
+			err = row.Scan(&i)
+			if err != nil {
+				continue
+			}
+
+			arr = append(arr, i)
+		}
+
 		_, err = s.dataBase.Exec("DELETE FROM CHANNEL_USER WHERE channel_id=?", channelID)//every channel users are deleted
 		if err != nil {
-			return
+			return err
 		}
+
+		for _, j := range arr {
+			_, err = s.dataBase.Exec("DELETE FROM ALIAS WHERE alias_id=?", j)//every single alias' for each user in channel are deleted
+			if err != nil {
+				continue
+			}
+		}
+
 		return nil
 	}else {
 		err = s.dataBase.QueryRow("SELECT alias_id FROM CHANNEL_USER WHERE channel_id=? AND user_id=?", channelID, userID).Scan(&data)
-		_, err = s.dataBase.Exec("DELETE FROM ALIAS WHERE alias_id=?", data)//alias is deleted
+		_, err = s.dataBase.Exec("DELETE FROM CHANNEL_USER WHERE channel_id=? AND user_id=?", channelID, userID)//channel_user is deleted
 		if err != nil {
 			return
 		}
 
-		_, err = s.dataBase.Exec("DELETE FROM CHANNEL_USER WHERE channel_id=? AND user_id=?", channelID, userID)//channel_user is deleted
+		_, err = s.dataBase.Exec("DELETE FROM ALIAS WHERE alias_id=?", data)//alias is deleted
 		if err != nil {
 			return
 		}
