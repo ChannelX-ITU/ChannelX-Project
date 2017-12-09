@@ -2,10 +2,11 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router'
 import { Store } from '@ngrx/store'
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { Logger } from '@nsalaun/ng-logger'
 import { AppState } from '../state/app-state'
 import { User } from '../models/user';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, delay } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -34,8 +35,11 @@ export class ToolbarComponent implements OnInit {
 
   logout() {
     this.client.get("/api/logout").subscribe( success => {
-      this.store.dispatch({ type: "LOGOUT" })
-      this.router.navigateByUrl("/login")
+      this.router.navigateByUrl("/login").then(() => {
+        of(false).pipe(delay(500)).subscribe(() => {
+          this.store.dispatch({ type: "LOGOUT" });
+        })
+      });
     })
   }
 
