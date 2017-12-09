@@ -40,18 +40,10 @@ export class LoginComponent implements OnInit {
       return this.client.get<User>("/api/userinfo");
     })).subscribe(
       data => {
-        this.logger.log("Got data: ", data)
-
         this.store.dispatch({ type: "LOGIN", user: data })
-        
-        this.router.navigateByUrl("/home", {
-          skipLocationChange: false
-        }).then( _ => {
-          this.notifications.success("Login successful!")
-        })
+        this.router.navigateByUrl("/home")
       },
       error => {
-        this.logger.error("Got error: ", error)
       }
     )
   }
