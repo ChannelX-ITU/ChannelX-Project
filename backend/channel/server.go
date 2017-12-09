@@ -11,7 +11,8 @@ import (
 	"github.com/satori/go.uuid"
 	"encoding/json"
 	"github.com/gorilla/sessions"
-	)
+	"fmt"
+)
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
 
 type Server struct {
@@ -53,6 +54,7 @@ func (s *Server) Run() {
 	router.HandleFunc("/api/logout", s.Logout)
 	router.HandleFunc("/api/channels", s.ServeChannels)
 	router.HandleFunc("/api/comm/add", s.AddCommHandler)
+	router.HandleFunc("/api/send", s.SendMessageHandler)
 	router.HandleFunc("/api/comm/remove", s.DeleteCommHandler)
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
 	router.HandleFunc("/{_:.*}", s.Receive)
@@ -691,9 +693,21 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			defer r.Body.Close()
-			if ok, err := s.CheckUserInChannel(userId, t.Channel); ok {
-				if ok, err := s.GetIsUserOwner(userId, t.Channel); ok {
-					comm, err := s.GetAllCommInChannel(t.Channel)
+
+			channelID, err := s.GetChannelID(t.Channel)
+			if channelID == -1 {
+				WriteError(w, ErrChannelNotExist)
+				return
+			}
+
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			if ok, err := s.CheckUserInChannel(userId, channelID); ok {
+				if ok, err := s.GetIsUserOwner(channelID, userId); ok {
+					comm, err := s.GetAllCommInChannel(channelID)
 					if err != nil {
 						WriteError(w, ErrInternalServerError)
 						return
@@ -706,10 +720,11 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 					WriteSuccess(w, "Message is sent to channel")
 				} else if err != nil {
 					WriteError(w, ErrInternalServerError)
+					fmt.Println(err.Error())
 					return
 				} else {
-					if ok, err := s.CheckTimeForSend(t.Channel); ok {
-						comm, err := s.GetOwnerCommInChannel(t.Channel)
+					if ok, err := s.CheckTimeForSend(channelID); ok {
+						comm, err := s.GetOwnerCommInChannel(channelID)
 						if err != nil {
 							WriteError(w, ErrInternalServerError)
 							return
