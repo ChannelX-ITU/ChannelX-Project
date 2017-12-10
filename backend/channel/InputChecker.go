@@ -14,7 +14,6 @@ var(
 	ErrInvalidEmail			   	= ChannelError{"Err_Invalid_Email", "E-mail address is not valid", http.StatusBadRequest}
 	ErrInvalidUsernameOnSignup	= ChannelError{"Err_Invalid_Username_On_Signup", "Username is not valid", http.StatusBadRequest}
 	ErrInvalidPasswordOnSignup	= ChannelError{"Err_Invalid_Password_On_Signup", "Password is not valid", http.StatusBadRequest}
-	ErrInvalidChannelNameLength	= ChannelError{"Err_Invalid_Channel_Name_Length", "Channel name length is not suitable", http.StatusBadRequest}
 	ErrInvalidChannelName		= ChannelError{"Err_Invalid_Channel_Name", "Invalid channel name (Same character restrictions with username)", http.StatusBadRequest}
 	ErrInvalidCommType			= ChannelError{"Err_Invalid_Comm_Type", "Invalid Communication Type", http.StatusBadRequest}
 	ErrInvalidAlias				= ChannelError{"Err_Invalid_Alias", "Invalid Alias (Same character restrictions with username)", http.StatusBadRequest}
@@ -47,9 +46,6 @@ func ( s *Server ) SignupValidation ( signup SignUp ) *ChannelError {
 }
 
 func ( s *Server ) JoinChannelValidation ( joinchannel JoinChannel ) *ChannelError {
-	if validation.Validate( joinchannel.Channel, validation.Required, validation.Length(4, 30) ) != nil {
-		return &ErrInvalidChannelNameLength
-	}
 	if validation.Validate( joinchannel.Channel, validation.Required,
 		validation.Match( IsUserName ), validation.Length(3, 16) ) != nil {
 		return &ErrInvalidChannelName
@@ -101,6 +97,15 @@ func ( s *Server ) DeleteCommValidation ( comm DeleteComm ) *ChannelError{
 	if validation.Validate( comm.Comm, validation.Required, is.Email ) != nil &&
 		validation.Validate(comm.Comm, validation.Required, validation.Match(IsPhoneNumber) ) != nil {
 		return &ErrInvalidCommType
+	}
+	return nil
+}
+
+
+func ( s *Server ) MessageValidation ( message SendMessage ) *ChannelError{
+	if validation.Validate( message.Channel, validation.Required,
+		validation.Match( IsUserName ), validation.Length(3, 16) ) != nil {
+		return &ErrInvalidChannelName
 	}
 	return nil
 }

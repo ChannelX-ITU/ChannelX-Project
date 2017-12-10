@@ -3,6 +3,7 @@ package channel
 import (
 	"database/sql"
 	"fmt"
+	"time"
 )
 
 type Channel struct {
@@ -360,8 +361,34 @@ func (s *Server) GetOwnerCommInChannel(channelID int64) (comm Communication, err
 	return
 }
 
-func (s *Server) CheckTimeForSend(channelID int64) (ok bool, err error) {
-	return true, nil
+func (s *Server) CheckTimeForSend(channelID int64) (ok bool, err error) {// KAFAN CALISIRKEN YAZ
+	ok = false
+	var prefId	int64
+	var intervals[] Interval
+
+	err = s.dataBase.QueryRow("SELECT preference_id FROM PREFERENCE WHERE channeL_id=?", channelID).Scan(&prefId)
+	if err != nil {
+		return
+	}
+
+	intervals, err = s.GetInterval(prefId)
+	if err != nil{
+		return
+	}
+
+	now := time.Now()
+
+	var myValue int
+	for _, j := range intervals {
+		if j.Start / 1440 == ( (int(now.Weekday()) + 6) % 7 ) {
+			myValue = 1440 * ( j.Start / 1440)  + now.Hour()*60 + now.Minute()
+			if j.Start <= myValue && myValue <= j.Start + j.Duration{
+				return true, nil
+			}
+		}
+	}
+
+	return false, err
 }
 
 func (s *Server) DeleteUserFromChannel( channelID int64, userID int64, isOwner bool) (err error) {
