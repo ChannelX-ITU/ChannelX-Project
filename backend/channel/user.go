@@ -121,3 +121,13 @@ func (s *Server) GetAlias(userID int64, channelID int64) (alias string, er error
 	err = get.QueryRow(channelID, userID).Scan(&alias)
 	return
 }
+
+func (s *Server) UpdateAlias(userID int64, channelID int64, alias string) (err error) {
+	set, err := s.dataBase.Prepare("UPDATE ALIAS SET val = ? WHERE alias_id = (SELECT DISTINCT FROM CHANNEL_USER WHERE channel_id = ? AND user_id = ?)")
+	if err != nil {
+		return
+	}
+
+	_, err = set.Exec(alias, channelID, userID)
+	return
+}

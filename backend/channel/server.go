@@ -52,6 +52,7 @@ func (s *Server) Run() {
 	router.HandleFunc("/api/channels/add", s.AddChannelHandler)
 	router.HandleFunc("/api/channels/leave", s.LeaveChannelHandler)
 	router.HandleFunc("/api/channels/{channel}", s.ServeChannel)
+	router.HandleFunc("/api/channels/{channel}/update", s.ServeChannel)
 	router.HandleFunc("/api/userinfo", s.ServeUserInfo)
 	router.HandleFunc("/api/logout", s.Logout)
 	router.HandleFunc("/api/channels", s.ServeChannels)
@@ -934,6 +935,64 @@ func (s *Server) LeaveChannelHandler ( w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// Set a new flash.
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+}
+
+func (s *Server) UpdateChannelHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+
+	if !session.IsNew {id := session.Values["user-id"]
+		if userId, ok := id.(int64); ok {
+			vars := mux.Vars(r)
+			channelName := vars["channel"]
+			decoder := json.NewDecoder(r.Body)
+			var t AddChannel
+			err := decoder.Decode(&t)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+			defer r.Body.Close()
+
+			channelID, err := s.GetChannelID(channelName)
+			if channelID == -1 {
+				WriteError(w, ErrChannelNotExist)
+				return
+			}
+
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			if ok, _ := s.GetIsUserOwner(channelID, userId); ok {
+				err = s.UpdateChannel(userId, t.Channel, t.Comm, t.Alias)
+				if err != nil {
+					WriteError(w, ErrInternalServerError)
+					return
+				}
+
+				WriteSuccess(w, "Channel preferences are updated")
+			} else {
+				WriteError(w, ErrUserIsNotOwner)
+				return
+			}
+		} else {
+			WriteError(w, ErrInternalServerError)
+			return
+		}
+	} else {
 		WriteError(w, ErrNotLoggedIn)
 		return
 	}

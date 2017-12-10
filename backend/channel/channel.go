@@ -508,3 +508,59 @@ func (s *Server) GetChannelUserToken(channelID int64, userID int64) (token strin
 
 	return
 }
+
+func (s *Server) DeleteChannelIntervals(prefID int64) (err error) {
+	del, err := s.dataBase.Prepare("DELETE FROM INTER WHERE preference_id = ?")
+
+	if err != nil {
+		return
+	}
+
+	defer del.Close()
+
+	_, err = del.Exec(prefID)
+	return
+}
+
+func (s *Server) DeleteChannelRestrictions(prefID int64) (err error) {
+	del, err := s.dataBase.Prepare("DELETE FROM RESTRICTION WHERE preference_id = ?")
+
+	if err != nil {
+		return
+	}
+
+	defer del.Close()
+
+	_, err = del.Exec(prefID)
+	return
+}
+
+func (s *Server) UpdateChannelPref(prefID int64, duration int, start int64) (err error) {
+	upd, err := s.dataBase.Prepare("UPDATE PREFERENCE SET duration_days = ?, start_Date = ? WHERE preference_id = ?")
+	if err != nil {
+		return
+	}
+
+	_, err = upd.Exec(duration, start, prefID)
+	return
+}
+
+func (s *Server) UpdateChannel(userID int64, cha Channel, comm string, alias string) (err error) {
+	channelID, err := s.GetChannelID(cha.Name)
+	if err != nil {
+		return
+	}
+
+	prefID, err := s.GetPreferenceForChannel(channelID)
+	if err != nil {
+		return
+	}
+
+	s.DeleteChannelIntervals(prefID.prefID)
+	s.DeleteChannelRestrictions(prefID.prefID)
+	s.UpdateChannelPref(channelID, cha.Preference.Duration, cha.Preference.StartDate)
+	s.AddInterval(cha.Preference.Intervals, prefID.prefID)
+	s.AddRestriction(cha.Restrictions, prefID.prefID)
+	s.UpdateAlias(userID, channelID, alias)
+	return
+}
