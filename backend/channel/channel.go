@@ -367,7 +367,7 @@ func (s *Server) CheckTimeForSend(channelID int64) (ok bool, err error) {// KAFA
 	var(
 		prefId	int64
 		stDate	int64
-		drDays	int64
+		drDays	int
 	)
 	var intervals[] Interval
 
@@ -387,33 +387,63 @@ func (s *Server) CheckTimeForSend(channelID int64) (ok bool, err error) {// KAFA
 	}
 
 	now := time.Now().UTC()
-
 	nowMSeconds := now.UnixNano() / 1000000
 
-	endDate := stDate + drDays
-	var ownerUserID int64
+	endDate := stDate + int64(drDays)*24*60*60*100
+	//buraya kadar sorun yok
+
+	//var ownerUserID int64
+
+	//day control
 	if nowMSeconds < stDate || nowMSeconds > endDate {
 		if nowMSeconds > endDate {
-			err = s.dataBase.QueryRow("SELECT CU.user_id FROM CHANNEL, CHANNEL_USER AS CU WHERE CHANNEL.channel_id=CU.channel_id AND CHANNEL.channel_id=? AND CU.is_owner=1", channelID).Scan(&ownerUserID)
-			if err!=nil {
+			if drDays != 0 {
+				/*
+				err = s.dataBase.QueryRow("SELECT CU.user_id FROM CHANNEL, CHANNEL_USER AS CU WHERE CHANNEL.channel_id=CU.channel_id AND CHANNEL.channel_id=? AND CU.is_owner=1", channelID).Scan(&ownerUserID)
+				if err != nil {
+					return
+				}
+				s.DeleteUserFromChannel(channelID, ownerUserID, true)
+				*/
 				return
 			}
-			s.DeleteUserFromChannel(channelID, ownerUserID, true)
+		} else{
+			return
 		}
-		return
 	}
 
-	var myValue int
+	var nowValue int
 	for _, j := range intervals {
 		if j.Start / 1440 == ( (int(now.Weekday()) + 6) % 7 ) {	//if its the day message is allowed
-			myValue = 1440 * ( j.Start / 1440)  + now.Hour()*60 + now.Minute()
-			if j.Start <= myValue && myValue <= (j.Start + j.Duration) {
+			nowValue = 1440 * ( j.Start / 1440 )  + now.Hour()*60 + now.Minute()
+			if j.Start <= nowValue && nowValue <= ( j.Start + j.Duration ) {
 				return true, nil
 			}
 		}
 	}
 
 	return false, err
+
+	/*
+	{
+		"channel":{
+			"name":"ata",
+			"is_owner":true,
+			"preference":{
+				"start_date":1512912025153,
+				"duration":0,
+				"intervals":[]
+				},
+			"restrictions":[],
+			"users":["Boring Panda"]
+		},
+		"comm":{
+			"comm_type":"EMAIL",
+			"value":"h.atakan.c@gmail.com"
+			},
+		"alias":"Boring Panda"
+	}
+	 */
 }
 
 func (s *Server) DeleteUserFromChannel( channelID int64, userID int64, isOwner bool) (err error) {
