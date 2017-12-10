@@ -1,5 +1,5 @@
 export class Restriction {
-    comm_type: string;
+    cont_type: string;
     operator: string;
     type: string;
     value: string;

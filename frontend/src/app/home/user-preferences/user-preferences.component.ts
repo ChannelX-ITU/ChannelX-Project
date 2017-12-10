@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import { Communication } from '../../models/communication'
+import { Restriction } from '../../models/restriction'
 import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
 import { User } from '../../models/user';
@@ -16,6 +17,8 @@ import { User } from '../../models/user';
 export class UserPreferencesComponent implements OnInit {
 
   addComm: Communication = new Communication();
+
+  addRest: Restriction = new Restriction();
 
   user: User = new User();
 
@@ -42,6 +45,10 @@ export class UserPreferencesComponent implements OnInit {
     this.addComm.add(this.client).subscribe( user => {
       this.store.dispatch({type: "REFRESH", user: user})
     })
+  }
+
+  addRestriction(){
+    
   }
 
   save() {

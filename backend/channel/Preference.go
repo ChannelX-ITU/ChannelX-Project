@@ -11,12 +11,12 @@ func (s *Server) GetPreference(userID int64) (pre Preference, err error) {
 	var prefID int64
 
 	pre.Intervals = make([]Interval, 0)
-	get, err := s.dataBase.Prepare("SELECT preference_id ,start_date, duration_days FROM USERS AS U, PREFERENCE AS P WHERE U.user_id = ? AND P.user_id = ?")
+	get, err := s.dataBase.Prepare("SELECT preference_id ,start_date, duration_days FROM PREFERENCE WHERE user_id = ?")
 	if err != nil {
 		return
 	}
 
-	err = get.QueryRow(userID, userID).Scan(&prefID, &pre.StartDate, &pre.Duration)
+	err = get.QueryRow(userID).Scan(&prefID, &pre.StartDate, &pre.Duration)
 	if err != nil {
 		return
 	}

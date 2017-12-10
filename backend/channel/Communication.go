@@ -4,6 +4,7 @@ import (
 	"net/url"
 	"strings"
 	"net/http"
+	"fmt"
 )
 
 type Communication struct {
@@ -78,7 +79,14 @@ func SendSMS(mes SendMessage, comm Communication) {
 	req.SetBasicAuth(accountSid, authToken)
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	client.Do(req)
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err.Error())
+		var b []byte
+		b = make([]byte, 1000)
+		res.Body.Read(b)
+		fmt.Println(string(b))
+	}
 }
 
 func (s *Server) GetCommTypeName(commType string) (id string, err error) {

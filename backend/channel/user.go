@@ -131,3 +131,49 @@ func (s *Server) UpdateAlias(userID int64, channelID int64, alias string) (err e
 	_, err = set.Exec(alias, channelID, userID)
 	return
 }
+
+func (s *Server) DeleteUserIntervals(prefID int64) (err error) {
+	del, err := s.dataBase.Prepare("DELETE FROM INTER WHERE preference_id = ?")
+
+	if err != nil {
+		return
+	}
+
+	defer del.Close()
+
+	_, err = del.Exec(prefID)
+	return
+}
+
+func (s *Server) UpdateUserPref(prefID int64, duration int, start int64) (err error) {
+	upd, err := s.dataBase.Prepare("UPDATE PREFERENCE SET duration_days = ?, start_date = ? WHERE preference_id = ?")
+	if err != nil {
+		return
+	}
+
+	_, err = upd.Exec(duration, start, prefID)
+	if err != nil {
+	}
+	return
+}
+
+func (s *Server) UpdateUser(userID int64, pref Preference) (err error) {
+	prefID, err := s.GetPreference(userID)
+	if err != nil {
+		return
+	}
+	err = s.DeleteUserIntervals(prefID.prefID)
+	if err != nil {
+		return
+	}
+	err = s.AddInterval(pref.Intervals, prefID.prefID)
+	if err != nil {
+		return
+	}
+	err = s.UpdateChannelPref(prefID.prefID, pref.Duration, pref.StartDate)
+
+	if err != nil {
+		return
+	}
+	return
+}

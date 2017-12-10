@@ -2,7 +2,6 @@ package channel
 
 import (
 	"database/sql"
-	"fmt"
 	"time"
 	"github.com/satori/go.uuid"
 )
@@ -414,7 +413,6 @@ func (s *Server) DeleteUserFromChannel( channelID int64, userID int64, isOwner b
 	if isOwner {	//owner ise
 		err = s.dataBase.QueryRow("SELECT preference_id FROM PREFERENCE WHERE channel_id=?", channelID).Scan(&data)//pref data is needed for restriction and interval infos
 		if err != nil {
-			fmt.Println(err.Error())
 			return
 		}
 		_, err = s.dataBase.Exec("DELETE FROM INTER WHERE preference_id=?", data)//interval is deleted
@@ -538,14 +536,11 @@ func (s *Server) DeleteChannelRestrictions(prefID int64) (err error) {
 func (s *Server) UpdateChannelPref(prefID int64, duration int, start int64) (err error) {
 	upd, err := s.dataBase.Prepare("UPDATE PREFERENCE SET duration_days = ?, start_date = ? WHERE preference_id = ?")
 	if err != nil {
-		fmt.Println(err.Error())
-
 		return
 	}
 
 	_, err = upd.Exec(duration, start, prefID)
 	if err != nil {
-		fmt.Println(err.Error())
 	}
 	return
 }
@@ -574,14 +569,11 @@ func (s *Server) UpdateChannel(userID int64, cha Channel, comm string, alias str
 func (s *Server) UpdateCommInChannel(userID int64, channelID int64, comm string) (err error) {
 	commID,err := s.GetCommID(comm)
 	if err != nil {
-		fmt.Println(err.Error())
 		return
 	}
 
 	set, err := s.dataBase.Prepare("UPDATE CHANNEL_USER SET comm_id = ? WHERE channel_id = ? AND user_id = ?")
 	if err != nil {
-		fmt.Println(err.Error())
-
 		return
 	}
 
@@ -589,8 +581,6 @@ func (s *Server) UpdateCommInChannel(userID int64, channelID int64, comm string)
 
 	_, err = set.Exec(commID, channelID, userID)
 	if err != nil {
-		fmt.Println(err.Error())
-
 		return
 	}
 	return

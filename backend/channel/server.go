@@ -11,7 +11,6 @@ import (
 	"github.com/satori/go.uuid"
 	"encoding/json"
 	"github.com/gorilla/sessions"
-	"fmt"
 )
 
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
@@ -53,6 +52,7 @@ func (s *Server) Run() {
 	router.HandleFunc("/api/channels/leave", s.LeaveChannelHandler)
 	router.HandleFunc("/api/channels/{channel}/update", s.UpdateChannelHandler)
 	router.HandleFunc("/api/channels/{channel}", s.ServeChannel)
+	router.HandleFunc("/api/userinfo/update", s.UpdateUserHandler)
 	router.HandleFunc("/api/userinfo", s.ServeUserInfo)
 	router.HandleFunc("/api/logout", s.Logout)
 	router.HandleFunc("/api/channels", s.ServeChannels)
@@ -67,7 +67,6 @@ func (s *Server) Run() {
 
 	http.ListenAndServe(":6969", loggedHandler)
 }
-
 
 func (s *Server) Login(res http.ResponseWriter, req *http.Request) {
 	// If method is GET serve an html login page
@@ -799,13 +798,18 @@ func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Requ
 
 	channelID, userId, err := s.GetChannelUserFromToken(token)
 	if err != nil {
-		fmt.Println(err.Error())
-
 		WriteError(w, ErrInternalServerError)
 		return
 	}
 
-	t := SendMessage{}
+	var t SendMessage
+	decoder := json.NewDecoder(r.Body)
+	err = decoder.Decode(&t)
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+
 	chanName, err := s.GetChannelName(channelID)
 	if err != nil {
 		WriteError(w, ErrInternalServerError)
@@ -813,8 +817,7 @@ func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Requ
 	}
 	t.Subject = "You have a message from channel " + chanName
 	t.Channel = chanName
-	t.Message = "DENEME"
-	t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
+	t.Message = t.Message + " -- To Reply: http://localhost:6969/reply?t=" + token
 
 	if ok, err := s.CheckUserInChannel(userId, channelID); ok {
 		if ok, err := s.GetIsUserOwner(channelID, userId); ok {
@@ -988,6 +991,47 @@ func (s *Server) UpdateChannelHandler(w http.ResponseWriter, r *http.Request) {
 				WriteError(w, ErrUserIsNotOwner)
 				return
 			}
+		} else {
+			WriteError(w, ErrInternalServerError)
+			return
+		}
+	} else {
+		WriteError(w, ErrNotLoggedIn)
+		return
+	}
+}
+
+func (s *Server) UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		WriteError(w, ErrWrongMethod)
+		return
+	}
+
+	session, err := store.Get(r, "bist-sissin-ivir")
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+
+	if !session.IsNew {id := session.Values["user-id"]
+		if userId, ok := id.(int64); ok {
+			decoder := json.NewDecoder(r.Body)
+			var t Preference
+			err := decoder.Decode(&t)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+			defer r.Body.Close()
+
+			err = s.UpdateUser(userId, t)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+
+				}
+
+				WriteSuccess(w, "User preferences are updated")
 		} else {
 			WriteError(w, ErrInternalServerError)
 			return
