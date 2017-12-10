@@ -10,11 +10,13 @@ import { RegisterComponent} from './auth/register/register.component'
 import { AuthComponent } from './auth/auth.component'
 
 import { ChannelComponent } from './channel/channel.component'
+
 import { BroadcastComponent } from './channel/broadcast/broadcast.component'
 import { EditChannelComponent } from './channel/edit-channel/edit-channel.component'
 import { ReplyComponent } from './reply/reply.component'
 
 import { AuthGuard } from './guards/auth.guard'
+import { ActivationGuard } from './guards/activation.guard'
 
 const routes: Routes = [
   { path: '', component: AuthComponent, children: [
@@ -40,6 +42,9 @@ const routes: Routes = [
         { path: "settings", component: EditChannelComponent },
         { path: "broadcast", component: BroadcastComponent }
       ] 
+  },
+  {
+    path: 'activate/:token', canActivate: [ ActivationGuard ], component: AuthComponent
   },
   {
     path: 'reply', component: ReplyComponent

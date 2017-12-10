@@ -27,6 +27,7 @@ import { environment } from '../environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { userAuth } from './state/user-authenticator'
 import { AuthGuard } from './guards/auth.guard';
+import { ActivationGuard } from './guards/activation.guard';
 import { BroadcastComponent } from './channel/broadcast/broadcast.component';
 import { EditChannelComponent } from './channel/edit-channel/edit-channel.component';
 import { IndexerPipe } from './pipes/indexer.pipe';
@@ -39,7 +40,7 @@ import { CeilPipe } from './pipes/ceil.pipe'
 import { ErrorNotifyInterceptor } from './interceptors/error-notify.interceptor'
 import { SuccessNotifyInterceptor } from './interceptors/success-notify.interceptor';
 import { PreferencesComponent } from './preferences/preferences.component';
-import { CommunicationsComponent } from './communications/communications.component'
+import { CommunicationsComponent } from './communications/communications.component';
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -83,7 +84,7 @@ if (environment.production){
     StoreModule.forRoot({ user: userAuth }),
     SimpleNotificationsModule.forRoot()
   ],
-  providers: [ AuthGuard, RouteChildBinderService, {
+  providers: [ AuthGuard, ActivationGuard, RouteChildBinderService, {
     provide: HTTP_INTERCEPTORS,
     useClass: ErrorNotifyInterceptor,
     multi: true,
