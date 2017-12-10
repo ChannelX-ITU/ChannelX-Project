@@ -364,10 +364,19 @@ func (s *Server) GetOwnerCommInChannel(channelID int64) (comm Communication, err
 
 func (s *Server) CheckTimeForSend(channelID int64) (ok bool, err error) {// KAFAN CALISIRKEN YAZ
 	ok = false
-	var prefId	int64
+	var(
+		prefId	int64
+		stDate	int64
+		drDays	int64
+	)
 	var intervals[] Interval
 
 	err = s.dataBase.QueryRow("SELECT preference_id FROM PREFERENCE WHERE channeL_id=?", channelID).Scan(&prefId)
+	if err != nil {
+		return
+	}
+
+	err = s.dataBase.QueryRow("SELECT start_date, duration_days FROM PREFERENCE WHERE preference_id=?", prefId).Scan(&stDate, &drDays)
 	if err != nil {
 		return
 	}
@@ -377,13 +386,28 @@ func (s *Server) CheckTimeForSend(channelID int64) (ok bool, err error) {// KAFA
 		return
 	}
 
-	now := time.Now()
+	now := time.Now().UTC()
+
+	nowMSeconds := now.UnixNano() / 1000000
+
+	endDate := stDate + drDays
+	var ownerUserID int64
+	if nowMSeconds < stDate || nowMSeconds > endDate {
+		if nowMSeconds > endDate {
+			err = s.dataBase.QueryRow("SELECT CU.user_id FROM CHANNEL, CHANNEL_USER AS CU WHERE CHANNEL.channel_id=CU.channel_id AND CHANNEL.channel_id=? AND CU.is_owner=1", channelID).Scan(&ownerUserID)
+			if err!=nil {
+				return
+			}
+			s.DeleteUserFromChannel(channelID, ownerUserID, true)
+		}
+		return
+	}
 
 	var myValue int
 	for _, j := range intervals {
-		if j.Start / 1440 == ( (int(now.Weekday()) + 6) % 7 ) {
+		if j.Start / 1440 == ( (int(now.Weekday()) + 6) % 7 ) {	//if its the day message is allowed
 			myValue = 1440 * ( j.Start / 1440)  + now.Hour()*60 + now.Minute()
-			if j.Start <= myValue && myValue <= j.Start + j.Duration{
+			if j.Start <= myValue && myValue <= (j.Start + j.Duration) {
 				return true, nil
 			}
 		}

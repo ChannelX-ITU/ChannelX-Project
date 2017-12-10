@@ -11,6 +11,7 @@ var IsUserName 		= regexp.MustCompile(`^[a-zA-Z0-9_.-]+$`)
 var IsPhoneNumber	= regexp.MustCompile( `(0|\\+90|090|90)[0-9]+$`)
 
 var(
+	ErrChannelDoesNotExist		= ChannelError{"Err_Channel_Does_Not_Exist", "Channel is already deleted.", http.StatusBadRequest}
 	ErrInvalidEmail			   	= ChannelError{"Err_Invalid_Email", "E-mail address is not valid", http.StatusBadRequest}
 	ErrInvalidUsernameOnSignup	= ChannelError{"Err_Invalid_Username_On_Signup", "Username is not valid", http.StatusBadRequest}
 	ErrInvalidPasswordOnSignup	= ChannelError{"Err_Invalid_Password_On_Signup", "Password is not valid", http.StatusBadRequest}
