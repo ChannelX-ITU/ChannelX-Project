@@ -62,13 +62,17 @@ export class PreferenceInterface {
     updateValue(newValue: any) {
         this.onChange.next(true);
     }
+    
+    createDateAsUTC(date) {
+        return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    }
 
     toPreferenceValues(): Object {
         console.log(this);
-        let start = this.start.valueOf()
+        let start = this.createDateAsUTC(this.start).valueOf()
         return {
             start_date: start,
-            duration: ((this.end.valueOf()-start)/86400000)
+            duration: ((this.createDateAsUTC(this.end).valueOf()-start)/86400000) | 0
 
         }
     }

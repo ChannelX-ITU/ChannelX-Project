@@ -3,11 +3,11 @@
   <span class="center-flex" *ngIf="intervals.length == 0">Channel is open 7/24</span>
 <mat-card class="interval" *ngFor="let interval of intervals">
   <div class="content">
-    <button mat-button class="close" (click)="close(interval)">
+    <button mat-button class="close" (click)="close(interval)" *ngIf="!readOnly">
       <mat-icon>close</mat-icon>
     </button>
     <mat-form-field>
-      <mat-select placeholder="Choose Active Days" multiple [(ngModel)]="interval.days" (ngModelChange)="interval.updateValue(newValue)">
+      <mat-select placeholder="Active Days" multiple [(ngModel)]="interval.days" (ngModelChange)="interval.updateValue(newValue)" [disabled]="readOnly">
         <mat-option *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; let i = index" [value]="i">
           {{day}}
         </mat-option>
@@ -15,7 +15,7 @@
     </mat-form-field>
     <br/>
     <mat-form-field>
-      <mat-select placeholder="Choose Active Hour Begin" [(ngModel)]="interval.start" (ngModelChange)="interval.updateValue(newValue)">
+      <mat-select placeholder="Active Hours Begin" [(ngModel)]="interval.start" (ngModelChange)="interval.updateValue(newValue)" [disabled]="readOnly">
         <mat-option *ngFor="let hour of 96 | indexer" [value]="hour*15">
           {{(hour / 4) | floor | number:'2.0-0'}}:{{((hour * 15) % 60) | number: '2.0-0'}}
         </mat-option>
@@ -23,7 +23,7 @@
     </mat-form-field>
     <br/>
     <mat-form-field>
-      <mat-select placeholder="Choose Active Hour Finish" [(ngModel)]="interval.end" (ngModelChange)="interval.updateValue(newValue)">
+      <mat-select placeholder="Active Hours Finish" [(ngModel)]="interval.end" (ngModelChange)="interval.updateValue(newValue)" [disabled]="readOnly">
         <ng-container *ngFor="let hour of 96 | indexer">
           <mat-option  *ngIf="hour*15 >= interval.start" [value]="hour*15">
             {{(hour / 4) | floor | number:'2.0-0'}}:{{((hour * 15) % 60) | number: '2.0-0'}}
