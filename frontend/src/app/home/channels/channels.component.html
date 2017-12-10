@@ -1,5 +1,5 @@
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let acc of accordions">
+    <mat-expansion-panel *ngFor="let acc of accordions; let i = index;" [expanded]="openedAcc == i" (opened)="openAccordion(i)">
       <mat-expansion-panel-header>
         <mat-panel-title> {{acc.title}} </mat-panel-title>
         <mat-spinner class="table-loader" *ngIf="!loaded" [diameter]=24 [strokeWidth]=4></mat-spinner>
@@ -29,7 +29,7 @@
       </mat-table>
     </mat-expansion-panel>
 
-    <mat-expansion-panel>
+    <mat-expansion-panel [expanded]="accordions.length == openedAcc" (opened)="openAccordion(accordions.length)">
       <mat-expansion-panel-header>
         <mat-panel-title> Join a Channel </mat-panel-title>
       </mat-expansion-panel-header>

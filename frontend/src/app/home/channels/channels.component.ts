@@ -3,7 +3,7 @@ import {MatTableDataSource} from '@angular/material';
 import { AppState } from '../../state/app-state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { Communication } from '../../models/communication';
 import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
@@ -41,19 +41,17 @@ export class ChannelsComponent implements OnInit {
 
   loaded = false;
 
+  openedAcc: number = -1;
+
   channelName: string;
   comm: string;
 
   constructor(private store: Store<AppState>, private client: HttpClient, private logger: Logger) { }
 
   ngOnInit() {
-    this.client.get<UserChannels>("/api/channels").subscribe( data => {
-      this.loaded = true;
-      this.logger.log("Channels:", data);
-      this.channels = data;
-      this.ownedDataSource.data = this.channels.owned;
-      this.subscribedDataSource.data = this.channels.subbed;
-    });
+    this.updateChannels().subscribe(() => {
+      this.openAccordion(0);
+    })
     this.comms = this.store
     .select("user")
     .pipe(map(
@@ -62,12 +60,36 @@ export class ChannelsComponent implements OnInit {
     );
   }
 
+  updateChannels() : Observable<UserChannels> {
+    this.loaded = false;
+
+    let obs = this.client.get<UserChannels>("/api/channels").pipe(shareReplay(3));
+    obs.subscribe( data => {
+      this.loaded = true;
+      this.channels = data;
+      this.ownedDataSource.data = this.channels.owned;
+      this.subscribedDataSource.data = this.channels.subbed;
+    });
+    return obs;
+  }
+
+  openAccordion(accordion: number) {
+    // console.log("WUT");
+    this.openedAcc = accordion;
+  }
+
   joinChannel()
   {
     this.client.post("/api/channels/join", {
       channel: this.channelName,
       comm: this.comm
-    }).subscribe();
+    }).subscribe( () => {
+      this.channelName = "";
+      this.comm = "";
+      this.updateChannels().subscribe(() => {
+        this.openAccordion(1);
+      })
+    });
 
 
   }
