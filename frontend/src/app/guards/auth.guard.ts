@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
         if (sessionToken != "") {
             return this.client.get<User>("/api/userinfo").pipe(onErrorResumeNext(of(null))).map((value) => {
                 if (value === null) {
-                    this.router.navigateByUrl("/login");
+                    this.router.navigateByUrl("/login?r=" + state.url);
                 } else {
                     this.store.dispatch({type: "AUTO_LOGIN", user: value});
                 }
