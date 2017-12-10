@@ -30,14 +30,19 @@ export class PreferencesComponent implements OnInit {
         console.log(this.readOnly);
         this.preferenceInterface = new PreferenceInterface(this.preference);
         this.preferenceInterface.onChange.asObservable().pipe(filter(val => val)).subscribe(() => {
-            let vals = this.preferenceInterface.toPreferenceValues();
-            console.log("updated preference dates", vals);
-            this.preference.start_date = vals["start_date"];
-            this.preference.duration = vals["duration"];
-            if (this.preference.duration == 0) {
-                this.preference.start_date = 0;
-            }
-        })
+            this.updatePreference()
+        });
+        this.updatePreference();
+    }
+
+    updatePreference() {
+        let vals = this.preferenceInterface.toPreferenceValues();
+        console.log("updated preference dates", vals);
+        this.preference.start_date = vals["start_date"];
+        this.preference.duration = vals["duration"];
+        if (this.preference.duration == 0) {
+            this.preference.start_date = 0;
+        }
     }
 
     dateChange(event: MatDatepickerInputEvent<Date>) {

@@ -78,9 +78,12 @@ export class IntervalInterface {
 
     constructor(interval: Interval = null) {
         if (interval === null) return;
-        this.start = this.closestMultiple((interval.start % 1440), 15);
-        this.end = this.closestMultiple((interval.start + interval.duration) % 1440, 15);
-        this.days.push(((interval.start / 1440) | 0) % 7); //js hack to convert float to int
+        let date = new Date();
+        let start = this.fromUTC(interval.start);
+        let end = start + interval.duration;
+        this.start = this.closestMultiple((start % 1440), 15);
+        this.end = this.closestMultiple(end % 1440, 15);
+        this.days.push(((start / 1440) | 0) % 7); //js hack to convert float to int
     }
 
     updateValue(newValue: any) {
@@ -88,14 +91,26 @@ export class IntervalInterface {
         this.onChange.next(true);
     }
 
+    toUTC(value: number): number {
+        let date = new Date();
+        return (value + date.getTimezoneOffset() + 10080) % 10080;
+    }
+
+    fromUTC(value: number): number {
+        let date = new Date();
+        return (value - date.getTimezoneOffset() + 10080) % 10080;
+    }
+
     closestMultiple(value: number, multiple: number) : number {
         return ((value / multiple) | 0) * multiple;
     }
 
-    toIntervals() : Interval[] {
+    toIntervals(): Interval[] {
         return this.days.map((value) => {
-            let start = value * 1440 + this.start;
-            let duration = value * 1440 + this.end - start;
+            let start = this.toUTC(value * 1440 + this.start);
+            let end = this.toUTC(value * 1440 + this.end);
+            console.log(value, start, this.start, end, this.end);
+            let duration = end - start;
             return new Interval(start, duration);
         })
     }
