@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 import { Communication } from '../../models/communication'
 import { RouteChildBinderService } from '../../services/route-child-binder.service'
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class EditChannelComponent implements OnInit {
     private logger: Logger, 
     private store: Store<AppState>, 
     private childBinder: RouteChildBinderService<ChannelResponse, boolean>,
-    private client: HttpClient) { }
+    private client: HttpClient
+    private router: Router) { }
 
   ngOnInit() {
     this.channel = this.childBinder.fromParent.map( val => val.channel);
@@ -59,7 +61,9 @@ export class EditChannelComponent implements OnInit {
   destroy() {
     this.client.post("/api/channels/leave", {
       channel: this.currentChannel.channel.name
-    }).subscribe();
+    }).subscribe(() => {
+      this.router.navigateByUrl("/home");
+    });
   }
 
 }
