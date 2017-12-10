@@ -45,7 +45,7 @@ export class UserPreferencesComponent implements OnInit {
   }
 
   save() {
-    console.log(this.user);
+    this.client.post("/api/userinfo/update", this.user.preferences).subscribe();
   }
 
 }
