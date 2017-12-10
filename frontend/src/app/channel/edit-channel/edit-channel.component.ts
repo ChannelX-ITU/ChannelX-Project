@@ -32,7 +32,7 @@ export class EditChannelComponent implements OnInit {
     private logger: Logger, 
     private store: Store<AppState>, 
     private childBinder: RouteChildBinderService<ChannelResponse, boolean>,
-    private client: HttpClient
+    private client: HttpClient,
     private router: Router) { }
 
   ngOnInit() {
@@ -50,12 +50,8 @@ export class EditChannelComponent implements OnInit {
   }
 
   save() {
-    // let intervals = this.intervals.map( value => value.toIntervals()).reduce((acc, value) => {
-    //   value.forEach( value => acc.push(value));
-    //   return acc;
-    // }, []);
-    // this.client.post("/api/channels")
-    this.logger.log("Current channel: " , this.currentChannel);
+    this.client.post("/api/channels/" + this.currentChannel.channel.name + "/update", 
+      this.currentChannel).subscribe();
   }
 
   destroy() {
