@@ -13,6 +13,7 @@ import (
 	"github.com/gorilla/sessions"
 	"fmt"
 )
+
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
 
 type Server struct {
@@ -737,7 +738,7 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			t.Message = t.Message + "\n\n    http://localhost:6969/api/send/" + token
+			t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
 
 			if ok, err := s.CheckUserInChannel(userId, channelID); ok {
 				if ok, err := s.GetIsUserOwner(channelID, userId); ok {
@@ -812,7 +813,7 @@ func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Requ
 	t.Subject = "You have a message from channel " + chanName
 	t.Channel = chanName
 	t.Message = "DENEME"
-	t.Message = t.Message + "\n\n    http://localhost:6969/api/send/" + token
+	t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
 
 	if ok, err := s.CheckUserInChannel(userId, channelID); ok {
 		if ok, err := s.GetIsUserOwner(channelID, userId); ok {
