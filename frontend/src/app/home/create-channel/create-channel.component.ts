@@ -39,6 +39,10 @@ export class CreateChannelComponent implements OnInit {
           )
         );
 
+        this.store.select("user").subscribe(value => {
+            this.channel.preference = value.user.preferences;
+        })
+
         this.nameGroup = this.formBuilder.group({
             channelName: ['', Validators.required]
         })
