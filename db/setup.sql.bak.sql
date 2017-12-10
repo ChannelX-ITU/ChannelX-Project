@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.20)
 # Database: ChannelX
-# Generation Time: 2017-12-04 19:35:33 +0000
+# Generation Time: 2017-12-09 22:09:07 +0000
 # ************************************************************
 
 
@@ -23,8 +23,6 @@
 # Dump of table ALIAS
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `ALIAS`;
-
 CREATE TABLE `ALIAS` (
   `alias_id` int(11) NOT NULL AUTO_INCREMENT,
   `val` varchar(50) NOT NULL DEFAULT '',
@@ -32,25 +30,10 @@ CREATE TABLE `ALIAS` (
   PRIMARY KEY (`alias_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `ALIAS` WRITE;
-/*!40000 ALTER TABLE `ALIAS` DISABLE KEYS */;
-
-INSERT INTO `ALIAS` (`alias_id`, `val`, `is_user_defined`)
-VALUES
-    (1,'Black Monk',0),
-    (2,'Boring Panda',0),
-    (3,'Boring Panda',0),
-    (4,'Boring Panda',0),
-    (5,'Boring Panda',0);
-
-/*!40000 ALTER TABLE `ALIAS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table CHANNEL
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `CHANNEL`;
 
 CREATE TABLE `CHANNEL` (
   `channel_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -59,28 +42,10 @@ CREATE TABLE `CHANNEL` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `CHANNEL` WRITE;
-/*!40000 ALTER TABLE `CHANNEL` DISABLE KEYS */;
-
-INSERT INTO `CHANNEL` (`channel_id`, `name`)
-VALUES
-    (4,'DENEME'),
-    (13,'IdsaNdSfooC32NM'),
-    (11,'INdSfC32NM'),
-    (12,'INdSfooC32NM'),
-    (7,'INSC2NM'),
-    (8,'INSC32NM'),
-    (5,'INSCNM'),
-    (9,'INSfC32NM');
-
-/*!40000 ALTER TABLE `CHANNEL` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table CHANNEL_USER
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `CHANNEL_USER`;
 
 CREATE TABLE `CHANNEL_USER` (
   `channel_user_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -101,25 +66,10 @@ CREATE TABLE `CHANNEL_USER` (
   CONSTRAINT `channel_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `CHANNEL_USER` WRITE;
-/*!40000 ALTER TABLE `CHANNEL_USER` DISABLE KEYS */;
-
-INSERT INTO `CHANNEL_USER` (`channel_user_id`, `channel_id`, `comm_id`, `alias_id`, `is_owner`, `user_id`)
-VALUES
-    (13,4,19,1,1,31),
-    (14,9,19,2,1,32),
-    (15,11,19,3,1,32),
-    (16,12,19,4,1,32),
-    (17,13,19,5,1,32);
-
-/*!40000 ALTER TABLE `CHANNEL_USER` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table COMM
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `COMM`;
 
 CREATE TABLE `COMM` (
   `comm_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -133,25 +83,10 @@ CREATE TABLE `COMM` (
   CONSTRAINT `COMM_fk1` FOREIGN KEY (`type_id`) REFERENCES `COMM_TYPE` (`type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `COMM` WRITE;
-/*!40000 ALTER TABLE `COMM` DISABLE KEYS */;
-
-INSERT INTO `COMM` (`comm_id`, `user_id`, `type_id`, `val`)
-VALUES
-    (19,30,2,'cicekhu@gmail.com'),
-    (20,30,1,'5389486646'),
-    (21,31,2,'keskinsaf@gmail.com'),
-    (22,32,2,'cicekhu@itu.edu.tr'),
-    (23,33,2,'a@ta.kan');
-
-/*!40000 ALTER TABLE `COMM` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table COMM_TYPE
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `COMM_TYPE`;
 
 CREATE TABLE `COMM_TYPE` (
   `type_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -164,9 +99,8 @@ LOCK TABLES `COMM_TYPE` WRITE;
 
 INSERT INTO `COMM_TYPE` (`type_id`, `val`)
 VALUES
-    (1,'SMS'),
-    (2,'EMAIL'),
-    (3,'');
+	(1,'SMS'),
+	(2,'EMAIL');
 
 /*!40000 ALTER TABLE `COMM_TYPE` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -174,8 +108,6 @@ UNLOCK TABLES;
 
 # Dump of table INTER
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `INTER`;
 
 CREATE TABLE `INTER` (
   `interval_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -187,28 +119,10 @@ CREATE TABLE `INTER` (
   CONSTRAINT `INTERVAL_fk0` FOREIGN KEY (`preference_id`) REFERENCES `PREFERENCE` (`preference_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `INTER` WRITE;
-/*!40000 ALTER TABLE `INTER` DISABLE KEYS */;
-
-INSERT INTO `INTER` (`interval_id`, `preference_id`, `start_time_in_minutes`, `duration`)
-VALUES
-    (1,16,1440,60),
-    (2,16,2700,30),
-    (3,21,21323,2132),
-    (4,22,21323,2132),
-    (5,23,21323,2132),
-    (6,24,21323,2132),
-    (7,25,21323,2132),
-    (8,26,21323,2132);
-
-/*!40000 ALTER TABLE `INTER` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table PREFERENCE
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `PREFERENCE`;
 
 CREATE TABLE `PREFERENCE` (
   `preference_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -223,31 +137,10 @@ CREATE TABLE `PREFERENCE` (
   CONSTRAINT `PREFERENCE_fk1` FOREIGN KEY (`channel_id`) REFERENCES `CHANNEL` (`channel_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `PREFERENCE` WRITE;
-/*!40000 ALTER TABLE `PREFERENCE` DISABLE KEYS */;
-
-INSERT INTO `PREFERENCE` (`preference_id`, `duration_days`, `user_id`, `channel_id`, `start_date`)
-VALUES
-    (16,7,30,NULL,0),
-    (17,7,31,NULL,0),
-    (18,7,32,NULL,0),
-    (19,7,NULL,4,21323),
-    (20,7,33,NULL,0),
-    (21,323,NULL,7,2131231321),
-    (22,323,NULL,8,2131231321),
-    (23,323,NULL,9,2131231321),
-    (24,323,NULL,11,2131231321),
-    (25,323,NULL,12,2131231321),
-    (26,323,NULL,13,2131231321);
-
-/*!40000 ALTER TABLE `PREFERENCE` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table RESOURCE
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `RESOURCE`;
 
 CREATE TABLE `RESOURCE` (
   `resource_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -261,8 +154,6 @@ CREATE TABLE `RESOURCE` (
 
 # Dump of table RESTRICTION
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `RESTRICTION`;
 
 CREATE TABLE `RESTRICTION` (
   `restriction_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -278,25 +169,10 @@ CREATE TABLE `RESTRICTION` (
   CONSTRAINT `RESTRICTION_fk1` FOREIGN KEY (`type_id`) REFERENCES `COMM_TYPE` (`type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `RESTRICTION` WRITE;
-/*!40000 ALTER TABLE `RESTRICTION` DISABLE KEYS */;
-
-INSERT INTO `RESTRICTION` (`restriction_id`, `preference_id`, `type_id`, `val`, `cont_op`, `cont_type`)
-VALUES
-    (2,19,1,'@gmail.com','=','END'),
-    (3,23,1,'@itu.edu.tr','=','END'),
-    (4,24,1,'@itu.edu.tr','=','END'),
-    (5,25,1,'@itu.edu.tr','=','END'),
-    (6,26,1,'@itu.edu.tr','=','END');
-
-/*!40000 ALTER TABLE `RESTRICTION` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table TOKENS
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `TOKENS`;
 
 CREATE TABLE `TOKENS` (
   `token_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -312,8 +188,6 @@ CREATE TABLE `TOKENS` (
 # Dump of table USERS
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `USERS`;
-
 CREATE TABLE `USERS` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `password` varchar(256) NOT NULL DEFAULT '',
@@ -321,18 +195,6 @@ CREATE TABLE `USERS` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-LOCK TABLES `USERS` WRITE;
-/*!40000 ALTER TABLE `USERS` DISABLE KEYS */;
-
-INSERT INTO `USERS` (`user_id`, `password`, `username`)
-VALUES
-    (30,'$2a$10$imKx78kI49ltNe6EVsPa/uUXRcLrRQ6LzN5oPttpFMbCRAaN5D3uO','Atakan'),
-    (31,'$2a$10$XP9014P4tx697ug78u/Y9.KpgYrTxSqaJzSdZXYWojTdCRtlEZJkq','Safa'),
-    (32,'$2a$10$Lj0zeZR7wsfiz89.x8oO5uGLv0M4WO2MQNXRuBMZCq0eU7OMqHsqG','Low'),
-    (33,'$2a$10$7eY0SKxH6jkLWXKZgDy1M.L8wNGE0foUCTae8IrQ5pOH5.5CGCfRW','');
-
-/*!40000 ALTER TABLE `USERS` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 

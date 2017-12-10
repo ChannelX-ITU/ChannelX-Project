@@ -31,7 +31,30 @@ export class BroadcastComponent implements OnInit {
 
   sendMessage(){
     let msg = this.message;
-    msg += "<br/><button>BUTTON</button>"
+    msg += `
+    <html>
+    <head>
+      <style>
+        .colored {
+          color: blue;
+        }
+        #body {
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <div id='body'>
+      <span>You can use this snippet to answer to ` + this.currentChannel.channel.name + ` owner</span>
+        <form method="POST" action="http://localhost:6969/api/send">
+          <input type="text" placeholder="Type your response here.."><br/>
+          <button class='colored'>SEND</button>
+        </form>
+      </div>
+    </body>
+    </html>
+    `
+
     this.client.post("/api/send", {
       channel: this.currentChannel.channel.name,
       message: this.message
