@@ -1,12 +1,6 @@
 <div *ngIf="currentChannel">
   <div class="row"> 
-  <mat-form-field>
-    <mat-select placeholder="Choose Communication" [(ngModel)]="currentChannel.comm.value">
-      <mat-option *ngFor="let comm of comms | async" [value]="comm.value">
-        {{comm.value}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <app-communications [(ngModel)]="currentChannel.comm.value" [communications]="comms | async" #xomms></app-communications>
 </div>
 <br/>
 <app-preferences  [(preference)]="currentChannel.channel.preference" [readOnly]="!currentChannel.channel.is_owner"></app-preferences>

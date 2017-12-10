@@ -8,13 +8,8 @@
   </mat-step>
   <mat-step label="Configure Communication Type" [stepControl]="commGroup">
     <form [formGroup]="commGroup" class="step-container">
-      <mat-form-field>
-        <mat-select formControlName="commValue" placeholder="Choose Communication" [(ngModel)]="channel.comm" required>
-          <mat-option *ngFor="let comm of comms | async" [value]="comm.value">
-            {{comm.value}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <app-communications [(ngModel)]="channel.comm" [communications]="comms | async" formControlName="commValue" >
+        </app-communications>
     </form>
   </mat-step>
   <mat-step label="Configure Active Hours" [stepControl]="timeForm">
