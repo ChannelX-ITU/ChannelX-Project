@@ -11,6 +11,7 @@ import (
 	"github.com/satori/go.uuid"
 	"encoding/json"
 	"github.com/gorilla/sessions"
+	"fmt"
 )
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
 
@@ -55,6 +56,7 @@ func (s *Server) Run() {
 	router.HandleFunc("/api/channels", s.ServeChannels)
 	router.HandleFunc("/api/comm/add", s.AddCommHandler)
 	router.HandleFunc("/api/send", s.SendMessageHandler)
+	router.HandleFunc("/api/send/{token}", s.SendMessageWithTokenHandler)
 	router.HandleFunc("/api/comm/remove", s.DeleteCommHandler)
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fs))
 	router.HandleFunc("/{_:.*}", s.Receive)
@@ -729,6 +731,14 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 
 			t.Subject = "You have a message from channel " + t.Channel
 
+			token, err := s.GetChannelUserToken(channelID, userId)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			t.Message = t.Message + "\n\n    http://localhost:6969/api/send/" + token
+
 			if ok, err := s.CheckUserInChannel(userId, channelID); ok {
 				if ok, err := s.GetIsUserOwner(channelID, userId); ok {
 					comm, err := s.GetAllCommInChannel(channelID)
@@ -778,6 +788,74 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 		WriteError(w, ErrNotLoggedIn)
 		return
 	}
+}
+
+func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	token := vars["token"]
+
+	channelID, userId, err := s.GetChannelUserFromToken(token)
+	if err != nil {
+		fmt.Println(err.Error())
+
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+
+	t := SendMessage{}
+	chanName, err := s.GetChannelName(channelID)
+	if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	}
+	t.Subject = "You have a message from channel " + chanName
+	t.Channel = chanName
+	t.Message = "DENEME"
+	t.Message = t.Message + "\n\n    http://localhost:6969/api/send/" + token
+
+	if ok, err := s.CheckUserInChannel(userId, channelID); ok {
+		if ok, err := s.GetIsUserOwner(channelID, userId); ok {
+			comm, err := s.GetAllCommInChannel(channelID)
+			if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			}
+
+			for _, val := range comm {
+				s.SendMessage(t, val)
+			}
+
+			WriteSuccess(w, "Message is sent to channel")
+		} else if err != nil {
+			WriteError(w, ErrInternalServerError)
+			return
+		} else {
+			if ok, err := s.CheckTimeForSend(channelID); ok {
+				comm, err := s.GetOwnerCommInChannel(channelID)
+				if err != nil {
+					WriteError(w, ErrInternalServerError)
+					return
+				}
+
+				s.SendMessage(t, comm)
+				WriteSuccess(w, "Message is sent to the owner")
+			} else if err != nil {
+				WriteError(w, ErrInternalServerError)
+				return
+			} else {
+				WriteError(w, ErrNotInInterval)
+				return
+			}
+		}
+	} else if err != nil {
+		WriteError(w, ErrInternalServerError)
+		return
+	} else {
+		WriteError(w, ErrUserNotInChannel)
+		return
+	}
+
 }
 
 

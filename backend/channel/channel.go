@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
+	"github.com/satori/go.uuid"
 )
 
 type Channel struct {
@@ -201,7 +202,7 @@ func (s *Server) AddUserToChannel(channelID int64, userID int64, commID int64, i
 	}
 
 
-	set, err := s.dataBase.Prepare("INSERT INTO CHANNEL_USER(channel_id, comm_id, alias_id, is_owner, user_id) VALUES(?, ?, ?, ?, ?)")
+	set, err := s.dataBase.Prepare("INSERT INTO CHANNEL_USER(channel_id, comm_id, alias_id, is_owner, user_id, token) VALUES(?, ?, ?, ?, ?, ?)")
 	if err != nil {
 		return
 	}
@@ -209,7 +210,7 @@ func (s *Server) AddUserToChannel(channelID int64, userID int64, commID int64, i
 
 	defer set.Close()
 
-	_, err = set.Exec(channelID, commID, aliasID, isOwner, userID)
+	_, err = set.Exec(channelID, commID, aliasID, isOwner, userID, uuid.NewV4())
 
 	return
 }
@@ -464,4 +465,30 @@ func (s *Server) DeleteUserFromChannel( channelID int64, userID int64, isOwner b
 		}
 	}
 	return nil
+}
+
+func (s *Server) GetChannelUserFromToken(token string) (channelID int64, userID int64, err error) {
+
+	get, err := s.dataBase.Prepare("SELECT CU.user_id, CU.channel_id FROM CHANNEL_USER AS CU WHERE CU.token = ?")
+	if err != nil {
+		return
+	}
+
+	defer get.Close()
+
+	err = get.QueryRow(token).Scan(&userID, &channelID)
+	return
+}
+
+func (s *Server) GetChannelUserToken(channelID int64, userID int64) (token string, err error) {
+	get, err := s.dataBase.Prepare("SELECT DISTINCT CU.token FROM CHANNEL_USER AS CU WHERE CU.user_id = ? AND CU.channel_id =?")
+	if err != nil {
+		return
+	}
+
+	defer get.Close()
+
+	err = get.QueryRow(userID, channelID).Scan(&token)
+
+	return
 }

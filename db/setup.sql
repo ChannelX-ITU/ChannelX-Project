@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.20)
 # Database: ChannelX
-# Generation Time: 2017-12-10 12:14:16 +0000
+# Generation Time: 2017-12-10 12:57:38 +0000
 # ************************************************************
 
 
@@ -54,6 +54,7 @@ CREATE TABLE `CHANNEL_USER` (
   `alias_id` int(11) NOT NULL,
   `is_owner` tinyint(1) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `token` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`channel_user_id`),
   KEY `CHANNEL_USER_fk0` (`channel_id`),
   KEY `CHANNEL_USER_fk1` (`comm_id`),
@@ -121,19 +122,6 @@ CREATE TABLE `INTER` (
 
 
 
-# Dump of table JOIN_TOKEN
-# ------------------------------------------------------------
-
-CREATE TABLE `JOIN_TOKEN` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `channel_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `channel_id` (`channel_id`),
-  CONSTRAINT `join_token_ibfk_1` FOREIGN KEY (`channel_id`) REFERENCES `CHANNEL` (`channel_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 # Dump of table PREFERENCE
 # ------------------------------------------------------------
 
@@ -180,22 +168,6 @@ CREATE TABLE `RESTRICTION` (
   KEY `RESTRICTION_fk1` (`type_id`),
   CONSTRAINT `RESTRICTION_fk0` FOREIGN KEY (`preference_id`) REFERENCES `PREFERENCE` (`preference_id`),
   CONSTRAINT `RESTRICTION_fk1` FOREIGN KEY (`type_id`) REFERENCES `COMM_TYPE` (`type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-# Dump of table SEND_TOKEN
-# ------------------------------------------------------------
-
-CREATE TABLE `SEND_TOKEN` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `channel_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `channel_id` (`channel_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `send_token_ibfk_1` FOREIGN KEY (`channel_id`) REFERENCES `CHANNEL` (`channel_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `send_token_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
