@@ -51,7 +51,11 @@ export class EditChannelComponent implements OnInit {
 
   save() {
     this.client.post("/api/channels/" + this.currentChannel.channel.name + "/update", 
-      this.currentChannel).subscribe();
+      {
+        alias: this.currentChannel.alias,
+        channel: this.currentChannel.channel,
+        comm: this.currentChannel.comm.value
+      }).subscribe();
   }
 
   destroy() {

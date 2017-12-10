@@ -5,6 +5,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map, shareReplay } from 'rxjs/operators';
 import { Communication } from '../../models/communication';
+
+import {FormBuilder, FormGroup, Validators, FormArray, FormControl} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Logger } from '@nsalaun/ng-logger';
 
@@ -27,6 +29,7 @@ interface ChannelInterface {
 })
 export class ChannelsComponent implements OnInit {
 
+  joinGroup: FormGroup;
 
   displayedColumns = ['ChannelName', 'UserCount', 'CommType'];
   ownedDataSource = new MatTableDataSource<ChannelInterface>();
@@ -46,7 +49,7 @@ export class ChannelsComponent implements OnInit {
   channelName: string;
   comm: string;
 
-  constructor(private store: Store<AppState>, private client: HttpClient, private logger: Logger) { }
+  constructor(private store: Store<AppState>, private client: HttpClient, private logger: Logger, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.updateChannels().subscribe(() => {
@@ -58,6 +61,10 @@ export class ChannelsComponent implements OnInit {
       (value) => value.user ? value.user.communications : []
       )
     );
+    this.joinGroup = this.formBuilder.group({
+        channelName: ['', Validators.required],
+        commValue: ['', Validators.required]
+    })
   }
 
   updateChannels() : Observable<UserChannels> {
@@ -78,8 +85,24 @@ export class ChannelsComponent implements OnInit {
     this.openedAcc = accordion;
   }
 
-  joinChannel()
+  markAsTouched(group: FormGroup | FormArray) {
+    Object.keys(group.controls).map((field) => {
+      const control = group.get(field);
+      if (control instanceof FormControl) {
+        control.markAsTouched({ onlySelf: true });
+        control.updateValueAndValidity();
+      } else if (control instanceof FormGroup) {
+        this.markAsTouched(control);
+      }
+    });
+  }
+
+  joinChannel(form: FormGroup)
   {
+    if (!this.joinGroup.valid) {
+      this.markAsTouched(this.joinGroup);
+      return;
+    }
     this.client.post("/api/channels/join", {
       channel: this.channelName,
       comm: this.comm
