@@ -30,7 +30,8 @@ export class BroadcastComponent implements OnInit {
   }
 
   sendMessage(){
-
+    let msg = this.message;
+    msg += "<br/><button>BUTTON</button>"
     this.client.post("/api/send", {
       channel: this.currentChannel.channel.name,
       message: this.message

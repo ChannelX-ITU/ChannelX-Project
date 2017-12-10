@@ -38,7 +38,7 @@ export class ChannelsComponent implements OnInit {
     { source: this.ownedDataSource , title: "Owned Channels"},
     { source: this.subscribedDataSource, title: "Subscribed Channels"}
   ]
-  
+
   loaded = false;
 
   channelName: string;
@@ -67,9 +67,9 @@ export class ChannelsComponent implements OnInit {
     this.client.post("/api/channels/join", {
       channel: this.channelName,
       comm: this.comm
-    }).subscribe(
+    }).subscribe();
 
-    );
+
   }
 
 }
