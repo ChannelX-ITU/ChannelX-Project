@@ -1,7 +1,6 @@
 .padded-content {
-    padding: 10px;
+    padding: 24px;
 }
-
 
 #homeButtons {
     margin: 40px;
@@ -10,21 +9,6 @@
 
 .home-navigation {
     margin-bottom: 20px;
-}
-
-
-div.mat-tab-links {
-    display:flex;
-}
-
-
-div.mat-tab-links > a.mat-tab-link {
-    flex: 1;
-    &:focus {
-        outline-style:none;
-        box-shadow:none;
-        border-color:transparent;
-    }
 }
 
 mat-form-field {
