@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 export class CreateChannelComponent implements OnInit {
     @ViewChild("stepper") stepper : MatStepper;
 
-    channel: Channel = new Channel();
+    channel: ChannelResponse = new ChannelResponse();
 
     comms: Observable<Communication[]>;
 
@@ -40,11 +40,12 @@ export class CreateChannelComponent implements OnInit {
         );
 
         this.store.select("user").subscribe(value => {
-            this.channel.preference = value.user.preferences;
+            this.channel.channel.preference = value.user.preferences;
         })
 
         this.nameGroup = this.formBuilder.group({
-            channelName: ['', Validators.required]
+            channelName: ['', Validators.required],
+            aliasName: ['']
         })
 
         this.commGroup = this.formBuilder.group({
@@ -59,8 +60,9 @@ export class CreateChannelComponent implements OnInit {
             this.stepper.selectedIndex++
         } else {
             this.client.post("/api/channels/add", {
-                channel: this.channel,
-                comm: this.channel.comm
+                alias: this.channel.alias,
+                channel: this.channel.channel,
+                comm: this.channel.comm.value
             }).subscribe( () =>
                 this.router.navigateByUrl("/home/channels")
             )

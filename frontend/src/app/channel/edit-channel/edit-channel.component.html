@@ -1,9 +1,12 @@
 <div *ngIf="currentChannel">
   <div class="row"> 
     <app-communications [(ngModel)]="currentChannel.comm.value" [communications]="comms | async" #xomms></app-communications>
+    <mat-form-field>
+      <input matTooltip="Leaving this empty will assign a random alias" matInput placeholder="Alias" type="text" name="aliasName" [(ngModel)]="currentChannel.alias">
+    </mat-form-field>
 </div>
 <br/>
-<app-preferences  [(preference)]="currentChannel.channel.preference" [readOnly]="!currentChannel.channel.is_owner"></app-preferences>
+<app-preferences  [(preference)]="currentChannel.channel.preference" [readOnly]="!currentChannel.channel.is_owner" [showRestrictions]="true" [(restrictions)]="currentChannel.channel.restrictions"></app-preferences>
 <br/>
 <mat-card-actions>
   <button mat-button (click)="save()">SAVE</button>

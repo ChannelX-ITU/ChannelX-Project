@@ -4,7 +4,7 @@
   <mat-datepicker #startPicker></mat-datepicker>
 </mat-form-field>
 <mat-form-field>
-  <input matTooltip="If start date equals end date, there won't be any limit" matInput [min]="preferenceInterface.start" [matDatepicker]="endPicker" placeholder="End Date" [(ngModel)]="preferenceInterface.end" (dateChange)="dateChange($event)" (ngModelChange)="preferenceInterface.updateValue(newValue)" [disabled]="readOnly == true || noExpiration == true">
+  <input matInput [min]="preferenceInterface.start" [matDatepicker]="endPicker" placeholder="End Date" [(ngModel)]="preferenceInterface.end" (dateChange)="dateChange($event)" (ngModelChange)="preferenceInterface.updateValue(newValue)" [disabled]="readOnly == true || noExpiration == true">
   <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
   <mat-datepicker #endPicker></mat-datepicker>
 </mat-form-field>
@@ -14,3 +14,24 @@
   <app-interval [(data)]="preference.intervals" [readOnly]="readOnly"></app-interval>
 </div>
 <br/>
+<div *ngIf="showRestrictions">
+    <h5 mat-subheader>Restrictions</h5>
+    <mat-list *ngIf="restrictions != null">
+        <mat-list-item *ngFor="let rest of restrictions">
+            <mat-icon mat-list-icon>compare_arrows</mat-icon> {{restType.typeString(rest.type)}} {{rest.value}}
+        </mat-list-item>
+    </mat-list>
+    <form>
+        <mat-form-field>
+            <mat-select placeholder="Restriction Type" id="rest_type" name="restType" [(ngModel)]="addRest.type">
+              <mat-option value="END">
+                Ends with:
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" placeholder="Restriction value" name="restValue" [(ngModel)]="addRest.value">
+    </mat-form-field>
+</form>
+<button mat-button (click)="addRestriction()">ADD</button>
+</div>

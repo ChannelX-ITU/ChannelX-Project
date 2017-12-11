@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 import { IntervalInterface } from '../interval/interval.component'
 import { Preference } from '../models/preference';
+import { Restriction, RestrictionType } from '../models/restriction';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { merge, filter } from 'rxjs/operators';
@@ -12,6 +13,19 @@ import {MatDatepickerInputEvent} from '@angular/material/datepicker';
     styleUrls: ['./preferences.component.scss']
 })
 export class PreferencesComponent implements OnInit {
+
+    restType = Restriction;
+
+    @Input()
+    showRestrictions: boolean = false;
+
+    addRest: Restriction = new Restriction();
+
+    @Input()
+    restrictions: Restriction[];
+
+    @Output()
+    restrictionsChange: EventEmitter<Restriction[]> = new EventEmitter<Restriction[]>();
 
     @Input()
     readOnly: boolean = false;
@@ -48,6 +62,12 @@ export class PreferencesComponent implements OnInit {
 
     dateChange(event: MatDatepickerInputEvent<Date>) {
         console.log(event);
+    }
+
+    addRestriction() {
+        this.restrictions.push(this.addRest);
+        this.addRest = new Restriction();
+        this.restrictionsChange.next(this.restrictions);
     }
 
 }

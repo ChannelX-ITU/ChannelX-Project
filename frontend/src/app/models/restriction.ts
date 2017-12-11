@@ -1,6 +1,19 @@
 export class Restriction {
-    cont_type: string;
-    operator: string;
-    type: string;
-    value: string;
+    constructor(
+    public operator: string = "=",
+    public type: RestrictionType = RestrictionType.END,
+    public value: string = "") {}
+
+    static typeString(type: RestrictionType): string {
+        switch (type) {
+            case RestrictionType.END:
+            default:
+                return "Ends with:"
+        }
+    }
+
+}
+
+export enum RestrictionType {
+    END = "END"
 }

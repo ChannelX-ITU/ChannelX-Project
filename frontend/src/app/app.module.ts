@@ -42,6 +42,7 @@ import { SuccessNotifyInterceptor } from './interceptors/success-notify.intercep
 import { PreferencesComponent } from './preferences/preferences.component';
 import { CommunicationsComponent } from './communications/communications.component';
 import { UsersComponent } from './channel/users/users.component';
+import { KeysPipe } from './pipes/keys.pipe';
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -71,7 +72,8 @@ if (environment.production){
     CeilPipe,
     PreferencesComponent,
     CommunicationsComponent,
-    UsersComponent
+    UsersComponent,
+    KeysPipe
   ],
   imports: [
     BrowserModule,

@@ -85,38 +85,6 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="pref-container-cell">
-    <mat-card class="sub-content">
-      <mat-card-header>
-        <mat-card-title>
-          Default Channel Restriction
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <form>
-          <mat-form-field>
-          <mat-select placeholder="Restriction Type" id="rest_type" name="restType" [(ngModel)]="addRest.cont_type">
-            <mat-option value="END">
-              Ends with:
-            </mat-option>
-            <mat-option value="START">
-              Starts with:
-            </mat-option>
-            <mat-option value="HAS">
-              Has:
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput type="text" placeholder="Restriction value">
-        </mat-form-field>
-        </form>
-      </mat-card-content>
-      <mat-card-actions>
-          <button mat-button (click)="addRestriction()">ADD</button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
 </div>
 <mat-card-actions style="margin-bottom: 0px; padding-left: 16px;">
   <button mat-button (click)="save()">SAVE</button>
