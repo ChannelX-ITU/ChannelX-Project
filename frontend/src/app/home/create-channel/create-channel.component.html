@@ -18,7 +18,7 @@
   <mat-step label="Configure Active Hours" [stepControl]="timeForm">
     <form>
       <div>
-        <app-preferences [(preference)]="channel.channel.preference"></app-preferences>
+        <app-preferences [(preference)]="channel.channel.preference" [showRestrictions]="true" [(restrictions)]="channel.channel.restrictions"></app-preferences>
       </div>
     </form>
   </mat-step>
