@@ -16,16 +16,15 @@ $content-padding: 12px;
 }
 
 
-div.mat-tab-links {
+nav.home-navigation ::ng-deep div.mat-tab-links {
     display:flex;
-}
 
-
-div.mat-tab-links > a.mat-tab-link {
-    flex: 1;
-    &:focus {
-        outline-style:none;
-        box-shadow:none;
-        border-color:transparent;
+    & > a.mat-tab-link {
+        flex: 1;
+        &:focus {
+            outline-style:none;
+            box-shadow:none;
+            border-color:transparent;
+        }
     }
 }

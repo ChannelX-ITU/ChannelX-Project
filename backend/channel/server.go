@@ -393,7 +393,7 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 				}
 
 				for _, restriction := range chRestrictions{
-					if strings.HasSuffix( restriction.Val, userEMail ){
+					if strings.HasSuffix( userEMail, restriction.Val ){
 						isInGroup = true
 						break
 					}else {
