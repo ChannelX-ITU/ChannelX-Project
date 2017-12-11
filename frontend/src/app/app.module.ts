@@ -43,6 +43,7 @@ import { PreferencesComponent } from './preferences/preferences.component';
 import { CommunicationsComponent } from './communications/communications.component';
 import { UsersComponent } from './channel/users/users.component';
 import { KeysPipe } from './pipes/keys.pipe';
+import { SimpleDialogComponent } from './dialogs/simple-dialog/simple-dialog.component';
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -73,7 +74,8 @@ if (environment.production){
     PreferencesComponent,
     CommunicationsComponent,
     UsersComponent,
-    KeysPipe
+    KeysPipe,
+    SimpleDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -97,6 +99,9 @@ if (environment.production){
     useClass: SuccessNotifyInterceptor,
     multi: true,
   } ],
+  entryComponents: [
+      SimpleDialogComponent
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

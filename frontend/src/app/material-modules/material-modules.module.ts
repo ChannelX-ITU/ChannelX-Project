@@ -20,7 +20,8 @@ import {
   MatExpansionModule,
   MatTooltipModule,
   MatProgressSpinnerModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatDialogModule
 } from '@angular/material';
 
 @NgModule({
@@ -47,7 +48,8 @@ import {
     MatExpansionModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ],
   declarations: []
 })

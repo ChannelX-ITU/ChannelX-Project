@@ -12,6 +12,8 @@ import { Communication } from '../../models/communication'
 import { RouteChildBinderService } from '../../services/route-child-binder.service'
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { SimpleDialogComponent } from '../../dialogs/simple-dialog/simple-dialog.component';
 
 
 @Component({
@@ -33,7 +35,8 @@ export class EditChannelComponent implements OnInit {
     private store: Store<AppState>, 
     private childBinder: RouteChildBinderService<ChannelResponse, boolean>,
     private client: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.channel = this.childBinder.fromParent.map( val => val.channel);
@@ -58,12 +61,27 @@ export class EditChannelComponent implements OnInit {
       }).subscribe();
   }
 
-  destroy() {
+  proceedDestroy() {
     this.client.post("/api/channels/leave", {
       channel: this.currentChannel.channel.name
     }).subscribe(() => {
       this.router.navigateByUrl("/home");
     });
+  }
+
+  destroy() {
+    let dialogRef = this.dialog.open(SimpleDialogComponent, {
+          width: '250px',
+          data: { 
+            title: "Are you sure?", 
+            body: ((this.currentChannel.channel.is_owner) ? "Delete" : "Leave") + " the channel?" 
+          }
+        });
+
+    dialogRef.afterClosed().subscribe(value => {
+      if (value) this.proceedDestroy();
+    })
+    
   }
 
 }
