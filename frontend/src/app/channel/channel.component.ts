@@ -1,12 +1,13 @@
 import {ViewChild, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChannelResponse } from '../models/channel';
+import { Channel, ChannelResponse } from '../models/channel';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { NotificationsService } from 'angular2-notifications'
 import { onErrorResumeNext, map, shareReplay } from 'rxjs/operators'
 import { RouteChildBinderService } from '../services/route-child-binder.service'
 import { Logger } from '@nsalaun/ng-logger';
+
 
 @Component({
   selector: 'app-channel',
@@ -17,11 +18,14 @@ import { Logger } from '@nsalaun/ng-logger';
 
 export class ChannelComponent implements OnInit {
   navLinks = [
-    { path: "broadcast", label: "Broadcast Message"},
-    { path: "settings", label: "Channel Settings"}
+    { path: "broadcast", label: "Broadcast Message", ownerOnly: false},
+    { path: "settings", label: "Channel Settings", ownerOnly: false},
+    { path: "users", label: "Channel Users", ownerOnly: true}
   ];
 
   channelId: string;
+
+  currentChannel: ChannelResponse;
 
   constructor(
     private router: Router,
@@ -36,6 +40,7 @@ export class ChannelComponent implements OnInit {
     this.logger.log("id:", this.channelId)
     
     this.client.get<ChannelResponse>("/api/channels/" + this.channelId).subscribe(value => {
+      this.currentChannel = value;
       this.childBinder.notifyChild(value);
     }, error => {
       this.router.navigateByUrl("/home/channels")

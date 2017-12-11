@@ -1,12 +1,16 @@
 <mat-card id="homeButtons">
   <nav mat-tab-nav-bar class="home-navigation">
+    <span *ngFor="let link of navLinks">
+      <span *ngIf="currentChannel != null">
     <a mat-tab-link
-       *ngFor="let link of navLinks"
+        *ngIf="!(link.ownerOnly && !currentChannel.channel.is_owner)"
        [routerLink]="link.path"
        routerLinkActive #rla="routerLinkActive"
        [active]="rla.isActive">
       {{link.label}}
     </a>
+  </span>
+  </span>
   </nav>
 
 
