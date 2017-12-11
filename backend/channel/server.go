@@ -347,19 +347,19 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 			)
 			err = s.dataBase.QueryRow("SELECT comm_id FROM CHANNEL_USER WHERE is_owner=1 AND channel_id=?", channelID).Scan(&chCommID)
 			if err!=nil {
-				WriteError(w, ErrGelbori2)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 			err = s.dataBase.QueryRow("SELECT type_id FROM COMM WHERE comm_id=?", chCommID).Scan(&chnTypeID)
 			if err!=nil {
-				WriteError(w, ErrGelbori3)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 			err = s.dataBase.QueryRow("SELECT type_id FROM COMM WHERE comm_id=?", commID).Scan(&usrTypeID)
 			if err!=nil {
-				WriteError(w, ErrGelbori4)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
@@ -1043,7 +1043,7 @@ func (s *Server) LeaveChannelHandler ( w http.ResponseWriter, r *http.Request) {
 			err := decoder.Decode(&t)
 			// whether json object is parsed correctly
 			if err != nil {
-				WriteError(w, ErrGelbori)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 			defer r.Body.Close()
@@ -1051,33 +1051,33 @@ func (s *Server) LeaveChannelHandler ( w http.ResponseWriter, r *http.Request) {
 			channelID, err := s.GetChannelID(t.Channel)
 			//if channelID could not be token
 			if channelID == -1 {
-				WriteError(w, ErrGelbori1)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 			if err != nil {
-				WriteError(w, ErrGelbori2)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 			if ok, err := s.CheckUserInChannel(userId, channelID); err != nil {
-				WriteError(w, ErrGelbori3)
+				WriteError(w, ErrInternalServerError)
 				return
 			} else if !ok {
 				// Set a new flash.
-				WriteError(w, ErrGelbori4)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 
 			isOwner, err := s.GetIsUserOwner(channelID, userId)
 			if err != nil {
-				WriteError(w, ErrGelbori5)
+				WriteError(w, ErrInternalServerError)
 			}
 
 			//leaving part
 			err = s.DeleteUserFromChannel(channelID, userId, isOwner)
 			if err != nil {
-				WriteError(w, ErrGelbori6)
+				WriteError(w, ErrInternalServerError)
 				return
 			}
 			if isOwner {

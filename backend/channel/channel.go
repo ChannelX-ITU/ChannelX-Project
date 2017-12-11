@@ -362,7 +362,7 @@ func (s *Server) GetOwnerCommInChannel(channelID int64) (comm Communication, err
 	return
 }
 
-func (s *Server) CheckTimeForSend(channelID int64) (ok bool, err error) {// KAFAN CALISIRKEN YAZ
+func (s *Server) CheckTimeForSend(channelID int64) (ok bool, err error) {
 	ok = false
 	var(
 		prefId	int64
