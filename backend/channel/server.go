@@ -317,6 +317,35 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 				WriteError(w, ErrInternalServerError)
 				return
 			}
+			//commType control
+			var (
+				chCommID	int
+				chnTypeID	int
+				usrTypeID	int
+			)
+			err = s.dataBase.QueryRow("SELECT comm_id FROM CHANNEL_USER WHERE is_owner=1 AND channel_id=?", channelID).Scan(&chCommID)
+			if err!=nil {
+				WriteError(w, ErrGelbori2)
+				return
+			}
+
+			err = s.dataBase.QueryRow("SELECT type_id FROM COMM WHERE comm_id=?", chCommID).Scan(&chnTypeID)
+			if err!=nil {
+				WriteError(w, ErrGelbori3)
+				return
+			}
+
+			err = s.dataBase.QueryRow("SELECT type_id FROM COMM WHERE comm_id=?", commID).Scan(&usrTypeID)
+			if err!=nil {
+				WriteError(w, ErrGelbori4)
+				return
+			}
+
+			if chnTypeID != usrTypeID{
+				WriteError(w, ErrCommTypeDoesNotMatch)
+				return
+			}
+			//till here
 
 			err = s.AddUserToChannel(channelID, userId, commID, false, t.Alias)
 			if err != nil {
@@ -335,7 +364,6 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-
 func (s *Server) AddChannelHandler (w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
