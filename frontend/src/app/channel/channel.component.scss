@@ -12,19 +12,42 @@ $content-padding: 24px 24px 0 24px;
     padding: 0;
 }
 
-div.mat-tab-links {
-    display:flex;
-}
+nav.home-navigation ::ng-deep div.mat-tab-links {
+    display: flex;
 
+    & > span {
+        display: flex;
+        flex: 1;
 
-div.mat-tab-links > a.mat-tab-link {
-    flex: 1;
-    &:focus {
-        outline-style:none;
-        box-shadow:none;
-        border-color:transparent;
+        & > span {
+            display: flex;
+            flex: 1;
+            
+            & > a.mat-tab-link {
+                flex: 1;
+                &:focus {
+                    outline-style:none;
+                    box-shadow:none;
+                    border-color:transparent;
+                }
+            }
+        }
+
+       
     }
 }
+
+// div.mat-tab-links > span {
+// }
+
+// div.mat-tab-links > a.mat-tab-link {
+//     flex: 1;
+//     &:focus {
+//         outline-style:none;
+//         box-shadow:none;
+//         border-color:transparent;
+//     }
+// }
 
 span.channel-name {
     margin-bottom: 24px;
