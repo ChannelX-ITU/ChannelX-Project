@@ -85,6 +85,13 @@ func (s *Server) Login(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	defer req.Body.Close()
+
+	isInputValid := s.LoginValidation(t)
+	if isInputValid != nil {
+		WriteError(res, *isInputValid)
+		return
+	}
+
 	username, password := t.Username, t.Password
 
 	// Grab from the database
@@ -148,6 +155,13 @@ func (s *Server) SignUp(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	defer req.Body.Close()
+
+	isInputValid := s.SignupValidation(t)
+
+	if isInputValid!=nil {
+		WriteError(res, *isInputValid)
+		return
+	}
 
 	var user string
 	username, email, password := t.Username, t.Email, t.Password
@@ -291,6 +305,12 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 			}
 			defer r.Body.Close()
 
+			isInputValid := s.JoinChannelValidation(t)
+			if isInputValid!=nil {
+				WriteError(w, *isInputValid)
+				return
+			}
+
 			channelID, err := s.GetChannelID(t.Channel)
 
 			if err != nil {
@@ -433,6 +453,12 @@ func (s *Server) AddChannelHandler (w http.ResponseWriter, r *http.Request) {
 			}
 			defer r.Body.Close()
 
+			isInputValid := s.AddChannelValidation(t)
+			if isInputValid!=nil {
+				WriteError(w, *isInputValid)
+				return
+			}
+
 			channelID, _ := s.GetChannelID(t.Channel.Name)
 			if channelID != -1 {
 				WriteError(w, ErrChannelExist)
@@ -480,6 +506,13 @@ func (s *Server) AddCommHandler (w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			defer r.Body.Close()
+
+			isInputValid := s.AddCommValidation(t)
+			if isInputValid!=nil {
+				WriteError(w, *isInputValid)
+				return
+			}
+
 			comm, commType := t.Comm, t.CommType
 
 			err = s.AddComm(comm, commType, userId)
@@ -529,6 +562,13 @@ func (s *Server) DeleteCommHandler (w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			defer r.Body.Close()
+
+			isInputValid := s.DeleteCommValidation(t)
+			if isInputValid!=nil {
+				WriteError(w, *isInputValid)
+				return
+			}
+
 			comm := t.Comm
 
 			err = s.DeleteComm(comm, userId)
@@ -788,6 +828,12 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			defer r.Body.Close()
+
+			isInputValid := s.MessageValidation(t)
+			if isInputValid!=nil {
+				WriteError(w, *isInputValid)
+				return
+			}
 
 			channelID, err := s.GetChannelID(t.Channel)
 			if channelID == -1 {

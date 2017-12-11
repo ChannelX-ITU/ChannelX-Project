@@ -18,6 +18,15 @@ type ChannelError struct {
 }
 
 var (
+	ErrUserNotInGroup			= ChannelError{"Err_User_Not_In_Group", "You can not join this group with this e-mail address.", http.StatusBadRequest}
+	ErrCommTypeDoesNotMatch		= ChannelError{"Err_Comm_Type_Does_Not_Match", "You can not join this channel with this communication type.", http.StatusBadRequest}
+	ErrInvalidEmail			   	= ChannelError{"Err_Invalid_Email", "E-mail address is not valid", http.StatusBadRequest}
+	ErrInvalidUsernameOnSignup	= ChannelError{"Err_Invalid_Username_On_Signup", "Username is not valid", http.StatusBadRequest}
+	ErrInvalidPasswordOnSignup	= ChannelError{"Err_Invalid_Password_On_Signup", "Password is not valid", http.StatusBadRequest}
+	ErrInvalidChannelName		= ChannelError{"Err_Invalid_Channel_Name", "Invalid channel name (Same character restrictions with username)", http.StatusBadRequest}
+	ErrInvalidCommType			= ChannelError{"Err_Invalid_Comm_Type", "Invalid Communication Type", http.StatusBadRequest}
+	ErrEmptyChannelPreference	= ChannelError{"Err_Empty_Channel_Preference", "Invalid Alias ", http.StatusBadRequest}
+	ErrInvalidPhoneNumber		= ChannelError{"Err_Invalid_Phone_Number", "Phone number must be valid.", http.StatusBadRequest}
 	ErrNotInInterval = ChannelError{"Err_Not_In_Interval", "Message can not be send because of the restriction on time interval", http.StatusPreconditionFailed}
 	ErrInvalidLoginCredentials = ChannelError{"Err_Invalid_Login_Credentials", "Username or password is incorrect", http.StatusBadRequest}
 	ErrUsernameTaken = ChannelError{"Err_Username_Taken", "This username is already taken", http.StatusBadRequest}
