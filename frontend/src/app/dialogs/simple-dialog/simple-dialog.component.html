@@ -1,0 +1,12 @@
+<mat-card class="mat-elevation-z0">
+    <mat-card-title>
+        {{data.title}}
+    </mat-card-title>
+    <mat-card-content>
+        {{data.body}}
+    </mat-card-content>
+    <mat-card-actions class="dialog-actions">
+        <button mat-button (click)="cancel()">{{data.cancelTitle || 'Cancel'}}</button>
+        <button mat-button (click)="ok()">{{data.okTitle || 'OK'}}</button>
+    </mat-card-actions>
+</mat-card>
