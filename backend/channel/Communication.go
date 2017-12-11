@@ -104,3 +104,19 @@ func (s *Server) GetCommTypeName(commType string) (id string, err error) {
 
 	return
 }
+
+func (s *Server) GetUserIDFromComm(comm string) (id int64, err error) {
+	get, err := s.dataBase.Prepare("SELECT user_id FROM COMM WHERE val = ?")
+	if err != nil {
+		return
+	}
+
+	defer get.Close()
+
+	err = get.QueryRow(comm).Scan(&id)
+	if err != nil {
+		return
+	}
+
+	return
+}

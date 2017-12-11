@@ -732,13 +732,11 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 
 			t.Subject = "You have a message from channel " + t.Channel
 
-			token, err := s.GetChannelUserToken(channelID, userId)
 			if err != nil {
 				WriteError(w, ErrInternalServerError)
 				return
 			}
 
-			t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
 
 			if ok, err := s.CheckUserInChannel(userId, channelID); ok {
 				if ok, err := s.GetIsUserOwner(channelID, userId); ok {
@@ -749,10 +747,20 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 					}
 
 					for _, val := range comm {
+						userID, err := s.GetUserIDFromComm(val.Value)
+						if err != nil {
+							continue
+						}
+						token, err := s.GetChannelUserToken(channelID, userID)
+						if err != nil {
+							continue
+						}
+						t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
 						s.SendMessage(t, val)
 					}
 
 					WriteSuccess(w, "Message is sent to channel")
+					return
 				} else if err != nil {
 					WriteError(w, ErrInternalServerError)
 					return
@@ -764,6 +772,17 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 							return
 						}
 
+						userID, err := s.GetUserIDFromComm(comm.Value)
+						if err != nil {
+							WriteError(w, ErrInternalServerError)
+							return
+						}
+						token, err := s.GetChannelUserToken(channelID, userID)
+						if err != nil {
+							WriteError(w, ErrInternalServerError)
+							return
+						}
+						t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
 						s.SendMessage(t, comm)
 						WriteSuccess(w, "Message is sent to the owner")
 					} else if err != nil {
@@ -828,10 +847,19 @@ func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Requ
 			}
 
 			for _, val := range comm {
+				userID, err := s.GetUserIDFromComm(val.Value)
+				if err != nil {
+					continue
+				}
+				token, err := s.GetChannelUserToken(channelID, userID)
+				if err != nil {
+					continue
+				}
+				t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
 				s.SendMessage(t, val)
 			}
-
 			WriteSuccess(w, "Message is sent to channel")
+			return
 		} else if err != nil {
 			WriteError(w, ErrInternalServerError)
 			return
@@ -843,8 +871,18 @@ func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Requ
 					return
 				}
 
+				userID, err := s.GetUserIDFromComm(comm.Value)
+				if err != nil {
+					WriteError(w, ErrInternalServerError)
+					return
+				}
+				token, err := s.GetChannelUserToken(channelID, userID)
+				if err != nil {
+					WriteError(w, ErrInternalServerError)
+					return
+				}
+				t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
 				s.SendMessage(t, comm)
-				WriteSuccess(w, "Message is sent to the owner")
 			} else if err != nil {
 				WriteError(w, ErrInternalServerError)
 				return
