@@ -11,6 +11,7 @@ import (
 	"github.com/satori/go.uuid"
 	"encoding/json"
 	"github.com/gorilla/sessions"
+	"strings"
 )
 
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
@@ -267,7 +268,6 @@ func (s *Server) Logout(w http.ResponseWriter, r *http.Request) {
 
 
 func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
-
 	if r.Method != "POST" {
 		WriteError(w, ErrWrongMethod)
 		return
@@ -312,11 +312,13 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			//user commID
 			commID, err := s.GetCommID(t.Comm)
 			if err != nil {
 				WriteError(w, ErrInternalServerError)
 				return
 			}
+
 			//commType control
 			var (
 				chCommID	int
@@ -347,6 +349,45 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 			}
 			//till here
 
+			//email extension control
+			if chnTypeID == 2 {
+				var(
+					isInGroup		bool
+					prefID			int64
+					chRestrictions	[]Restriction
+					userEMail		string
+				)
+
+				isInGroup = true
+				userEMail = t.Comm
+
+				err = s.dataBase.QueryRow("SELECT preference_id FROM PREFERENCE WHERE channel_id=?", channelID).Scan(&prefID)
+				if err != nil {
+					WriteError(w, ErrInternalServerError)
+					return
+				}
+
+				chRestrictions, err = s.GetRestrictions(prefID)
+				if err != nil {
+					return
+				}
+
+				for _, restriction := range chRestrictions{
+					if strings.HasSuffix( restriction.Val, userEMail ){
+						isInGroup = true
+						break
+					}else {
+						isInGroup = false
+					}
+				}
+				if isInGroup == false {
+					WriteError(w, ErrUserNotInGroup)
+					return
+				}
+
+			}
+			//till here
+
 			err = s.AddUserToChannel(channelID, userId, commID, false, t.Alias)
 			if err != nil {
 				WriteError(w, ErrInternalServerError)
@@ -364,6 +405,7 @@ func (s *Server) JoinChannelHandler (w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
 func (s *Server) AddChannelHandler (w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {

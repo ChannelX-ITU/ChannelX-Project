@@ -11,6 +11,8 @@ var IsUserName 		= regexp.MustCompile(`^[a-zA-Z0-9_.-]+$`)
 var IsPhoneNumber	= regexp.MustCompile( `(0|\\+90|090|90)[0-9]+$`)
 
 var(
+	ErrUserNotInGroup			= ChannelError{"Err_User_Not_In_Group", "You can not join this group with this e-mail address.", http.StatusBadRequest}
+	ErrChannelGetRestriction	= ChannelError{"Err_Channel_Get_Restriction", "An error is occurred.", http.StatusBadRequest}
 	ErrCommTypeDoesNotMatch		= ChannelError{"Err_Comm_Type_Does_Not_Match", "You can not join this channel with this communication type.", http.StatusBadRequest}
 	ErrChannelDoesNotExist		= ChannelError{"Err_Channel_Does_Not_Exist", "Channel is already deleted.", http.StatusBadRequest}
 	ErrInvalidEmail			   	= ChannelError{"Err_Invalid_Email", "E-mail address is not valid", http.StatusBadRequest}
