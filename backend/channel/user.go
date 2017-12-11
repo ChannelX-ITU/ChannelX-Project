@@ -2,6 +2,8 @@ package channel
 
 import (
 	"database/sql"
+	"time"
+	"math/rand"
 )
 
 type User struct {
@@ -118,12 +120,19 @@ func (s *Server) GetAlias(userID int64, channelID int64) (alias string, er error
 		return
 	}
 
+	if alias == "" {
+		rand.Seed(time.Now().Unix())
+		alliassess := make ([]string, 0)
+		alliassess = append(alliassess, "Boring Panda", "Sneaky Mamba", "Fluffy Panda", "Furious Mamba", "Grumpy Cat", "Wow Doge")
+		alias = alliassess[rand.Intn(len(alliassess))]
+	}
+
 	err = get.QueryRow(channelID, userID).Scan(&alias)
 	return
 }
 
 func (s *Server) UpdateAlias(userID int64, channelID int64, alias string) (err error) {
-	set, err := s.dataBase.Prepare("UPDATE ALIAS SET val = ? WHERE alias_id = (SELECT DISTINCT FROM CHANNEL_USER WHERE channel_id = ? AND user_id = ?)")
+	set, err := s.dataBase.Prepare("UPDATE ALIAS SET val = ? WHERE alias_id = (SELECT DISTINCT alias_id FROM CHANNEL_USER WHERE channel_id = ? AND user_id = ?)")
 	if err != nil {
 		return
 	}
