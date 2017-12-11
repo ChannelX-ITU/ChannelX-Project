@@ -85,7 +85,7 @@ export class PreferenceInterface {
         this.end = new Date(preference.start_date + preference.duration*86400000);
     }
 
-    updateValue(newValue: any) {
+    updateValue() {
         this.onChange.next(true);
     }
     

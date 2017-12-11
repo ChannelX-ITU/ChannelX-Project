@@ -1,10 +1,10 @@
 <mat-form-field>
-  <input [min]="preferenceInterface.min" matInput [matDatepicker]="startPicker" placeholder="Start Date" [(ngModel)]="preferenceInterface.start" (dateChange)="dateChange($event)" (ngModelChange)="preferenceInterface.updateValue(newValue)" [disabled]="readOnly == true">
+  <input [min]="preferenceInterface.min" matInput [matDatepicker]="startPicker" placeholder="Start Date" [(ngModel)]="preferenceInterface.start" (dateChange)="dateChange($event)" (ngModelChange)="preferenceInterface.updateValue()" [disabled]="readOnly == true">
   <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
   <mat-datepicker #startPicker></mat-datepicker>
 </mat-form-field>
 <mat-form-field>
-  <input matInput [min]="preferenceInterface.start" [matDatepicker]="endPicker" placeholder="End Date" [(ngModel)]="preferenceInterface.end" (dateChange)="dateChange($event)" (ngModelChange)="preferenceInterface.updateValue(newValue)" [disabled]="readOnly == true || noExpiration == true">
+  <input matInput [min]="preferenceInterface.start" [matDatepicker]="endPicker" placeholder="End Date" [(ngModel)]="preferenceInterface.end" (dateChange)="dateChange($event)" (ngModelChange)="preferenceInterface.updateValue()" [disabled]="readOnly == true || noExpiration == true">
   <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
   <mat-datepicker #endPicker></mat-datepicker>
 </mat-form-field>
