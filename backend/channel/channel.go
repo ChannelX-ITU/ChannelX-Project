@@ -5,6 +5,7 @@ import (
 	"time"
 	"github.com/satori/go.uuid"
 	"fmt"
+	"math/rand"
 )
 
 type Channel struct {
@@ -129,7 +130,7 @@ func (s *Server) GetChannels(userID int64) (inf []string, err error) {
 	return
 }
 
-func (s *Server) AddChannel(channel Channel, userID int64, comm string) (err error) {
+func (s *Server) AddChannel(channel Channel, userID int64, comm string, alias string) (err error) {
 	set, err := s.dataBase.Prepare("INSERT INTO CHANNEL(name) VALUES(?)")
 	if err != nil {
 		return
@@ -162,7 +163,7 @@ func (s *Server) AddChannel(channel Channel, userID int64, comm string) (err err
 		return
 	}
 
-	err = s.AddUserToChannel(int64(channelID), int64(userID), commID, true, "")
+	err = s.AddUserToChannel(int64(channelID), int64(userID), commID, true, alias)
 
 	return
 }
@@ -189,7 +190,10 @@ func (s *Server) AddUserToChannel(channelID int64, userID int64, commID int64, i
 		}
 	} else {
 		userDefined = false
-		res, err = setAlias.Exec("Boring Panda", userDefined)
+		rand.Seed(time.Now().Unix())
+		alliassess := make ([]string, 0)
+		alliassess = append(alliassess, "Boring Panda", "Sneaky Mamba", "Fluffy Panda", "Furious Mamba", "Grumpy Cat", "Wow Doge")
+		res, err = setAlias.Exec(alliassess[rand.Intn(len(alliassess))], userDefined)
 		if err != nil {
 			return
 		}

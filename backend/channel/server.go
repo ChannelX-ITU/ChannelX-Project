@@ -465,7 +465,7 @@ func (s *Server) AddChannelHandler (w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			err = s.AddChannel(t.Channel, userId, t.Comm)
+			err = s.AddChannel(t.Channel, userId, t.Comm, t.Alias)
 			if err != nil {
 				WriteError(w, ErrInternalServerError)
 				return
