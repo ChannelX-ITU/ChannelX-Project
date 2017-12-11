@@ -19,7 +19,8 @@ import {
   MatTableModule,
   MatExpansionModule,
   MatTooltipModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatCheckboxModule
 } from '@angular/material';
 
 @NgModule({
@@ -45,7 +46,8 @@ import {
     MatTableModule,
     MatExpansionModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCheckboxModule
   ],
   declarations: []
 })

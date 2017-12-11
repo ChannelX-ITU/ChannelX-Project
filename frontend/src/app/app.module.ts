@@ -41,6 +41,7 @@ import { ErrorNotifyInterceptor } from './interceptors/error-notify.interceptor'
 import { SuccessNotifyInterceptor } from './interceptors/success-notify.interceptor';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { CommunicationsComponent } from './communications/communications.component';
+import { UsersComponent } from './channel/users/users.component';
 
 const LOG_LEVEL = Level.LOG;
 if (environment.production){
@@ -69,7 +70,8 @@ if (environment.production){
     FloorPipe,
     CeilPipe,
     PreferencesComponent,
-    CommunicationsComponent
+    CommunicationsComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

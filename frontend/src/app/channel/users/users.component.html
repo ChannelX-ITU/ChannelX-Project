@@ -1,0 +1,5 @@
+<mat-list *ngIf="currentChannel">
+    <mat-list-item *ngFor="let user of currentChannel.channel.users">
+        {{user}}
+    </mat-list-item>
+</mat-list>

@@ -10,6 +10,7 @@ import { RegisterComponent} from './auth/register/register.component'
 import { AuthComponent } from './auth/auth.component'
 
 import { ChannelComponent } from './channel/channel.component'
+import { UsersComponent } from './channel/users/users.component';
 
 import { BroadcastComponent } from './channel/broadcast/broadcast.component'
 import { EditChannelComponent } from './channel/edit-channel/edit-channel.component'
@@ -40,7 +41,8 @@ const routes: Routes = [
       children: [
         { path: "", redirectTo: "broadcast", pathMatch: "full" },
         { path: "settings", component: EditChannelComponent },
-        { path: "broadcast", component: BroadcastComponent }
+        { path: "broadcast", component: BroadcastComponent },
+        { path: "users", component: UsersComponent }
       ] 
   },
   {

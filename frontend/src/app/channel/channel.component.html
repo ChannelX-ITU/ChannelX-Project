@@ -1,12 +1,16 @@
 <mat-card id="homeButtons">
   <nav mat-tab-nav-bar class="home-navigation">
+    <span *ngFor="let link of navLinks">
+      <span *ngIf="currentChannel != null">
     <a mat-tab-link
-       *ngFor="let link of navLinks"
+        *ngIf="!(link.ownerOnly && !currentChannel.channel.is_owner)"
        [routerLink]="link.path"
        routerLinkActive #rla="routerLinkActive"
        [active]="rla.isActive">
       {{link.label}}
     </a>
+  </span>
+  </span>
   </nav>
 
 
@@ -17,82 +21,3 @@
   </div>
 
 </mat-card>
-
-<!-- <mat-card id="Channel_Card">
-  <mat-tab-group>
-    <mat-tab label="Broadcast Message">
-      <form method="post" action="broadcast">
-        <mat-form-field>
-            <textarea matTextareaAutosize matAutosizeMinRows="3"
-            matAutosizeMaxRows="8" required matInput placeholder="Type your message here.." id="message" type="text" name="message"></textarea>
-        </mat-form-field>
-        <button mat-raised-button>SEND</button>
-      </form>
-    </mat-tab>
-    <mat-tab label="Channel Settings">
-      <form>
-        <mat-form-field>
-          <mat-select [(ngModel)]="selectedNav" (change)="setNav(selectedNav)"
-            name="CommType" name="CommType" placeholder="Choose Comm Type">
-            <mat-option *ngFor="let commType of commTypes" [value]="commType.view">
-            {{commType.view}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div *ngIf="regTypeSelectedOption === 'email'">
-          <mat-form-field>
-            <mat-select placeholder="Choose E-mail">
-              <mat-option *ngFor="let email of emails" [value]="email.view">
-              {{email.name}} - {{email.view}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div *ngIf="regTypeSelectedOption === 'sms'">
-          <mat-form-field>
-            <mat-select placeholder="Choose Phone">
-              <mat-option *ngFor="let phone of phones" [value]="phone.view">
-              {{phone.name}} - {{phone.view}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <br/>
-        <div>
-          <mat-card id="interval">
-            <mat-form-field>
-              <mat-select placeholder="Choose Active Days" multiple>
-                <mat-option *ngFor="let day of days" [value]="day.view">
-                {{day.view}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <br/>
-            <mat-form-field>
-              <mat-select placeholder="Choose Active Hour Begin">
-                <mat-option *ngFor="let hour of hours" [value]="hour.view">
-                {{hour.view}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <br/>
-            <mat-form-field>
-              <mat-select placeholder="Choose Active Hour Finish">
-                <mat-option *ngFor="let hour of hours" [value]="hour.view">
-                {{hour.view}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <button mat-fab (click)="createNew()">+</button>
-          </mat-card>
-          <div #container></div>
-        </div>
-        <br/>
-          <span>Ya</span>
-          <button mat-raised-button>SAVE</button>
-          <span>Ya</span>
-          <button mat-raised-button color="warn">LEAVE</button>
-      </form>
-    </mat-tab>
-  </mat-tab-group>
-</mat-card> -->
