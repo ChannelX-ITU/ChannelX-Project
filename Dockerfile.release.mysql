@@ -1,0 +1,7 @@
+FROM mysql
+
+COPY db/setup.sql /docker-entrypoint-initdb.d/setup.sql
+
+
+
+
