@@ -4,10 +4,10 @@ pipeline {
     stages {
         stage('Deploy') {
             steps {
-                sh 'docker-compose stop'
-                sh 'yes y | docker-compose rm'
-                sh 'docker-compose -f docker-compose.release.yml build'
-                sh 'docker-compose -f docker-compose.release.yml -d up'
+                sh 'sudo docker-compose -f docker-compose.release.yml stop'
+                sh 'yes y | sudo docker-compose rm'
+                sh 'sudo docker-compose -f docker-compose.release.yml build'
+                sh 'sudo docker-compose -f docker-compose.release.yml -d up'
             }
         }
     }
