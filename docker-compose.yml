@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mysql:
+    image: 'mysql'
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: 35792030
+        MYSQL_DATABASE: ChannelX
+    ports:
+     - "3306:3306"
+    volumes:
+     - ./db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+     - alpine_mysql:/var/lib/mysql
+  backend:
+    build: .
+    depends_on: 
+     - "mysql"
+    links:
+     - "mysql:my.sql"
+    ports:
+     - "6969:6969"
+     - "4200:4200"
+    volumes:
+     - ./backend:/app/backend
+     - ./frontend:/app/frontend
+     - alpine_node_modules:/app/frontend/node_modules
+    environment:
+        PKG_NAME: github.com/ChannelX-ITU/ChannelX-Project/backend
+    entrypoint: startup.sh
+volumes:
+  alpine_node_modules:
+  alpine_mysql:

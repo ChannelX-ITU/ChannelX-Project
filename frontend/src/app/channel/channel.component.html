@@ -1,0 +1,23 @@
+<mat-card id="homeButtons">
+  <nav mat-tab-nav-bar class="home-navigation">
+    <span *ngFor="let link of navLinks">
+      <span *ngIf="currentChannel != null">
+    <a mat-tab-link
+        *ngIf="!(link.ownerOnly && !currentChannel.channel.is_owner)"
+       [routerLink]="link.path"
+       routerLinkActive #rla="routerLinkActive"
+       [active]="rla.isActive">
+      {{link.label}}
+    </a>
+  </span>
+  </span>
+  </nav>
+
+
+  <div class="padded-content">
+    <span class="channel-name"><h2 mat-header>{{channelId}}</h2></span>
+
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-card>

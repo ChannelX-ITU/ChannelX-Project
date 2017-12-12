@@ -1,0 +1,11 @@
+<mat-card id="homeButtons">
+    <div class="padded-content">
+        <form>
+          <mat-form-field>
+              <textarea [(ngModel)]="message" matTextareaAutosize matAutosizeMinRows="3"
+              matAutosizeMaxRows="8" required matInput placeholder="Type your message here..." id="message" type="text" name="message"></textarea>
+          </mat-form-field>
+          <button mat-button (click)="send()">SEND</button>
+        </form>
+    </div>
+</mat-card>

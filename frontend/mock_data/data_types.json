@@ -1,0 +1,89 @@
+// Restriction
+{
+    "type": "END",
+    "value": "itu.edu.tr",
+    "operator": "="
+}
+
+// Communication Method
+{
+    "type": "EMAIL",
+    "value": "apake15@itu.edu.tr"
+}
+
+// Interval
+{
+    "start": 1440,
+    "duration": 1440
+}
+
+// Preference
+{
+    "start_date": "1234567890",
+    "duration": 90,
+    "intervals": [
+        {
+            "start": 1440,
+            "duration": 1440
+        },
+        {
+            "start": 0,
+            "duration": 120
+        }
+    ]
+}
+
+// User
+{
+    "username": "egeapak",
+    "channels": ["1231421asdad3132asda21", "1232131241asdeqwe1231"],
+    "preferences": {
+        "start_date": "1234567890",
+        "duration": 90,
+        "intervals": [
+            {
+                "start": 1440,
+                "duration": 1440
+            },
+            {
+                "start": 0,
+                "duration": 120
+            }
+        ]
+    },
+    "communications": [
+        {
+            "type": "EMAIL",
+            "value": "apake15@itu.edu.tr"
+        }
+    ]
+}
+
+// Channel
+{
+    "name": "Test Channel",
+    "preferences": {
+        "start_date": "1234567890",
+        "duration": 90,
+        "intervals": [
+            {
+                "start": 1440,
+                "duration": 1440
+            },
+            {
+                "start": 0,
+                "duration": 120
+            }
+        ]
+    },
+    "restrictions": [
+        {
+            "type": "END",
+            "value": "itu.edu.tr",
+            "operator": "="
+        }
+    ],
+    "is_owner": true,
+    "users": ["hatakan", "iyigit", "at", "papak"]
+}
+

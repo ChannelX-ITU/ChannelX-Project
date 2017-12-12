@@ -1,0 +1,48 @@
+@import '~@angular/material/theming';
+
+mat-card.sub-content {
+    // padding: 8px;
+
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        @include mat-elevation(8);
+    }
+}
+
+mat-card > mat-card-content.mat-card-content {
+    margin-bottom: 0px;
+}
+
+.pref-container {
+    padding: 0.3em;
+    margin: 0;
+}
+.pref-container > .pref-container-cell {
+  padding: 0.5em;
+}
+
+div.sample {
+    display: block;
+    background-color: red;
+}
+
+div.pref-container {
+    margin: -12px;
+    display: flex;
+}
+
+div.pref-container-cell {
+    flex: 1;
+}
+
+form {
+    display: flex;
+}
+
+form > * {
+    margin: 1em;
+}

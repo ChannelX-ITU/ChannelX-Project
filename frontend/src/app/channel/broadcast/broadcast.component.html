@@ -1,0 +1,10 @@
+<div>
+  <mat-form-field>
+      <textarea matTextareaAutosize matAutosizeMinRows="3"
+      matAutosizeMaxRows="8" required matInput placeholder="Type your message here.." id="message" type="text" name="message" [(ngModel)]="message"></textarea>
+  </mat-form-field>
+</div>
+
+<mat-card-actions>
+<button mat-button (click)="sendMessage()">SEND</button>
+</mat-card-actions>

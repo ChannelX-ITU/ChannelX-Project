@@ -1,0 +1,30 @@
+$content-padding: 12px;
+
+.padded-content {
+    padding: $content-padding;
+    display: grid;
+}
+
+
+#homeButtons {
+    margin: 40px;
+    padding: 0;
+}
+
+.home-navigation {
+    margin-bottom: 20px;
+}
+
+
+nav.home-navigation ::ng-deep div.mat-tab-links {
+    display:flex;
+
+    & > a.mat-tab-link {
+        flex: 1;
+        &:focus {
+            outline-style:none;
+            box-shadow:none;
+            border-color:transparent;
+        }
+    }
+}

@@ -1,0 +1,8 @@
+@import '~@angular/material/theming';
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue.
+$dark-background: #212121;
+$dark-primary: mat-palette($mat-blue, 600, 400, 800);
+$dark-accent:  mat-palette($mat-light-blue, 600, 400, 800);
+$dark-warn:    mat-palette($mat-deep-orange);

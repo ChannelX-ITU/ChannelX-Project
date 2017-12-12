@@ -1,0 +1,91 @@
+<div class="pref-container">
+  <div class="pref-container-cell">
+    <mat-card class="sub-content">
+      <mat-card-header>
+        <mat-card-title>
+          User Mails
+        </mat-card-title>
+        <mat-card-subtitle>
+          Your e-mail list and edit options
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngFor="let email of user.communications | commFilter: 'EMAIL'">
+            <button mat-button matTooltip="Click to Remove" matTooltipPosition="before" (click)="removeCommunication(email)">{{email.value}}</button>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="pref-container-cell">
+    <mat-card class="sub-content">
+      <mat-card-header>
+        <mat-card-title>
+          User SMS
+        </mat-card-title>
+        <mat-card-subtitle>
+          Your phone number list and edit options
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngFor="let phone of user.communications | commFilter: 'SMS'">
+            <button mat-button matTooltip="Click to Remove" matTooltipPosition="before" (click)="removeCommunication(phone)">{{phone.value}}</button>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div class="pref-container">
+  <div class="pref-container-cell">
+    <mat-card class="sub-content">
+      <mat-card-header>
+        <mat-card-title>
+          Add Communication Method
+        </mat-card-title>
+        <mat-card-subtitle>
+          Add a new method for other people to contact you with
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <form>
+          <mat-form-field>
+            <mat-select placeholder="Type" id="comm_type" name="commType" [(ngModel)]="addComm.comm_type">
+              <mat-option value="EMAIL">
+                Email
+              </mat-option>
+              <mat-option value="SMS">
+                SMS
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Number/Mail" id="comm_value" type="text" [(ngModel)]="addComm.value" name="commValue">
+          </mat-form-field>
+        </form>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="addCommunication()">ADD</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+<div class="pref-container">
+  <div class="pref-container-cell">
+    <mat-card class="sub-content">
+      <mat-card-header>
+        <mat-card-title>
+          Default Channel Preferences
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <app-preferences [(preference)]="user.preferences"></app-preferences>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<mat-card-actions style="margin-bottom: 0px; padding-left: 16px;">
+  <button mat-button (click)="save()">SAVE</button>
+</mat-card-actions>

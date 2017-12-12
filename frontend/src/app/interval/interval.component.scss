@@ -1,0 +1,47 @@
+mat-card.interval {
+    max-width: fit-content;
+    margin: 8px;
+    height: 236px;
+    display: flex;
+}
+
+div.content {
+    display: block;
+    align-self: center;
+}
+
+button.close {
+    min-width: fit-content;
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 10px 5px 10px 0px;
+    z-index: 1;
+}
+
+.intervals {
+    display: flex;
+    overflow-x: scroll;
+}
+
+div.intervals {
+    position: relative;
+    min-height: 300px;
+}
+
+button.fab {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 8px;
+}
+
+span.center-flex {
+        flex: 1;
+        align-self: center;
+        text-align: center;
+
+}

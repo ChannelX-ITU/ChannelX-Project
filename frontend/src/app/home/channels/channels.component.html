@@ -1,0 +1,49 @@
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let acc of accordions; let i = index;" [expanded]="openedAcc == i" (opened)="openAccordion(i)">
+      <mat-expansion-panel-header>
+        <mat-panel-title> {{acc.title}} </mat-panel-title>
+        <mat-spinner class="table-loader" *ngIf="!loaded" [diameter]=24 [strokeWidth]=4></mat-spinner>
+      </mat-expansion-panel-header>
+      <mat-table #table [dataSource]="acc.source">
+        <!--Channel Name Column-->
+        <ng-container matColumnDef="ChannelName">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"><a mat-button routerLink="/channel/{{element.name}}">{{element.name}}</a></mat-cell>
+          <!-- Also bind the selected channel id!!!! -->
+        </ng-container>
+
+        <!--Channel User Count Column-->
+        <ng-container matColumnDef="UserCount">
+          <mat-header-cell *matHeaderCellDef> User Count </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.user_count}} </mat-cell>
+        </ng-container>
+
+        <!--Channel Prefered Comm Column-->
+        <ng-container matColumnDef="CommType">
+          <mat-header-cell *matHeaderCellDef> Preferred Communication </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.comm}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="accordions.length == openedAcc" (opened)="openAccordion(accordions.length)">
+      <mat-expansion-panel-header>
+        <mat-panel-title> Join a Channel </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="joinGroup" #joinForm>
+      <mat-form-field>
+        <input required matInput  formControlName="channelName" [(ngModel)]="channelName" placeholder="Enter channel name..." type="text" name="channelName">
+      </mat-form-field>
+      <app-communications [(ngModel)]="comm" [communications]="comms | async" formControlName="commValue" >
+              </app-communications>
+            </form>
+      <mat-card-actions style="margin-bottom: -8px; padding-left: 16px;">
+        <button mat-button (click)="joinChannel(joinForm)">
+            JOIN
+        </button>
+      </mat-card-actions>
+    </mat-expansion-panel>
+  </mat-accordion>

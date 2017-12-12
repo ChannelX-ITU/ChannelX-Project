@@ -1,0 +1,9 @@
+<mat-form-field>
+    <mat-select placeholder="Choose Communication" [value]="selection" (valueChange)="updateValue($event)">
+    <mat-optgroup *ngFor="let type of ['EMAIL', 'SMS']" [label]="type">
+        <mat-option *ngFor="let comm of communications | commFilter: type" [value]="comm.value">
+          {{comm.value}}
+      </mat-option>
+  </mat-optgroup>
+</mat-select>
+</mat-form-field>

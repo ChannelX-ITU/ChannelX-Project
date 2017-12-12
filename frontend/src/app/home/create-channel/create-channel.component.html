@@ -1,0 +1,30 @@
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step label="Name Your Channel" [stepControl]="nameGroup">
+    <form [formGroup]="nameGroup" class="step-container">
+      <mat-form-field>
+        <input formControlName="channelName" matInput placeholder="Channel Name" id="channel_name" type="text" name="channelName" required [(ngModel)]="channel.channel.name">
+      </mat-form-field>
+        <mat-form-field>
+          <input formControlName="aliasName" matTooltip="Leaving this empty will assign a random alias" matInput placeholder="Alias" id="alias_name" type="text" name="aliasName" [(ngModel)]="channel.alias">
+        </mat-form-field>
+    </form>
+  </mat-step>
+  <mat-step label="Configure Communication Type" [stepControl]="commGroup">
+    <form [formGroup]="commGroup" class="step-container">
+        <app-communications [(ngModel)]="channel.comm.value" [communications]="comms | async" formControlName="commValue" >
+        </app-communications>
+    </form>
+  </mat-step>
+  <mat-step label="Configure Active Hours">
+    <form>
+      <div>
+        <app-preferences [(preference)]="channel.channel.preference" [showRestrictions]="true" [(restrictions)]="channel.channel.restrictions"></app-preferences>
+      </div>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>
+<mat-card-actions>
+      <button mat-button (click)="proceed()">
+      {{(stepper.selectedIndex < 2) ? 'NEXT' : 'CREATE'}}
+    </button>
+</mat-card-actions>
