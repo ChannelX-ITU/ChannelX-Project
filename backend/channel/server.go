@@ -219,7 +219,7 @@ func (s *Server) SignUp(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		s.SendMail(email, "Activation", "To activate your account please click the link: http://localhost:6969/activate/" + u1.String())
+		s.SendMail(email, "Activation", "To activate your account please click the link: http://www.channelsx.com/activate/" + u1.String())
 		WriteSuccess(res, "Activation mail is sent to the user's mail")
 		return
 	case err != nil:
@@ -870,7 +870,7 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 						if err != nil {
 							continue
 						}
-						t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
+						t.Message = t.Message + "\n\n    http://www.channelsx.com/reply?t=" + token
 						s.SendMessage(t, val)
 					}
 
@@ -897,7 +897,7 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 							WriteError(w, ErrInternalServerError)
 							return
 						}
-						t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
+						t.Message = t.Message + "\n\n    http://www.channelsx.com/reply?t=" + token
 						s.SendMessage(t, comm)
 						WriteSuccess(w, "Message is sent to the owner")
 					} else if err != nil {
@@ -951,7 +951,6 @@ func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Requ
 	}
 	t.Subject = "You have a message from channel " + chanName
 	t.Channel = chanName
-	t.Message = t.Message + " -- To Reply: http://localhost:6969/reply?t=" + token
 
 	if ok, err := s.CheckUserInChannel(userId, channelID); ok {
 		if ok, err := s.GetIsUserOwner(channelID, userId); ok {
@@ -970,7 +969,7 @@ func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Requ
 				if err != nil {
 					continue
 				}
-				t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
+				t.Message = t.Message + "\n\n    http://www.channelsx.com/reply?t=" + token
 				s.SendMessage(t, val)
 			}
 			WriteSuccess(w, "Message is sent to channel")
@@ -996,7 +995,7 @@ func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Requ
 					WriteError(w, ErrInternalServerError)
 					return
 				}
-				t.Message = t.Message + "\n\n    http://localhost:6969/reply?t=" + token
+				t.Message = t.Message + "\n\n    http://www.channelsx.com/reply?t=" + token
 				s.SendMessage(t, comm)
 			} else if err != nil {
 				WriteError(w, ErrInternalServerError)
