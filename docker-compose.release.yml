@@ -24,6 +24,8 @@ services:
     ports:
      - "6969:6969"
      - "4200:4200"
+    stdin_open: true
+    tty: true
     environment:
         PKG_NAME: github.com/ChannelX-ITU/ChannelX-Project/backend
 volumes:
