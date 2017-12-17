@@ -13,6 +13,7 @@ services:
     volumes:
      - ./db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
      - alpine_mysql:/var/lib/mysql
+     - gmail_api:/root/.credentials
   backend:
     build: 
         context: .
@@ -31,3 +32,4 @@ services:
 volumes:
   alpine_node_modules:
   alpine_mysql:
+  gmail_api:
