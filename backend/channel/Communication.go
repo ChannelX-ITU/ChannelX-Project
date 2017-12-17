@@ -58,7 +58,7 @@ func (s *Server) SendMessage(mes SendMessage, comm Communication) {
 		return
 
 	case "EMAIL":
-		s.mailMan.Send(Message{To:comm.Value, Sub:mes.Subject, Msg:mes.Message})
+		s.SendMail(comm.Value, mes.Subject, mes.Message)
 		return
 	}
 }
