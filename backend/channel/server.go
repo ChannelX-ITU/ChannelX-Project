@@ -12,21 +12,21 @@ import (
 	"encoding/json"
 	"github.com/gorilla/sessions"
 	"strings"
+	"google.golang.org/api/gmail/v1"
 )
 
 var store = sessions.NewCookieStore([]byte("bist-chinnil-ivir"))
 
 type Server struct {
 	dataBase		*sql.DB
-	mailMan			*Mailman
+	mailMan			*gmail.Service
 	port 			string
 }
 
 func (s *Server) Setup(smtp string, port int, username string, psswrd string) {
-	s.mailMan = &Mailman{}
-	s.mailMan.Setup(smtp, port, username, psswrd)
+	s.mailMan = GetGmailService()
 	db, err := sql.Open("mysql", "root:35792030@tcp(my.sql:3306)/ChannelX")
-	
+
 	if err != nil {
 		panic(err.Error())
 	}
@@ -40,7 +40,6 @@ func (s *Server) Setup(smtp string, port int, username string, psswrd string) {
 }
 
 func (s *Server) Run() {
-	s.mailMan.Run()
 	router := mux.NewRouter()
 	fs := http.FileServer(http.Dir("static"))
 
@@ -220,7 +219,7 @@ func (s *Server) SignUp(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		s.mailMan.Send(Message{email, "Activation", "To activate your account please click the link: http://localhost:6969/activate/" + u1.String()})
+		s.SendMail(email, "Activation", "To activate your account please click the link: http://localhost:6969/activate/" + u1.String())
 		WriteSuccess(res, "Activation mail is sent to the user's mail")
 		return
 	case err != nil:
@@ -1183,9 +1182,9 @@ func (s *Server) UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 				WriteError(w, ErrInternalServerError)
 				return
 
-				}
+			}
 
-				WriteSuccess(w, "User preferences are updated")
+			WriteSuccess(w, "User preferences are updated")
 		} else {
 			WriteError(w, ErrInternalServerError)
 			return
