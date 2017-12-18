@@ -862,6 +862,7 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 					}
 
 					for _, val := range comm {
+						d := t
 						userID, err := s.GetUserIDFromComm(val.Value)
 						if err != nil {
 							continue
@@ -870,8 +871,8 @@ func (s *Server) SendMessageHandler(w http.ResponseWriter, r *http.Request) {
 						if err != nil {
 							continue
 						}
-						t.Message = t.Message + "\n\n    https://channelsx.com/reply?t=" + token
-						s.SendMessage(t, val)
+						d.Message = d.Message + "\n\n    https://channelsx.com/reply?t=" + token
+						s.SendMessage(d, val)
 					}
 
 					WriteSuccess(w, "Message is sent to channel")
@@ -961,6 +962,7 @@ func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Requ
 			}
 
 			for _, val := range comm {
+				d := t
 				userID, err := s.GetUserIDFromComm(val.Value)
 				if err != nil {
 					continue
@@ -969,8 +971,8 @@ func (s *Server) SendMessageWithTokenHandler(w http.ResponseWriter, r *http.Requ
 				if err != nil {
 					continue
 				}
-				t.Message = t.Message + "\n\n    https://channelsx.com/reply?t=" + token
-				s.SendMessage(t, val)
+				d.Message = d.Message + "\n\n    https://channelsx.com/reply?t=" + token
+				s.SendMessage(d, val)
 			}
 			WriteSuccess(w, "Message is sent to channel")
 			return
