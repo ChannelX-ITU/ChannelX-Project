@@ -5,6 +5,7 @@ services:
         context: .
         dockerfile: Dockerfile.release.mysql
     restart: always
+    container_name: channelx_mysql
     environment:
         MYSQL_ROOT_PASSWORD: 35792030
         MYSQL_DATABASE: ChannelX
@@ -13,13 +14,13 @@ services:
     volumes:
      - ./db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
      - alpine_mysql:/var/lib/mysql
-     - gmail_api:/root/.credentials
   backend:
     build: 
         context: .
         dockerfile: Dockerfile.release
     depends_on: 
      - "mysql"
+    container_name: channelx_backend
     links:
      - "mysql:my.sql"
     ports:
@@ -29,6 +30,8 @@ services:
     tty: true
     environment:
         PKG_NAME: github.com/ChannelX-ITU/ChannelX-Project/backend
+    volumes:
+     - gmail_api:/root/.credentials
 volumes:
   alpine_node_modules:
   alpine_mysql:
