@@ -4,6 +4,7 @@ services:
     build:
         context: .
         dockerfile: Dockerfile.release.mysql
+    image: channelx/mysql
     restart: always
     container_name: channelx_mysql
     environment:
@@ -18,6 +19,7 @@ services:
     build: 
         context: .
         dockerfile: Dockerfile.release
+    image: channelx/backend
     depends_on: 
      - "mysql"
     container_name: channelx_backend
